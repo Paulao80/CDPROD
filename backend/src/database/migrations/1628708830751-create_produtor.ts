@@ -37,12 +37,14 @@ export class createProdutor1628708830751 implements MigrationInterface {
                 {
                     name: 'CpfCnpj',
                     type: 'varchar',
-                    isNullable: false
+                    isNullable: false,
+                    isUnique: true
                 },
                 {
                     name: 'rg',
                     type: 'varchar',
-                    isNullable: false
+                    isNullable: false,
+                    isUnique: true
                 },
                 {
                     name: 'OrgaoExp',
@@ -67,7 +69,7 @@ export class createProdutor1628708830751 implements MigrationInterface {
                 {
                     name: 'Telefone',
                     type: 'varchar',
-                    isNullable: true
+                    isNullable: true               
                 },
                 {
                     name: 'UltLaticinio',

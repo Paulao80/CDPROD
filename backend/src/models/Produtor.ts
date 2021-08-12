@@ -1,6 +1,7 @@
-import {TipoPessoa} from './enums/TipoPessoaEnum';
-import {EstadoCivil} from './enums/EstadoCivilEnum';
-import {Entity, Column, PrimaryGeneratedColumn} from 'typeorm'
+import {TipoPessoa} from '../enums/TipoPessoaEnum';
+import {EstadoCivil} from '../enums/EstadoCivilEnum';
+import {Entity, Column, PrimaryGeneratedColumn, OneToMany, JoinColumn} from 'typeorm';
+import ContaBancaria from './ContaBancaria';
 
 @Entity('Produtores')
 export default class Produtor{
@@ -13,7 +14,7 @@ export default class Produtor{
     @Column()
     DataNasc: string;
 
-    @Column()
+    @Column({type: 'integer'})
     TipoPessoa: TipoPessoa;
 
     @Column()
@@ -34,7 +35,7 @@ export default class Produtor{
     @Column()
     DataExp: string;
 
-    @Column()
+    @Column({type: 'integer'})
     EstadoCivil: EstadoCivil;
 
     @Column()
@@ -42,4 +43,10 @@ export default class Produtor{
 
     @Column()
     UltLaticinio: string;
+
+    @OneToMany(() => ContaBancaria, conta => conta.Produtor, {
+        cascade: ['insert', 'update']
+    })
+    @JoinColumn({name: 'ProdutorId'})
+    ContasBancarias: ContaBancaria[];
 }
