@@ -16,27 +16,35 @@ export class createPropriedade1628856203704 implements MigrationInterface {
                 },
                 {
                     name: 'Nirf',
-                    type: 'varchar'
+                    type: 'varchar',
+                    isNullable: false,
+                    isUnique: true
                 },
                 {
                     name: 'Nome',
-                    type: 'varchar'
+                    type: 'varchar',
+                    isNullable: false
                 },
                 {
                     name: 'InscEstadual',
-                    type: 'varchar'
+                    type: 'varchar',
+                    isNullable: false,
+                    isUnique: true
                 },
                 {
                     name: 'Endereco',
-                    type: 'text'
+                    type: 'text',
+                    isNullable: false
                 },
                 {
                     name: 'Municipio',
-                    type: 'varchar'
+                    type: 'varchar',
+                    isNullable: false
                 },
                 {
                     name: 'Estado',
-                    type: 'varchar'
+                    type: 'varchar',
+                    isNullable: false
                 },
                 {
                     name: 'ProdutorId',

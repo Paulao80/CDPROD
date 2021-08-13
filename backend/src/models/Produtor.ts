@@ -3,6 +3,7 @@ import {EstadoCivil} from '../enums/EstadoCivilEnum';
 import {Entity, Column, PrimaryGeneratedColumn, OneToMany, JoinColumn} from 'typeorm';
 import ContaBancaria from './ContaBancaria';
 import Propriedade from './Propriedade';
+import ProdutorTanque from './ProdutorTanque';
 
 @Entity('Produtores')
 export default class Produtor{
@@ -56,4 +57,10 @@ export default class Produtor{
     })
     @JoinColumn({name: 'ProdutorId'})
     Propriedades: Propriedade[];
+
+    @OneToMany(() => ProdutorTanque, prodTanque => prodTanque.Produtor, {
+        cascade: ['insert', 'update']
+    })
+    @JoinColumn({name: 'ProdutorId'})
+    ProdutoresTanques: ProdutorTanque[];
 }
