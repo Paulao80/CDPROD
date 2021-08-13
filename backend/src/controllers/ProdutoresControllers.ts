@@ -34,7 +34,8 @@ export default {
             EstadoCivil,
             Telefone,
             UltLaticinio,
-            ContasBancarias
+            ContasBancarias,
+            Propriedades
         } = request.body; 
 
         const ProdutoresRepository = getRepository(Produtor);
@@ -52,7 +53,8 @@ export default {
             EstadoCivil,
             Telefone,
             UltLaticinio,
-            ContasBancarias          
+            ContasBancarias,
+            Propriedades          
         });
     
         await ProdutoresRepository.save(produtor);

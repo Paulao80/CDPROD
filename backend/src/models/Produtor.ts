@@ -2,6 +2,7 @@ import {TipoPessoa} from '../enums/TipoPessoaEnum';
 import {EstadoCivil} from '../enums/EstadoCivilEnum';
 import {Entity, Column, PrimaryGeneratedColumn, OneToMany, JoinColumn} from 'typeorm';
 import ContaBancaria from './ContaBancaria';
+import Propriedade from './Propriedade';
 
 @Entity('Produtores')
 export default class Produtor{
@@ -49,4 +50,10 @@ export default class Produtor{
     })
     @JoinColumn({name: 'ProdutorId'})
     ContasBancarias: ContaBancaria[];
+
+    @OneToMany(() => Propriedade, propriedade => propriedade.Produtor, {
+        cascade: ['insert', 'update']
+    })
+    @JoinColumn({name: 'ProdutorId'})
+    Propriedades: Propriedade[];
 }
