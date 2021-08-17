@@ -86,8 +86,7 @@ export class createTanque1628866739911 implements MigrationInterface {
                 },
                 {
                     name: 'Responsavel',
-                    type: 'boolean',
-                    default: false
+                    type: 'boolean'
                 }
             ],
             foreignKeys: [

@@ -1,6 +1,7 @@
 import {Request, Response} from 'express';
 import {getRepository} from 'typeorm';
 import Tanque from '../models/Tanque';
+import ProdutorTanque from '../models/ProdutorTanque';
 
 export default {
     async index(request: Request, response: Response){
@@ -20,12 +21,13 @@ export default {
         return response.json(tanque);
     },
     async create(request: Request, response: Response){
+        console.log(request.file);
+
         const {
             Rota,
             Capacidade,
             MediaDiaria,
-            TipoTanque,
-            FotoPath,
+            TipoTanque,            
             NumeroSerie,
             Marca,
             Latitude,
@@ -33,18 +35,27 @@ export default {
             ProdutoresTanques
         } = request.body;
 
+        if(ProdutoresTanques !== undefined && ProdutoresTanques !== null && ProdutoresTanques.length > 0){
+            ProdutoresTanques.map((obj: any) => {
+                obj.Responsavel = JSON.parse(obj.Responsavel);
+                return obj;
+            });
+        }
+
+        var FotoPath = request.file?.filename;
+
         const TanquesRepository = getRepository(Tanque);
 
         const tanque = TanquesRepository.create({
             Rota,
             Capacidade,
             MediaDiaria,
-            TipoTanque,
-            FotoPath,
+            TipoTanque,            
             NumeroSerie,
             Marca,
             Latitude,
             Longitude,
+            FotoPath,
             ProdutoresTanques
         });
 
