@@ -1,24 +1,34 @@
 import {Request, Response} from 'express';
 import {getRepository} from 'typeorm';
 import Tanque from '../models/Tanque';
-import ProdutorTanque from '../models/ProdutorTanque';
+import TanqueView from '../views/TanqueView';
 
 export default {
     async index(request: Request, response: Response){
         const TanquesRepository = getRepository(Tanque);
 
-        const tanques = await TanquesRepository.find();
+        const tanques = await TanquesRepository.find({
+            relations: [
+                'ProdutoresTanques',
+                'ProdutoresTanques.Produtor'     
+            ]
+        });
 
-        return response.json(tanques);
+        return response.json(TanqueView.renderMany(tanques));
     },
     async show(request: Request, response: Response){
         const {id} = request.params;
 
         const TanquesRepository = getRepository(Tanque);
         
-        const tanque = await TanquesRepository.findOneOrFail(id);
+        const tanque = await TanquesRepository.findOneOrFail(id,{
+            relations: [
+                'ProdutoresTanques',
+                'ProdutoresTanques.Produtor'       
+            ]
+        });
 
-        return response.json(tanque);
+        return response.json(TanqueView.render(tanque));
     },
     async create(request: Request, response: Response){
         console.log(request.file);
