@@ -1,8 +1,9 @@
 import {Request, Response} from 'express';
 import {getRepository} from 'typeorm';
 import ContaBancaria from '../models/ContaBancaria';
-import Produtor from '../models/Produtor';
+import {default as ProdutorClass} from '../models/Produtor';
 import ContaBancariaView from '../views/ContaBancariaView';
+import * as Yup from 'yup';
 
 export default {
     async index(request: Request, response: Response){
@@ -35,22 +36,51 @@ export default {
             Banco,
             Agencia,
             Conta,
-            ProdutorId
+            Produtor
         } = request.body;
 
-        const ProdutoresRepository = getRepository(Produtor);
-
-        const produtor = await ProdutoresRepository.findOneOrFail(ProdutorId);
-
+        const ProdutoresRepository = getRepository(ProdutorClass);
         const ContaRepository = getRepository(ContaBancaria);
 
-        const conta = ContaRepository.create({
+        const data = {
             NomePertence,
             Banco,
             Agencia,
             Conta,
-            Produtor: produtor
+            Produtor
+        };
+
+        const schema = Yup.object().shape({
+            NomePertence: Yup.string().required('NomePertence é Obrigatório'),
+            Banco: Yup.string().required('Banco é Obrigatório'),
+            Agencia: Yup.string().required('Agencia é Obrigatória'),
+            Conta: Yup.string().required('Conta é Obrigatória'),
+            Produtor: Yup.object().shape({
+                ProdutorId: Yup.number().required('ProdutorId é Obrigatório'),
+                Nome: Yup.string().notRequired(),
+                DataNasc: Yup.date().notRequired(),
+                TipoPessoa: Yup.number().notRequired(),
+                Nacionalidade: Yup.string().notRequired(),
+                CpfCnpj: Yup.string().notRequired(),
+                RG: Yup.string().notRequired(),
+                OrgaoExp: Yup.string().notRequired(),
+                EstadoExp: Yup.string().notRequired(),
+                DataExp: Yup.date().notRequired(),
+                EstadoCivil: Yup.number().notRequired(),
+                Telefone: Yup.string().notRequired(),
+                UltLaticinio: Yup.string().notRequired()
+            }).required('Produtor é Obrigatório')
+        })
+
+        await schema.validate(data, {
+            abortEarly: false
         });
+
+        const produtor = await ProdutoresRepository.findOneOrFail(Produtor.ProdutorId);  
+        
+        data.Produtor = produtor;
+
+        const conta = ContaRepository.create(data);
         
         await ContaRepository.save(conta);
 

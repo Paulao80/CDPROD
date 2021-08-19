@@ -2,6 +2,7 @@ import {Request, Response} from 'express';
 import {getRepository} from 'typeorm';
 import Tanque from '../models/Tanque';
 import TanqueView from '../views/TanqueView';
+import * as Yup from 'yup';
 
 export default {
     async index(request: Request, response: Response){

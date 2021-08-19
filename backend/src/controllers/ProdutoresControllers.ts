@@ -2,6 +2,7 @@ import {Request, Response} from 'express';
 import {getRepository} from 'typeorm';
 import Produtor from '../models/Produtor';
 import ProdutorView from '../views/ProdutorView';
+import * as Yup from 'yup';
 
 export default {
 
@@ -50,13 +51,12 @@ export default {
             Telefone,
             UltLaticinio,
             ContasBancarias,
-            Propriedades,
-            ProdutoresTanques
+            Propriedades
         } = request.body; 
 
         const ProdutoresRepository = getRepository(Produtor);
 
-        const produtor = ProdutoresRepository.create({
+        const data = {
             Nome,
             DataNasc,
             TipoPessoa,
@@ -70,9 +70,48 @@ export default {
             Telefone,
             UltLaticinio,
             ContasBancarias,
-            Propriedades,
-            ProdutoresTanques          
+            Propriedades          
+        }
+        
+        const schema = Yup.object().shape({
+            Nome: Yup.string().required('Nome é Obrigatório'),
+            DataNasc: Yup.date().required('DataNasc é Obrigatório'),
+            TipoPessoa: Yup.number().required('TipoPessoa é Obrigatório'),
+            Nacionalidade: Yup.string().required('Nacionalidade é Obrigatório'),
+            CpfCnpj: Yup.string().required('CpfCnpj é Obrigatório'),
+            RG: Yup.string().required('RG é Obrigatório'),
+            OrgaoExp: Yup.string().required('OrgaoExp é Obrigatório'),
+            EstadoExp: Yup.string().required('EstadoExp é Obrigatório'),
+            DataExp: Yup.date().required('DataExp é Obrigatório'),
+            EstadoCivil: Yup.number().required('EstadoCivil  é Obrigatório'),
+            Telefone: Yup.string().nullable(),
+            UltLaticinio: Yup.string().nullable(),
+            ContasBancarias: Yup.array(
+                Yup.object().shape({
+                    NomePertence: Yup.string().required(),
+                    Banco: Yup.string().required(),
+                    Agencia: Yup.string().required(),
+                    Conta: Yup.string().required()
+                })
+            ).notRequired(),
+            Propriedades: Yup.array(
+                Yup.object().shape({
+                    Nirf: Yup.string().required(),
+                    Nome: Yup.string().required(),
+                    InscEstadual: Yup.string().required(),
+                    Endereco: Yup.string().required(),
+                    Municipio: Yup.string().required(),
+                    Estado: Yup.string().required()
+                })
+            ).notRequired()
+
         });
+
+        await schema.validate(data, {
+            abortEarly: false
+        });
+
+        const produtor = ProdutoresRepository.create(data);
     
         await ProdutoresRepository.save(produtor);
     
