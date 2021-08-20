@@ -73,7 +73,7 @@ export default {
                 Telefone: Yup.string().notRequired(),
                 UltLaticinio: Yup.string().notRequired()
             }).required('Produtor é Obrigatório')
-        })
+        });
 
         await schema.validate(data, {
             abortEarly: false
