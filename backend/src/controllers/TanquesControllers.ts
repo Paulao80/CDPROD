@@ -89,7 +89,7 @@ export default {
                         UltLaticinio: Yup.string().notRequired()
                     }).required('Produtor é Obrigatório')
                 })
-            ).notRequired()
+            ).required('ProdutoresTanques é Obrigatório')
         });
 
         await schema.validate(data, {
