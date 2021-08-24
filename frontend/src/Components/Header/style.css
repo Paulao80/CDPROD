@@ -1,16 +1,18 @@
 header {
   height: 75px;
   width: 100%;
-  background-color: #fcbc2a;
+  background-color: var(--cor-principal);
+  position: fixed;
 }
 
 header nav {
   height: 100%;
+  position: relative;
 }
 
 header nav .logo {
   display: inline-block;
-  background-color: #ffb100;
+  background-color: var(--cor-secundaria);
   height: 100%;
   width: 300px;
   position: relative;
@@ -34,4 +36,31 @@ header nav .logo h1 {
   top: 50%;
   left: 100px;
   transform: translateY(-50%);
+}
+
+/* Botão header */
+
+.btn-header {
+  padding: 5px 10px;
+  border-radius: 50%;
+  font-size: 30px;
+  background-color: var(--cor-principal);
+  color: white;
+  border: none;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+
+.btn-header:hover {
+  background-color: var(--cor-secundaria);
+}
+
+.btn-bars {
+  right: 10px;
+}
+
+.btn-bell {
+  right: 70px;
 }
