@@ -1,7 +1,6 @@
 import './style.css';
 import { Link } from 'react-router-dom';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTachometerAlt, faUsers, faHome, faGlassWhiskey, faFileAlt } from '@fortawesome/free-solid-svg-icons';
+import { Dashboard, People, House, LocalDrink, FileCopy } from '@material-ui/icons';
 
 type props = {
     UserImg: string;
@@ -48,31 +47,36 @@ const Aside = ({ UserImg, Active, responsive }: props) => {
                 <ul>
                     <li className={dashboard}>
                         <Link to="/">
-                            <FontAwesomeIcon icon={faTachometerAlt} />
+                            {/* <FontAwesomeIcon icon={faTachometerAlt} /> */}
+                            <Dashboard fontSize="large" />
                             <span>Dashboard</span>
                         </Link>
                     </li>
                     <li className={produtor}>
                         <Link to="/produtor">
-                            <FontAwesomeIcon icon={faUsers} />
+                            {/* <FontAwesomeIcon icon={faUsers} /> */}
+                            <People fontSize="large" />
                             <span>Produtores</span>
                         </Link>
                     </li>
                     <li className={propriedade}>
                         <Link to="/propriedade">
-                            <FontAwesomeIcon icon={faHome} />
+                            {/* <FontAwesomeIcon icon={faHome} /> */}
+                            <House fontSize="large" />
                             <span>Propriedades</span>
                         </Link>
                     </li>
                     <li className={tanques}>
                         <Link to="/tanque">
-                            <FontAwesomeIcon icon={faGlassWhiskey} />
+                            {/* <FontAwesomeIcon icon={faGlassWhiskey} /> */}
+                            <LocalDrink fontSize="large" />
                             <span>Tanques</span>
                         </Link>
                     </li>
                     <li className={relatorio}>
                         <Link to="/relatorios">
-                            <FontAwesomeIcon icon={faFileAlt} />
+                            {/* <FontAwesomeIcon icon={faFileAlt} /> */}
+                            <FileCopy fontSize="large" />
                             <span>Relatórios</span>
                         </Link>
                     </li>

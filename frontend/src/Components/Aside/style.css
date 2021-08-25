@@ -11,6 +11,7 @@ aside {
   box-sizing: border-box;
   overflow-y: auto;
   transition: all 0.5s ease;
+  z-index: 1;
 }
 
 .user_info {
@@ -60,7 +61,8 @@ aside {
 }
 
 .menu_lateral ul li a {
-  display: inline-block;
+  display: flex;
+  align-items: center;
   text-decoration: none;
   font-size: 20px;
   color: white;

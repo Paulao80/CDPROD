@@ -1,6 +1,5 @@
 import './style.css';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBell, faBars } from '@fortawesome/free-solid-svg-icons';
+import { Notifications, Menu } from '@material-ui/icons';
 
 type Props = {
     logo: string;
@@ -22,8 +21,8 @@ const Header = ({ logo, titulo, responsive, btnState, onHambClick }: Props) => {
                     <img src={logo} alt="Logo" />
                     <h1>{titulo}</h1>
                 </div>
-                <button id="btnHamb" className={btnClass} onClick={() => onHambClick()}><FontAwesomeIcon icon={faBars} /></button>
-                <button className="btn-header btn-notification"><FontAwesomeIcon icon={faBell} /></button>
+                <button id="btnHamb" className={btnClass} onClick={() => onHambClick()}><Menu fontSize="large" /></button>
+                <button className="btn-header btn-notification"><Notifications fontSize="large" /></button>
             </nav>
         </header>
     );
