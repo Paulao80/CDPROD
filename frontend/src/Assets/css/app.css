@@ -15,3 +15,23 @@
 body {
   background-color: #e4e4e4;
 }
+
+@media screen and (max-width: 700px) {
+  .btn-off {
+    left: 10px;
+  }
+
+  .btn-on {
+    left: 310px;
+  }
+
+  .responsive-none {
+    position: absolute;
+    left: -300px;
+  }
+
+  .responsive-show {
+    position: absolute;
+    left: 0;
+  }
+}

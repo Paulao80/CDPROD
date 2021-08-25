@@ -16,6 +16,7 @@ header nav .logo {
   height: 100%;
   width: 300px;
   position: relative;
+  transition: all 0.5s ease;
 }
 
 header nav img {
@@ -57,10 +58,17 @@ header nav .logo h1 {
   background-color: var(--cor-secundaria);
 }
 
-.btn-bars {
+.btn-menu-aside {
+  display: none;
+  transition: all 0.5s ease;
+}
+
+.btn-notification {
   right: 10px;
 }
 
-.btn-bell {
-  right: 70px;
+@media screen and (max-width: 700px) {
+  .btn-menu-aside {
+    display: inline-block;
+  }
 }

@@ -6,9 +6,10 @@ import { faTachometerAlt, faUsers, faHome, faGlassWhiskey, faFileAlt } from '@fo
 type props = {
     UserImg: string;
     Active: string;
+    responsive: string;
 };
 
-const Aside = ({ UserImg, Active }: props) => {
+const Aside = ({ UserImg, Active, responsive }: props) => {
 
     let dashboard = "", produtor = "", propriedade = "", tanques = "", relatorio = "";
 
@@ -35,7 +36,7 @@ const Aside = ({ UserImg, Active }: props) => {
     }
 
     return (
-        <aside>
+        <aside className={responsive}>
             <div className="user_info">
                 <div className="user_image">
                     <img src={UserImg} alt="user Imagem" />

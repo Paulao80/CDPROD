@@ -11,14 +11,14 @@ type props = {
     HambClick: Function;
 }
 
-const Tanque = ({ Logo, UserImg, Responsive, BtnState, HambClick }: props) => {
+const Relatorios = ({ Logo, UserImg, Responsive, BtnState, HambClick }: props) => {
     return (
         <>
             <Header logo={Logo} titulo="CDTR" responsive={Responsive} btnState={BtnState} onHambClick={HambClick} />
-            <Aside UserImg={UserImg} Active="tanque" responsive={Responsive} />
+            <Aside UserImg={UserImg} Active="relatorios" responsive={Responsive} />
             <Footer />
         </>
     )
 }
 
-export default Tanque;
+export default Relatorios;

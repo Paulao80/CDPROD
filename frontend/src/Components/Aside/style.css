@@ -1,6 +1,6 @@
 aside {
   width: 300px;
-  height: calc(100vh - 75px);
+  height: calc(100vh - 75px - 50px);
   display: inline-block;
   background-color: var(--cor-terceraria);
   position: fixed;
@@ -9,6 +9,8 @@ aside {
   color: white;
   border-right: 2px solid var(--cor-quartararia);
   box-sizing: border-box;
+  overflow-y: auto;
+  transition: all 0.5s ease;
 }
 
 .user_info {
