@@ -4,8 +4,7 @@ import Aside from '../../Components/Aside';
 import Footer from '../../Components/Footer';
 import Main from '../../Components/Main';
 import MUIDataTable from "mui-datatables";
-
-
+import ButtonAdd from '../../Components/ButtonAdd'
 
 type props = {
     Logo: string;
@@ -19,32 +18,32 @@ const Produtor = ({ Logo, UserImg, Responsive, BtnState, HambClick }: props) => 
 
     const columns = [
         {
-            name: "name",
-            label: "Name",
+            name: "ProdutorId",
+            label: "ID",
+            options: {
+                filter: true,
+                sort: false,
+            },
+        },
+        {
+            name: "Nome",
+            label: "Nome",
             options: {
                 filter: true,
                 sort: true,
             },
         },
         {
-            name: "company",
-            label: "Company",
+            name: "CpfCnpj",
+            label: "CPF/CNPJ",
             options: {
                 filter: true,
                 sort: false,
             },
         },
         {
-            name: "city",
-            label: "City",
-            options: {
-                filter: true,
-                sort: false,
-            },
-        },
-        {
-            name: "state",
-            label: "State",
+            name: "Telefone",
+            label: "Telefone",
             options: {
                 filter: true,
                 sort: false,
@@ -54,222 +53,162 @@ const Produtor = ({ Logo, UserImg, Responsive, BtnState, HambClick }: props) => 
 
     const data = [
         {
-            name: "Joe James",
-            company: "Test Corp",
-            city: "Yonkers",
-            state: "NY",
+            ProdutorId: 1,
+            Nome: "Paulo Vinicius Costa Nogueira",
+            DataNasc: "1997-09-19",
+            TipoPessoa: 1,
+            Nacionalidade: "Brasileiro",
+            CpfCnpj: "02747861252",
+            RG: "1281291",
+            OrgaoExp: "SESDC",
+            EstadoExp: "RO",
+            DataExp: "2011-11-11",
+            EstadoCivil: 1,
+            Telefone: "69992642095",
+            UltLaticinio: null
         },
         {
-            name: "John Walsh",
-            company: "Test Corp",
-            city: "Hartford",
-            state: "CT",
+            ProdutorId: 2,
+            Nome: "João das Neves Gomez",
+            DataNasc: "1998-08-15",
+            TipoPessoa: 1,
+            Nacionalidade: "Brasileiro",
+            CpfCnpj: "02847861252",
+            RG: "1281295",
+            OrgaoExp: "SESDC",
+            EstadoExp: "RO",
+            DataExp: "2012-08-12",
+            EstadoCivil: 1,
+            Telefone: "69993652196",
+            UltLaticinio: null
         },
         {
-            name: "Bob Herm",
-            company: "Test Corp",
-            city: "Tampa",
-            state: "FL",
+            ProdutorId: 3,
+            Nome: "Carlos de Oliveira da Silva",
+            DataNasc: "1987-05-20",
+            TipoPessoa: 1,
+            Nacionalidade: "Brasileiro",
+            CpfCnpj: "36562152547",
+            RG: "1052672",
+            OrgaoExp: "SESDC",
+            EstadoExp: "RO",
+            DataExp: "2005-02-15",
+            EstadoCivil: 1,
+            Telefone: "69993722558",
+            UltLaticinio: null
         },
         {
-            name: "James Houston",
-            company: "Test Corp",
-            city: "Dallas",
-            state: "TX",
+            ProdutorId: 4,
+            Nome: "Miguel Ramirez Santos",
+            DataNasc: "1981-06-02",
+            TipoPessoa: 1,
+            Nacionalidade: "Boliviano",
+            CpfCnpj: "26662152547",
+            RG: "1072672",
+            OrgaoExp: "SESDC",
+            EstadoExp: "RO",
+            DataExp: "2002-03-20",
+            EstadoCivil: 1,
+            Telefone: "69993752558",
+            UltLaticinio: null
         },
         {
-            name: "Joe James",
-            company: "Test Corp",
-            city: "Yonkers",
-            state: "NY",
+            ProdutorId: 5,
+            Nome: "Rodrigo Damacena Sanchez",
+            DataNasc: "1990-08-10",
+            TipoPessoa: 1,
+            Nacionalidade: "Brasileiro",
+            CpfCnpj: "31562152547",
+            RG: "1182672",
+            OrgaoExp: "SESDC",
+            EstadoExp: "RO",
+            DataExp: "2008-04-02",
+            EstadoCivil: 1,
+            Telefone: "69993796558",
+            UltLaticinio: null
         },
         {
-            name: "John Walsh",
-            company: "Test Corp",
-            city: "Hartford",
-            state: "CT",
+            ProdutorId: 6,
+            Nome: "Peter Parker",
+            DataNasc: "1985-10-12",
+            TipoPessoa: 1,
+            Nacionalidade: "Estadunidense",
+            CpfCnpj: "38777766622",
+            RG: "1222222",
+            OrgaoExp: "SESDC",
+            EstadoExp: "RO",
+            DataExp: "2000-05-05",
+            EstadoCivil: 1,
+            Telefone: "69993896698",
+            UltLaticinio: null
         },
         {
-            name: "Bob Herm",
-            company: "Test Corp",
-            city: "Tampa",
-            state: "FL",
+            ProdutorId: 7,
+            Nome: "Anakin Skywalker",
+            DataNasc: "1965-03-15",
+            TipoPessoa: 1,
+            Nacionalidade: "Estadunidense",
+            CpfCnpj: "36775566622",
+            RG: "1223223",
+            OrgaoExp: "SESDC",
+            EstadoExp: "RO",
+            DataExp: "1990-05-05",
+            EstadoCivil: 1,
+            Telefone: "69993907628",
+            UltLaticinio: null
         },
         {
-            name: "James Houston",
-            company: "Test Corp",
-            city: "Dallas",
-            state: "TX",
+            ProdutorId: 8,
+            Nome: "Luke Skywalker",
+            DataNasc: "1985-05-25",
+            TipoPessoa: 1,
+            Nacionalidade: "Estadunidense",
+            CpfCnpj: "37775566822",
+            RG: "1226253",
+            OrgaoExp: "SESDC",
+            EstadoExp: "RO",
+            DataExp: "1995-06-05",
+            EstadoCivil: 1,
+            Telefone: "69999907628",
+            UltLaticinio: null
         },
         {
-            name: "Joe James",
-            company: "Test Corp",
-            city: "Yonkers",
-            state: "NY",
+            ProdutorId: 9,
+            Nome: "Bruce Wayne",
+            DataNasc: "1980-02-12",
+            TipoPessoa: 1,
+            Nacionalidade: "Estadunidense",
+            CpfCnpj: "39776466822",
+            RG: "1236553",
+            OrgaoExp: "SESDC",
+            EstadoExp: "RO",
+            DataExp: "1997-07-02",
+            EstadoCivil: 1,
+            Telefone: "69993914928",
+            UltLaticinio: null
         },
         {
-            name: "John Walsh",
-            company: "Test Corp",
-            city: "Hartford",
-            state: "CT",
-        },
-        {
-            name: "Bob Herm",
-            company: "Test Corp",
-            city: "Tampa",
-            state: "FL",
-        },
-        {
-            name: "James Houston",
-            company: "Test Corp",
-            city: "Dallas",
-            state: "TX",
-        },
-        {
-            name: "Joe James",
-            company: "Test Corp",
-            city: "Yonkers",
-            state: "NY",
-        },
-        {
-            name: "John Walsh",
-            company: "Test Corp",
-            city: "Hartford",
-            state: "CT",
-        },
-        {
-            name: "Bob Herm",
-            company: "Test Corp",
-            city: "Tampa",
-            state: "FL",
-        },
-        {
-            name: "James Houston",
-            company: "Test Corp",
-            city: "Dallas",
-            state: "TX",
-        },
-        {
-            name: "Joe James",
-            company: "Test Corp",
-            city: "Yonkers",
-            state: "NY",
-        },
-        {
-            name: "John Walsh",
-            company: "Test Corp",
-            city: "Hartford",
-            state: "CT",
-        },
-        {
-            name: "Bob Herm",
-            company: "Test Corp",
-            city: "Tampa",
-            state: "FL",
-        },
-        {
-            name: "James Houston",
-            company: "Test Corp",
-            city: "Dallas",
-            state: "TX",
-        },
-        {
-            name: "Joe James",
-            company: "Test Corp",
-            city: "Yonkers",
-            state: "NY",
-        },
-        {
-            name: "John Walsh",
-            company: "Test Corp",
-            city: "Hartford",
-            state: "CT",
-        },
-        {
-            name: "Bob Herm",
-            company: "Test Corp",
-            city: "Tampa",
-            state: "FL",
-        },
-        {
-            name: "James Houston",
-            company: "Test Corp",
-            city: "Dallas",
-            state: "TX",
-        },
-        {
-            name: "Joe James",
-            company: "Test Corp",
-            city: "Yonkers",
-            state: "NY",
-        },
-        {
-            name: "John Walsh",
-            company: "Test Corp",
-            city: "Hartford",
-            state: "CT",
-        },
-        {
-            name: "Bob Herm",
-            company: "Test Corp",
-            city: "Tampa",
-            state: "FL",
-        },
-        {
-            name: "James Houston",
-            company: "Test Corp",
-            city: "Dallas",
-            state: "TX",
-        },
-        {
-            name: "Joe James",
-            company: "Test Corp",
-            city: "Yonkers",
-            state: "NY",
-        },
-        {
-            name: "John Walsh",
-            company: "Test Corp",
-            city: "Hartford",
-            state: "CT",
-        },
-        {
-            name: "Bob Herm",
-            company: "Test Corp",
-            city: "Tampa",
-            state: "FL",
-        },
-        {
-            name: "James Houston",
-            company: "Test Corp",
-            city: "Dallas",
-            state: "TX",
-        },
-        {
-            name: "Joe James",
-            company: "Test Corp",
-            city: "Yonkers",
-            state: "NY",
-        },
-        {
-            name: "John Walsh",
-            company: "Test Corp",
-            city: "Hartford",
-            state: "CT",
-        },
-        {
-            name: "Bob Herm",
-            company: "Test Corp",
-            city: "Tampa",
-            state: "FL",
-        },
-        {
-            name: "James Houston",
-            company: "Test Corp",
-            city: "Dallas",
-            state: "TX",
-        },
+            ProdutorId: 10,
+            Nome: "Oliver Queen",
+            DataNasc: "1983-03-15",
+            TipoPessoa: 1,
+            Nacionalidade: "Estadunidense",
+            CpfCnpj: "39986456822",
+            RG: "1346953",
+            OrgaoExp: "SESDC",
+            EstadoExp: "RO",
+            DataExp: "1997-07-02",
+            EstadoCivil: 1,
+            Telefone: "69993925998",
+            UltLaticinio: null
+        }
     ];
+
+    const options = {
+        onRowClick: (rowData: string[]) => {
+            alert(rowData);
+        }
+    };
 
     return (
         <>
@@ -280,8 +219,10 @@ const Produtor = ({ Logo, UserImg, Responsive, BtnState, HambClick }: props) => 
                     title={"Produtores"}
                     data={data}
                     columns={columns}
+                    options={options}
                 />
             </Main>
+            <ButtonAdd to="/produtor/create" />
             <Footer />
         </>
     )

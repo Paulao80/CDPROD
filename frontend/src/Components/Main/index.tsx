@@ -1,8 +1,6 @@
 import './style.css';
 
-interface MainProps {
-
-}
+interface MainProps { }
 
 const Main: React.FC<MainProps> = (props) => {
     return (

@@ -7,6 +7,7 @@ import Produtor from './Pages/Produtor';
 import Propriedade from './Pages/Propriedade';
 import Tanque from './Pages/Tanque';
 import Relatorios from './Pages/Relatorios';
+import CreateProdutor from './Pages/Produtor/create';
 
 const Routes = () => {
     const [responsive, setResponsive] = useState('responsive-none');
@@ -31,6 +32,9 @@ const Routes = () => {
                 </Route>
                 <Route path="/produtor">
                     <Produtor Logo={logoImg} UserImg={userImg} Responsive={responsive} BtnState={btnState} HambClick={HambClick} />
+                    <Route path="/produtor/create">
+                        <CreateProdutor Logo={logoImg} UserImg={userImg} Responsive={responsive} BtnState={btnState} HambClick={HambClick} />
+                    </Route>
                 </Route>
                 <Route path="/propriedade">
                     <Propriedade Logo={logoImg} UserImg={userImg} Responsive={responsive} BtnState={btnState} HambClick={HambClick} />

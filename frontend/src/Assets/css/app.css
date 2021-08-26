@@ -6,6 +6,10 @@
   --cor-terceraria: #6c6c6c;
   --cor-quartararia: #5a5a5a;
   --cor-background: #e4e4e4;
+  --cor-btnAdd: #0e62e0;
+  --cor-btnAdd-hover: #0a4bad;
+  --cor-btnSave: #3ab63a;
+  --cor-btnSave-hover: #349e34;
 }
 
 * {
