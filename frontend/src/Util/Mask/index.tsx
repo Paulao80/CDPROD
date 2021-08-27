@@ -48,3 +48,18 @@ export const RgMaskCustom = (props: TextMaskCustomProps) => {
         />
     );
 }
+
+export const TelefoneMaskCustom = (props: TextMaskCustomProps) => {
+    const { inputRef, ...other } = props;
+
+    return (
+        <MaskedInput
+            {...other}
+            ref={(ref: any) => {
+                inputRef(ref ? ref.inputElement : null);
+            }}
+            mask={['(', /\d/, /\d/, ')', ' ', /\d/, ' ', /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/,]}
+            placeholderChar={'\u2000'}
+        />
+    );
+}

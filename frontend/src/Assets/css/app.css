@@ -19,6 +19,7 @@
 
 body {
   background-color: var(--cor-background);
+  font-family: "Roboto", sans-serif;
 }
 
 @media screen and (max-width: 700px) {
