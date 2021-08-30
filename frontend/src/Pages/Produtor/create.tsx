@@ -6,13 +6,10 @@ import Main from '../../Components/Main';
 import Container from '../../Components/Container';
 import BtnSave from '../../Components/ButtonSave';
 import { TextField, MenuItem } from '@material-ui/core';
-import { KeyboardDatePicker } from '@material-ui/pickers'
 import { CpfMaskCustom, CnpjMaskCustom, RgMaskCustom, TelefoneMaskCustom } from '../../Util/Mask';
 import { useState, useEffect } from 'react';
 import ApiUf from '../../Services/ApiUf';
-import { Link } from 'react-router-dom';
-import ArrowBackIcon from '@material-ui/icons/ArrowBack';
-
+import PainelNav from '../../Components/PainelNav';
 
 type props = {
     Logo: string;
@@ -73,10 +70,7 @@ const CreateProdutor = ({ Logo, UserImg, Responsive, BtnState, HambClick }: prop
             <Header logo={Logo} titulo="CDTR" responsive={Responsive} btnState={BtnState} onHambClick={HambClick} />
             <Aside UserImg={UserImg} Active="produtor" responsive={Responsive} />
             <Main>
-                <div className="painel-nav">
-                    <Link to="/produtor"><ArrowBackIcon fontSize="large" /></Link>
-                    <label className="lbl-title">Adicionar Produtor</label>
-                </div>
+                <PainelNav to="/produtor" titulo="Adicionar Produtor" />
                 <Container>
                     <TextField name="Nome" id="Nome" label="Nome" variant="outlined" fullWidth required margin="normal" />
                     <TextField

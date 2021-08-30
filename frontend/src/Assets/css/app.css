@@ -10,6 +10,9 @@
   --cor-btnAdd-hover: #0a4bad;
   --cor-btnSave: #3ab63a;
   --cor-btnSave-hover: #349e34;
+  --cor-fonte: #424242;
+  --cor-btnEdt: #f8d822;
+  --cor-btnEdt-hover: #e7c91f;
 }
 
 * {
