@@ -10,6 +10,9 @@ import Relatorios from './Pages/Relatorios';
 import CreateProdutor from './Pages/Produtor/create';
 import DetailsProdutor from './Pages/Produtor/details';
 import EditProdutor from './Pages/Produtor/edit';
+import CreatePropriedade from './Pages/Propriedade/create';
+import DetailsPropriedade from './Pages/Propriedade/details';
+import EditPropriedade from './Pages/Propriedade/edit';
 
 const Routes = () => {
     const [responsive, setResponsive] = useState('responsive-none');
@@ -46,6 +49,15 @@ const Routes = () => {
                 </Route>
                 <Route path="/propriedade">
                     <Propriedade Logo={logoImg} UserImg={userImg} Responsive={responsive} BtnState={btnState} HambClick={HambClick} />
+                    <Route path="/propriedade/create">
+                        <CreatePropriedade Logo={logoImg} UserImg={userImg} Responsive={responsive} BtnState={btnState} HambClick={HambClick} />
+                    </Route>
+                    <Route path="/propriedade/details/:id">
+                        <DetailsPropriedade Logo={logoImg} UserImg={userImg} Responsive={responsive} BtnState={btnState} HambClick={HambClick} />
+                    </Route>
+                    <Route path="/propriedade/edit/:id">
+                        <EditPropriedade Logo={logoImg} UserImg={userImg} Responsive={responsive} BtnState={btnState} HambClick={HambClick} />
+                    </Route>
                 </Route>
                 <Route path="/tanque">
                     <Tanque Logo={logoImg} UserImg={userImg} Responsive={responsive} BtnState={btnState} HambClick={HambClick} />

@@ -1,0 +1,13 @@
+.dl-ent {
+  margin-bottom: 7px;
+  color: var(--cor-fonte);
+}
+.dl-ent label {
+  font-size: 22px;
+  font-weight: 700;
+  margin-right: 5px;
+}
+
+.dl-ent span {
+  font-size: 20px;
+}
