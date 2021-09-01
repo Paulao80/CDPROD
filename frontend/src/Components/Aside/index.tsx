@@ -46,7 +46,7 @@ const Aside = ({ UserImg, Active, responsive }: props) => {
             <div className="menu_lateral">
                 <ul>
                     <li className={dashboard}>
-                        <Link to="/">
+                        <Link to="/dashboard">
                             {/* <FontAwesomeIcon icon={faTachometerAlt} /> */}
                             <Dashboard fontSize="large" />
                             <span>Dashboard</span>

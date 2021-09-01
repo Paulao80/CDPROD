@@ -1,0 +1,44 @@
+.login-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.painel-login {
+  width: 600px;
+  height: 500px;
+  background-color: rgba(0, 0, 0, 0.75);
+  padding: 20px;
+  box-sizing: border-box;
+  color: white;
+  text-align: center;
+  border-radius: 15px;
+}
+
+.painel-login img {
+  width: 100px;
+}
+
+.painel-login a {
+  display: block;
+  text-decoration: none;
+  color: white;
+  font-size: 22px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.painel-login h1 {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.painel-login button {
+  margin-top: 10px;
+  padding: 15px;
+  display: inline-block;
+  border: none;
+  border-radius: 10px;
+  color: white;
+  background-color: #ff9900;
+}

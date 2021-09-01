@@ -13,7 +13,7 @@ type props = {
 }
 
 
-const Home = ({ Logo, UserImg, Responsive, BtnState, HambClick }: props) => {
+const Dashboard = ({ Logo, UserImg, Responsive, BtnState, HambClick }: props) => {
 
     return (
         <>
@@ -24,4 +24,4 @@ const Home = ({ Logo, UserImg, Responsive, BtnState, HambClick }: props) => {
     );
 }
 
-export default Home;
+export default Dashboard;

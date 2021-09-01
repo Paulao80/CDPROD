@@ -2,7 +2,9 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom'
 import logoImg from './Assets/images/logo.png';
 import userImg from './Assets/images/anonimos.jpg';
 import { useState } from 'react';
-import Home from './Pages/Home';
+import Landing from './Pages/Landing';
+import Login from './Pages/Login';
+import Dashboard from './Pages/Dashboard';
 import Produtor from './Pages/Produtor';
 import Propriedade from './Pages/Propriedade';
 import Tanque from './Pages/Tanque';
@@ -33,7 +35,13 @@ const Routes = () => {
         <BrowserRouter>
             <Switch>
                 <Route path="/" exact>
-                    <Home Logo={logoImg} UserImg={userImg} Responsive={responsive} BtnState={btnState} HambClick={HambClick} />
+                    <Landing />
+                </Route>
+                <Route path="/login">
+                    <Login />
+                </Route>
+                <Route path="/dashboard">
+                    <Dashboard Logo={logoImg} UserImg={userImg} Responsive={responsive} BtnState={btnState} HambClick={HambClick} />
                 </Route>
                 <Route path="/produtor">
                     <Produtor Logo={logoImg} UserImg={userImg} Responsive={responsive} BtnState={btnState} HambClick={HambClick} />
