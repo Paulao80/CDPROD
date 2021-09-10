@@ -15,6 +15,7 @@ import EditProdutor from './Pages/Produtor/edit';
 import CreatePropriedade from './Pages/Propriedade/create';
 import DetailsPropriedade from './Pages/Propriedade/details';
 import EditPropriedade from './Pages/Propriedade/edit';
+import CreateTanque from './Pages/Tanque/create';
 
 const Routes = () => {
     const [responsive, setResponsive] = useState('responsive-none');
@@ -69,6 +70,9 @@ const Routes = () => {
                 </Route>
                 <Route path="/tanque">
                     <Tanque Logo={logoImg} UserImg={userImg} Responsive={responsive} BtnState={btnState} HambClick={HambClick} />
+                    <Route path="/tanque/create">
+                        <CreateTanque Logo={logoImg} UserImg={userImg} Responsive={responsive} BtnState={btnState} HambClick={HambClick} />
+                    </Route>
                 </Route>
                 <Route path="/relatorios">
                     <Relatorios Logo={logoImg} UserImg={userImg} Responsive={responsive} BtnState={btnState} HambClick={HambClick} />
