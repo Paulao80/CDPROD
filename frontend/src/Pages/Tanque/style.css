@@ -7,7 +7,44 @@
   object-position: center;
 }
 
+.img-details {
+  border-radius: 10px;
+  border: 2px solid black;
+  width: 300px;
+  height: 300px;
+  object-fit: cover;
+  object-position: center;
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
 .leaflet-container {
   border: 2px solid orange;
   border-radius: 15px;
+  margin-bottom: 10px;
+}
+
+.ShowDatas {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.btn-table {
+  text-decoration: none;
+  color: white;
+  display: flex;
+  width: 35px;
+  height: 35px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+}
+
+.btn-prod {
+  background-color: green;
+}
+
+.btn-prod:hover {
+  background-color: rgb(6, 184, 6);
 }

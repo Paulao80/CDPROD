@@ -232,7 +232,7 @@ export const TanquesData = [
         Rota: "25",
         Capacidade: 1000,
         MediaDiaria: 550,
-        TipoTanque: 2,
+        TipoTanque: 1,
         FotoPath: "https://i.ibb.co/z5spV2R/1.jpg",
         NumeroSerie: "684336465353433",
         Marca: "Fectar",
@@ -257,10 +257,24 @@ export const TanquesData = [
                     Telefone: "69992642095",
                     UltLaticinio: null
                 }
-            },
+            }
+        ]
+    },    
+    {
+        TanqueId: 2,
+        Rota: "25",
+        Capacidade: 1000,
+        MediaDiaria: 550,
+        TipoTanque: 2,
+        FotoPath: "https://i.ibb.co/xzCYp9r/2.jpg",
+        NumeroSerie: "684336465353433",
+        Marca: "Fectar",
+        Latitude: -10.931785,
+        Longitude: -61.928325,
+        ProdutoresTanques: [
             {
                 ProdutorTanqueId: 2,
-                Responsavel: false,
+                Responsavel: true,
                 Produtor: {
                     ProdutorId: 2,
                     Nome: "João das Neves Gomez",
@@ -276,64 +290,25 @@ export const TanquesData = [
                     Telefone: "69993652196",
                     UltLaticinio: null
                 }
-            }
-        ]
-    },
-    {
-        TanqueId: 2,
-        Rota: "24",
-        Capacidade: 1000,
-        MediaDiaria: 420,
-        TipoTanque: 1,
-        FotoPath: "https://i.ibb.co/wr4H8vy/2.jpg",
-        NumeroSerie: "784356465353431",
-        Marca: "Golder",
-        Latitude: -10.931235,
-        Longitude: -61.828325,
-        ProdutoresTanques: [
+            },
             {
-                ProdutorId: 3,
-                Nome: "Carlos de Oliveira da Silva",
-                DataNasc: "1987-05-20",
-                TipoPessoa: 1,
-                Nacionalidade: "Brasileiro",
-                CpfCnpj: "36562152547",
-                RG: "1052672",
-                OrgaoExp: "SESDC",
-                EstadoExp: "RO",
-                DataExp: "2005-02-15",
-                EstadoCivil: 1,
-                Telefone: "69993722558",
-                UltLaticinio: null
-            }
-        ]
-    },
-    {
-        TanqueId: 3,
-        Rota: "14",
-        Capacidade: 1000,
-        MediaDiaria: 476,
-        TipoTanque: 1,
-        FotoPath: "https://i.ibb.co/yYpzFLg/3.png",
-        NumeroSerie: "584356465353431",
-        Marca: "Reafrio",
-        Latitude: -10.431235,
-        Longitude: -61.528325,
-        ProdutoresTanques: [
-            {
-                ProdutorId: 4,
-                Nome: "Miguel Ramirez Santos",
-                DataNasc: "1981-06-02",
-                TipoPessoa: 1,
-                Nacionalidade: "Boliviano",
-                CpfCnpj: "26662152547",
-                RG: "1072672",
-                OrgaoExp: "SESDC",
-                EstadoExp: "RO",
-                DataExp: "2002-03-20",
-                EstadoCivil: 1,
-                Telefone: "69993752558",
-                UltLaticinio: null
+                ProdutorTanqueId: 3,
+                Responsavel: false,
+                Produtor: {
+                    ProdutorId: 3,
+                    Nome: "Carlos de Oliveira da Silva",
+                    DataNasc: "1987-05-20",
+                    TipoPessoa: 1,
+                    Nacionalidade: "Brasileiro",
+                    CpfCnpj: "36562152547",
+                    RG: "1052672",
+                    OrgaoExp: "SESDC",
+                    EstadoExp: "RO",
+                    DataExp: "2005-02-15",
+                    EstadoCivil: 1,
+                    Telefone: "69993722558",
+                    UltLaticinio: null
+                }
             }
         ]
     }

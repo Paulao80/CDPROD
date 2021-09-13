@@ -8,9 +8,9 @@ import Container from '../../Components/Container';
 import BtnSave from '../../Components/ButtonSave';
 import { TextField, MenuItem } from '@material-ui/core';
 import PainelNav from '../../Components/PainelNav';
-import { MapContainer, TileLayer, Marker, Popup, useMapEvents } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, useMapEvents } from 'react-leaflet';
 import { useState } from 'react';
-import { iconLocation } from '../../Util/Icons'
+import { iconLocation } from '../../Util/Icons';
 
 type props = {
     Logo: string;
@@ -22,7 +22,7 @@ type props = {
 
 const CreateTanque = ({ Logo, UserImg, Responsive, BtnState, HambClick }: props) => {
 
-    function LocationMarker() {
+    const LocationMarker = () => {
         const [position, setPosition] = useState({ latitude: 0, longitude: 0 })
 
         const map = useMapEvents({
@@ -49,6 +49,10 @@ const CreateTanque = ({ Logo, UserImg, Responsive, BtnState, HambClick }: props)
 
     }
 
+    const OnBtnSave = () => {
+
+    }
+
     return (
         <>
             <Header logo={Logo} titulo="CDTR" responsive={Responsive} btnState={BtnState} onHambClick={HambClick} />
@@ -71,8 +75,26 @@ const CreateTanque = ({ Logo, UserImg, Responsive, BtnState, HambClick }: props)
 
                         <LocationMarker />
                     </MapContainer>
+                    <TextField name="Rota" id="Rota" label="Rota" variant="outlined" fullWidth required margin="normal" />
+                    <TextField name="Capacidade" id="Capacidade" label="Capacidade" variant="outlined" type="number" fullWidth required margin="normal" />
+                    <TextField name="MediaDiaria" id="MediaDiaria" label="Média Diária" variant="outlined" type="number" fullWidth required margin="normal" />
+                    <TextField name="TipoTanque" id="TipoTanque" label="Tipo de Tanque" variant="outlined" select fullWidth required margin="normal">
+                        <MenuItem key={1} value={1}>
+                            Individual
+                        </MenuItem>
+                        <MenuItem key={2} value={2}>
+                            Comunitário
+                        </MenuItem>
+                    </TextField>
+                    <TextField name="Foto" id="Foto" label="Foto do Tanque" variant="outlined" type="file" fullWidth required margin="normal" InputLabelProps={{
+                        shrink: true,
+                    }} />
+                    <TextField name="NumeroSerie" id="NumeroSerie" label="Nº de Série do Tanque" variant="outlined" fullWidth required margin="normal" />
+                    <TextField name="Marca" id="Marca" label="Marca do Tanque" variant="outlined" fullWidth required margin="normal" />
                 </Container>
             </Main>
+            <BtnSave OnBtnClick={OnBtnSave} />
+            <Footer />
         </>
     );
 }

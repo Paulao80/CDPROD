@@ -16,6 +16,9 @@ import CreatePropriedade from './Pages/Propriedade/create';
 import DetailsPropriedade from './Pages/Propriedade/details';
 import EditPropriedade from './Pages/Propriedade/edit';
 import CreateTanque from './Pages/Tanque/create';
+import DetailsTanque from './Pages/Tanque/details';
+import ProdutoresTanques from './Pages/Tanque/produtores';
+import AddProdutorTanque from './Pages/Tanque/add';
 
 const Routes = () => {
     const [responsive, setResponsive] = useState('responsive-none');
@@ -72,6 +75,18 @@ const Routes = () => {
                     <Tanque Logo={logoImg} UserImg={userImg} Responsive={responsive} BtnState={btnState} HambClick={HambClick} />
                     <Route path="/tanque/create">
                         <CreateTanque Logo={logoImg} UserImg={userImg} Responsive={responsive} BtnState={btnState} HambClick={HambClick} />
+                    </Route>
+                    <Route path="/tanque/details/:id">
+                        <DetailsTanque Logo={logoImg} UserImg={userImg} Responsive={responsive} BtnState={btnState} HambClick={HambClick} />
+                    </Route>
+                    <Route path="/tanque/produtores">
+                        <Route path="/tanque/produtores/:id">
+                            <ProdutoresTanques Logo={logoImg} UserImg={userImg} Responsive={responsive} BtnState={btnState} HambClick={HambClick} />
+                        </Route>
+
+                        <Route path="/tanque/produtores/:id/add">
+                            <AddProdutorTanque Logo={logoImg} UserImg={userImg} Responsive={responsive} BtnState={btnState} HambClick={HambClick} />
+                        </Route>
                     </Route>
                 </Route>
                 <Route path="/relatorios">

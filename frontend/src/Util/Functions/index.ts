@@ -25,3 +25,14 @@ export const GetEstadoCivil = (estado: number) => {
             return "Erro";
     }
 }
+
+export const GetTipoTanque = (tipo: number) => {
+    switch (tipo) {
+        case 1: 
+            return "Individual";
+        case 2: 
+            return "Comunitário";
+        default: 
+            return "Erro";
+    }
+}

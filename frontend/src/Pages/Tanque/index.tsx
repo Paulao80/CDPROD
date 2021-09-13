@@ -6,8 +6,9 @@ import Main from '../../Components/Main';
 import MUIDataTable from "mui-datatables";
 import ButtonAdd from '../../Components/ButtonAdd';
 import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@material-ui/core";
-import { useHistory } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { TanquesData } from '../../Util/Data';
+import { People } from '@material-ui/icons';
 
 
 type props = {
@@ -21,10 +22,20 @@ type props = {
 const Tanque = ({ Logo, UserImg, Responsive, BtnState, HambClick }: props) => {
     const history = useHistory();
 
-    const customBodyRender = (value: string) => {
+    const customFotoRender = (value: string) => {
         return (
             <img className="img-tanque" src={value} alt="Foto" />
-        )
+        );
+    }
+
+    const customAcoesRender = (value: string) => {
+        return (
+            <>
+                <Link className="btn-table btn-prod" to={`/tanque/produtores/${value}`}>
+                    <People fontSize="medium" />
+                </Link>
+            </>
+        );
     }
 
     const columns = [
@@ -34,7 +45,7 @@ const Tanque = ({ Logo, UserImg, Responsive, BtnState, HambClick }: props) => {
             options: {
                 filter: false,
                 sort: false,
-                customBodyRender
+                customBodyRender: customFotoRender
             }
         },
         {
@@ -59,6 +70,15 @@ const Tanque = ({ Logo, UserImg, Responsive, BtnState, HambClick }: props) => {
             options: {
                 filter: true,
                 sort: false,
+            }
+        },
+        {
+            name: "TanqueId",
+            label: "Ações",
+            options: {
+                filter: true,
+                sort: false,
+                customBodyRender: customAcoesRender
             }
         }
     ];
@@ -127,13 +147,12 @@ const Tanque = ({ Logo, UserImg, Responsive, BtnState, HambClick }: props) => {
         }
     }
 
-    const onRowClick = (rowData: any) => {
-        history.push(`/tanque/details/${rowData[1]}`)
-    }
+    // const onRowClick = (rowData: any) => {
+    //     history.push(`/tanque/details/${rowData[1]}`)
+    // }
 
     const options = {
         setRowProps,
-        onRowClick,
         expandableRows: true,
         renderExpandableRow
     };
