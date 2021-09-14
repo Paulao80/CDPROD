@@ -176,7 +176,7 @@ export default {
     
         await ProdutoresRepository.save(produtor);
     
-        return response.status(201).json(produtor);
+        return response.status(200).json(produtor);
     },
     async delete(request: Request, response: Response){
         const {id} = request.params;

@@ -85,5 +85,61 @@ export default {
         await ContaRepository.save(conta);
 
         return response.status(201).json(conta);
+    },
+    async update(request: Request, response: Response){
+        const {
+            ContaId,
+            NomePertence,
+            Banco,
+            Agencia,
+            Conta
+        } = request.body;
+
+        const ContaRepository = getRepository(ContaBancaria);
+
+        const data = {
+            ContaId,
+            NomePertence,
+            Banco,
+            Agencia,
+            Conta
+        };
+
+        const schema = Yup.object().shape({
+            ContaId: Yup.number().required('ContaId é Obrigatório'),
+            NomePertence: Yup.string().required('NomePertence é Obrigatório'),
+            Banco: Yup.string().required('Banco é Obrigatório'),
+            Agencia: Yup.string().required('Agencia é Obrigatória'),
+            Conta: Yup.string().required('Conta é Obrigatória')
+        })
+
+        await schema.validate(data, {
+            abortEarly: false
+        });
+
+        const conta = ContaRepository.create(data);
+        
+        await ContaRepository.save(conta);
+
+        return response.status(200).json(conta);
+    },
+    async delete(request: Request, response: Response){
+        const {id} = request.params;
+
+        const ContaRepository = getRepository(ContaBancaria); 
+
+        const conta = await ContaRepository.findOne(id);
+
+        if(conta !== null && conta !== undefined){
+            await ContaRepository.delete(conta.ContaId)
+            return response.json({
+                Message: "Excluída com Sucesso!"
+            });
+        }
+        else{
+            return response.json({
+                Message: "Conta Bancaria não encontrada!"
+            });
+        }     
     }
 }
