@@ -91,5 +91,67 @@ export default {
         await PropriedadesRepository.save(propriedade);
 
         return response.status(201).json(propriedade);
+    },
+    async update(request: Request, response: Response){
+        const {
+            PropriedadeId,
+            Nirf,
+            Nome,
+            InscEstadual,
+            Endereco,
+            Municipio,
+            Estado    
+        } = request.body;
+
+        const data = {
+            PropriedadeId,
+            Nirf,
+            Nome,
+            InscEstadual,
+            Endereco,
+            Municipio,
+            Estado            
+        };
+
+        const schema = Yup.object().shape({
+            PropriedadeId: Yup.number().required('PropriedadeId é Obrigatório'),
+            Nirf: Yup.string().required('Nirf é Obrigatório'),
+            Nome: Yup.string().required('Nome é Obrigatório'),
+            InscEstadual: Yup.string().required('InscEstadual é Obrigatório'),
+            Endereco: Yup.string().required('Endereco é Obrigatório'),
+            Municipio: Yup.string().required('Municipio é Obrigatório'),
+            Estado: Yup.string().required('Estado é Obrigatório'),
+        });
+
+        await schema.validate(data, {
+            abortEarly: false
+        });
+
+        const PropriedadesRepository = getRepository(Propriedade);
+
+        const propriedade = PropriedadesRepository.create(data);
+
+        await PropriedadesRepository.save(propriedade);
+
+        return response.status(200).json(propriedade);
+    },
+    async delete(request: Request, response: Response){
+        const {id} = request.params;
+
+        const PropriedadesRepository = getRepository(Propriedade);    
+
+        const propriedade = await PropriedadesRepository.findOne(id);
+
+        if(propriedade !== null && propriedade !== undefined){
+            await PropriedadesRepository.delete(propriedade.PropriedadeId)
+            return response.json({
+                Message: "Excluído com Sucesso!"
+            });
+        }
+        else{
+            return response.json({
+                Message: "Propriedade não encontrada!"
+            });
+        }     
     }
 }

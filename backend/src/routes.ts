@@ -26,6 +26,8 @@ routes.delete('/contas/:id', ContasControllers.delete);
 routes.get('/propriedades', PropriedadesControllers.index);
 routes.get('/propriedades/:id', PropriedadesControllers.show);
 routes.post('/propriedades', PropriedadesControllers.create);
+routes.put('/propriedades', PropriedadesControllers.update);
+routes.delete('/propriedades/:id', PropriedadesControllers.delete);
 
 routes.get('/tanques', TanquesControllers.index);
 routes.get('/tanques/:id', TanquesControllers.show);
