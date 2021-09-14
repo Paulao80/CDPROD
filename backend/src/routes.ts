@@ -5,6 +5,7 @@ import ProdutoresControllers from './controllers/ProdutoresControllers';
 import ContasControllers from './controllers/ContasControllers';
 import PropriedadesControllers from './controllers/PropriedadesControllers';
 import TanquesControllers from './controllers/TanquesControllers';
+import ProdutoresTanquesControllers from './controllers/ProdutoresTanquesControllers';
 
 
 const routes = Router();
@@ -13,6 +14,8 @@ const upload = multer(uploadConfig);
 routes.get('/produtores',ProdutoresControllers.index);
 routes.get('/produtores/:id',ProdutoresControllers.show);
 routes.post('/produtores', ProdutoresControllers.create);
+routes.put('/produtores', ProdutoresControllers.update);
+routes.delete('/produtores/:id', ProdutoresControllers.delete);
 routes.get('/contas',ContasControllers.index);
 routes.get('/contas/:id', ContasControllers.show);
 routes.post('/contas',ContasControllers.create);
@@ -22,5 +25,8 @@ routes.post('/propriedades', PropriedadesControllers.create);
 routes.get('/tanques', TanquesControllers.index);
 routes.get('/tanques/:id', TanquesControllers.show);
 routes.post('/tanques', upload.single('image'), TanquesControllers.create);
+routes.get('/prodtanques', ProdutoresTanquesControllers.index);
+routes.get('/prodtanques/:id', ProdutoresTanquesControllers.show);
+routes.post('/prodtanques', ProdutoresTanquesControllers.create);
 
 export default routes;

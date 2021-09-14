@@ -116,5 +116,85 @@ export default {
         await ProdutoresRepository.save(produtor);
     
         return response.status(201).json(produtor);
+    },
+    async update(request: Request, response: Response){
+        const {
+            ProdutorId,
+            Nome,
+            DataNasc,
+            TipoPessoa,
+            Nacionalidade,
+            CpfCnpj,
+            RG,
+            OrgaoExp,
+            EstadoExp,
+            DataExp,
+            EstadoCivil,
+            Telefone,
+            UltLaticinio
+        } = request.body; 
+
+        const ProdutoresRepository = getRepository(Produtor);
+
+        const data = {
+            ProdutorId,
+            Nome,
+            DataNasc,
+            TipoPessoa,
+            Nacionalidade,
+            CpfCnpj,
+            RG,
+            OrgaoExp,
+            EstadoExp,
+            DataExp,
+            EstadoCivil,
+            Telefone,
+            UltLaticinio        
+        }
+        
+        const schema = Yup.object().shape({
+            ProdutorId: Yup.number().required('ProdutorId é Obrigatório'),
+            Nome: Yup.string().required('Nome é Obrigatório'),
+            DataNasc: Yup.date().required('DataNasc é Obrigatório'),
+            TipoPessoa: Yup.number().required('TipoPessoa é Obrigatório'),
+            Nacionalidade: Yup.string().required('Nacionalidade é Obrigatório'),
+            CpfCnpj: Yup.string().required('CpfCnpj é Obrigatório'),
+            RG: Yup.string().required('RG é Obrigatório'),
+            OrgaoExp: Yup.string().required('OrgaoExp é Obrigatório'),
+            EstadoExp: Yup.string().required('EstadoExp é Obrigatório'),
+            DataExp: Yup.date().required('DataExp é Obrigatório'),
+            EstadoCivil: Yup.number().required('EstadoCivil  é Obrigatório'),
+            Telefone: Yup.string().nullable(),
+            UltLaticinio: Yup.string().nullable()
+        });
+
+        await schema.validate(data, {
+            abortEarly: false
+        });
+
+        const produtor = ProdutoresRepository.create(data);
+    
+        await ProdutoresRepository.save(produtor);
+    
+        return response.status(201).json(produtor);
+    },
+    async delete(request: Request, response: Response){
+        const {id} = request.params;
+
+        const ProdutoresRepository = getRepository(Produtor);    
+
+        const produtor = await ProdutoresRepository.findOne(id);
+
+        if(produtor !== null && produtor !== undefined){
+            await ProdutoresRepository.delete(produtor.ProdutorId)
+            return response.json({
+                Message: "Excluído com Sucesso!"
+            });
+        }
+        else{
+            return response.json({
+                Message: "Produtor não encontrado!"
+            });
+        }     
     }
 }
