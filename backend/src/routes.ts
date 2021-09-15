@@ -32,6 +32,8 @@ routes.delete('/propriedades/:id', PropriedadesControllers.delete);
 routes.get('/tanques', TanquesControllers.index);
 routes.get('/tanques/:id', TanquesControllers.show);
 routes.post('/tanques', upload.single('image'), TanquesControllers.create);
+routes.put('/tanques', upload.single('image'), TanquesControllers.update);
+routes.delete('/tanques/:id', TanquesControllers.delete);
 
 routes.get('/prodtanques', ProdutoresTanquesControllers.index);
 routes.get('/prodtanques/:id', ProdutoresTanquesControllers.show);

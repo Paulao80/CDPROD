@@ -4,6 +4,8 @@ import Tanque from '../models/Tanque';
 import {default as ProdutorClass} from '../models/Produtor';
 import TanqueView from '../views/TanqueView';
 import * as Yup from 'yup';
+import fs from 'fs';
+import path from "path";
 
 export default {
     async index(request: Request, response: Response){
@@ -127,5 +129,112 @@ export default {
         await TanquesRepository.save(tanque);
 
         return response.status(201).json(tanque);
+    },
+    async update(request: Request, response: Response){
+        const {
+            TanqueId,
+            Rota,
+            Capacidade,
+            MediaDiaria,
+            TipoTanque,            
+            NumeroSerie,
+            Marca,
+            Latitude,
+            Longitude
+        } = request.body;
+
+        var FotoPath = request.file?.filename;
+
+        const data = {
+            TanqueId: parseInt(TanqueId),
+            Rota,
+            Capacidade: parseFloat(Capacidade),
+            MediaDiaria: parseFloat(MediaDiaria),
+            TipoTanque: parseInt(TipoTanque),            
+            NumeroSerie,
+            Marca,
+            Latitude: parseFloat(Latitude),
+            Longitude: parseFloat(Longitude),
+            FotoPath
+        }
+
+        const schema = Yup.object().shape({
+            TanqueId: Yup.number().required('TanqueId é Obrigatório'),
+            Rota: Yup.string().nullable(),
+            Capacidade: Yup.number().required('Capacidade é Obrigatória'),
+            MediaDiaria: Yup.number().required('MediaDiaria é Obrigatória'),
+            TipoTanque: Yup.number().required('TipoTanque é Obrigatório'),
+            NumeroSerie: Yup.string().required('NumeroSerie é Obrigatório'),
+            Marca: Yup.string().required('Marca é Obrigatória'),
+            Latitude: Yup.number().required('Latitude é Obrigatória'),
+            Longitude: Yup.number().required('Longitude é Obrigatória'),
+            FotoPath: Yup.string().notRequired(),
+            ProdutoresTanques: Yup.array(
+                Yup.object().shape({
+                    Responsavel: Yup.boolean().required('Responsavel é Obrigatório'),
+                    Produtor: Yup.object().shape({
+                        ProdutorId: Yup.number().required('ProdutorId é Obrigatório'),
+                        Nome: Yup.string().notRequired(),
+                        DataNasc: Yup.date().notRequired(),
+                        TipoPessoa: Yup.number().notRequired(),
+                        Nacionalidade: Yup.string().notRequired(),
+                        CpfCnpj: Yup.string().notRequired(),
+                        RG: Yup.string().notRequired(),
+                        OrgaoExp: Yup.string().notRequired(),
+                        EstadoExp: Yup.string().notRequired(),
+                        DataExp: Yup.date().notRequired(),
+                        EstadoCivil: Yup.number().notRequired(),
+                        Telefone: Yup.string().notRequired(),
+                        UltLaticinio: Yup.string().notRequired()
+                    }).required('Produtor é Obrigatório')
+                })
+            ).notRequired()
+        });
+
+        await schema.validate(data, {
+            abortEarly: false
+        });
+
+        const TanquesRepository = getRepository(Tanque);
+
+        let tanque = await TanquesRepository.findOne(data.TanqueId);
+
+        if(tanque !== null && tanque !== undefined){
+            if(tanque.FotoPath !== undefined && tanque.FotoPath !== "" && tanque.FotoPath !== null){
+                let pathFoto = path.join(__dirname, '..', '..', 'uploads', tanque.FotoPath);
+                fs.unlinkSync(pathFoto);
+            }
+        }
+
+        tanque = TanquesRepository.create(data);
+
+        await TanquesRepository.save(tanque);
+
+        return response.status(200).json(TanqueView.renderClean(tanque));
+    },
+    async delete(request: Request, response: Response){
+        const {id} = request.params;
+
+        const TanquesRepository = getRepository(Tanque);
+
+        const tanque = await TanquesRepository.findOne(id);
+
+        if(tanque !== null && tanque !== undefined){
+            await TanquesRepository.delete(tanque.TanqueId);
+
+            if(tanque.FotoPath !== undefined && tanque.FotoPath !== "" && tanque.FotoPath !== null){
+                let pathFoto = path.join(__dirname, '..', '..', 'uploads', tanque.FotoPath);
+                fs.unlinkSync(pathFoto);
+            }
+
+            return response.json({
+                Message: "Excluído com Sucesso!"
+            });
+        }
+        else{
+            return response.json({
+                Message: "Tanque não encontrado!"
+            });
+        }     
     }
 }
