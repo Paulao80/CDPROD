@@ -86,5 +86,24 @@ export default{
         await ProdutoresTanquesRepository.save(produtorTanque);
 
         return response.status(201).json(produtorTanque);
+    },
+    async delete(request: Request, response: Response){
+        const {id} = request.params;
+
+        const ProdutoresTanquesRepository = getRepository(ProdutorTanque); 
+
+        const prodTanque = await ProdutoresTanquesRepository.findOne(id);
+
+        if(prodTanque !== null && prodTanque !== undefined){
+            await ProdutoresTanquesRepository.delete(prodTanque.ProdutorTanqueId)
+            return response.json({
+                Message: "Excluído com Sucesso!"
+            });
+        }
+        else{
+            return response.json({
+                Message: "ProdutorTanque não encontrado!"
+            });
+        }     
     }
 };

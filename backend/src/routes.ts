@@ -38,5 +38,6 @@ routes.delete('/tanques/:id', TanquesControllers.delete);
 routes.get('/prodtanques', ProdutoresTanquesControllers.index);
 routes.get('/prodtanques/:id', ProdutoresTanquesControllers.show);
 routes.post('/prodtanques', ProdutoresTanquesControllers.create);
+routes.delete('/prodtanques/:id', ProdutoresTanquesControllers.delete);
 
 export default routes;
