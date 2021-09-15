@@ -8,8 +8,10 @@ import BtnEdt from '../../Components/ButtonEdt';
 import PainelNav from '../../Components/PainelNav';
 import { useParams } from 'react-router-dom';
 import { GetTipoPessoa, GetEstadoCivil } from '../../Util/Functions';
-import { ProdutoresData } from '../../Util/Data';
 import ShowData from '../../Components/ShowData';
+import Api from '../../Services/Api';
+import { useState, useEffect } from 'react';
+import { Produtor } from '../../Interfaces';
 
 type props = {
     Logo: string;
@@ -24,10 +26,16 @@ interface Param {
 }
 
 const DetailsProdutor = ({ Logo, UserImg, Responsive, BtnState, HambClick }: props) => {
-
     const { id } = useParams<Param>();
 
-    const produtor = ProdutoresData.filter(obj => obj.ProdutorId === parseInt(id))[0];
+    const [produtor, setProdutor] = useState<Produtor>({} as Produtor);
+
+    useEffect(() => {
+        Api.get(`/produtores/${id}`).then(response => {
+            console.log(response.data);
+            setProdutor(response.data);
+        });
+    }, []);
 
     return (
         <>

@@ -7,8 +7,10 @@ import MUIDataTable from "mui-datatables";
 import ButtonAdd from '../../Components/ButtonAdd';
 import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@material-ui/core";
 import { GetTipoPessoa, GetEstadoCivil } from '../../Util/Functions';
+import { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
-import { ProdutoresData } from '../../Util/Data';
+import Api from '../../Services/Api';
+import { Produtor as IProdutor } from '../../Interfaces';
 
 type props = {
     Logo: string;
@@ -19,6 +21,15 @@ type props = {
 }
 
 const Produtor = ({ Logo, UserImg, Responsive, BtnState, HambClick }: props) => {
+    const [produtores, setProdutores] = useState<IProdutor[]>([]);
+
+    useEffect(() => {
+        Api.get('/produtores').then(response => {
+            console.log(response.data);
+            setProdutores(response.data);
+        });
+    }, []);
+
     const history = useHistory();
 
     const columns = [
@@ -58,8 +69,7 @@ const Produtor = ({ Logo, UserImg, Responsive, BtnState, HambClick }: props) => 
 
     const renderExpandableRow = (rowData: any, rowMeta: any) => {
 
-        const produtor = ProdutoresData.filter(obj => obj.ProdutorId === rowData[0])[0];
-        console.log(produtor);
+        const item = produtores.filter(obj => obj.ProdutorId === rowData[0])[0];
 
         return (
             <>
@@ -96,30 +106,30 @@ const Produtor = ({ Logo, UserImg, Responsive, BtnState, HambClick }: props) => 
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
-                                    <TableRow key={produtor.ProdutorId}>
+                                    <TableRow key={item.ProdutorId}>
                                         <TableCell>
-                                            {GetTipoPessoa(produtor.TipoPessoa)}
+                                            {GetTipoPessoa(item.TipoPessoa)}
                                         </TableCell>
                                         <TableCell>
-                                            {produtor.DataNasc}
+                                            {item.DataNasc}
                                         </TableCell>
                                         <TableCell>
-                                            {produtor.Nacionalidade}
+                                            {item.Nacionalidade}
                                         </TableCell>
                                         <TableCell>
-                                            {produtor.RG}
+                                            {item.RG}
                                         </TableCell>
                                         <TableCell>
-                                            {produtor.OrgaoExp}
+                                            {item.OrgaoExp}
                                         </TableCell>
                                         <TableCell>
-                                            {produtor.EstadoExp}
+                                            {item.EstadoExp}
                                         </TableCell>
                                         <TableCell>
-                                            {produtor.DataExp}
+                                            {item.DataExp}
                                         </TableCell>
                                         <TableCell>
-                                            {GetEstadoCivil(produtor.EstadoCivil)}
+                                            {GetEstadoCivil(item.EstadoCivil)}
                                         </TableCell>
                                     </TableRow>
                                 </TableBody>
@@ -155,7 +165,7 @@ const Produtor = ({ Logo, UserImg, Responsive, BtnState, HambClick }: props) => 
             <Main>
                 <MUIDataTable
                     title={"Produtores"}
-                    data={ProdutoresData}
+                    data={produtores}
                     columns={columns}
                     options={options}
                 />

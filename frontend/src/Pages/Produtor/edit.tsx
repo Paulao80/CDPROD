@@ -5,13 +5,14 @@ import Footer from '../../Components/Footer';
 import Main from '../../Components/Main';
 import Container from '../../Components/Container';
 import BtnSave from '../../Components/ButtonSave';
-import { TextField, MenuItem } from '@material-ui/core';
+import { TextField, Select, MenuItem, InputLabel, FormControl } from '@material-ui/core';
 import { CpfMaskCustom, CnpjMaskCustom, RgMaskCustom, TelefoneMaskCustom } from '../../Util/Mask';
 import { useState, useEffect } from 'react';
 import ApiUf from '../../Services/ApiUf';
+import Api from '../../Services/Api';
 import PainelNav from '../../Components/PainelNav';
 import { useParams } from 'react-router-dom';
-import { ProdutoresData } from '../../Util/Data'
+import { Produtor } from '../../Interfaces';
 
 type props = {
     Logo: string;
@@ -35,11 +36,16 @@ const EditProdutor = ({ Logo, UserImg, Responsive, BtnState, HambClick }: props)
 
     const { id } = useParams<Param>();
 
-    const produtor = ProdutoresData.filter(obj => obj.ProdutorId === parseInt(id))[0];
+    const [produtor, setProdutor] = useState<Produtor>({} as Produtor);
 
     const [ufs, setUfs] = useState<Uf[]>([]);
 
     useEffect(() => {
+        Api.get(`/produtores/${id}`).then(response => {
+            console.log(response.data);
+            setProdutor(response.data);
+        });
+
         ApiUf.get('/localidades/estados', {
             params: {
                 orderBy: "nome"
@@ -50,6 +56,16 @@ const EditProdutor = ({ Logo, UserImg, Responsive, BtnState, HambClick }: props)
         });
     }, []);
 
+    const [tipoPessoa, setTipoPessoa] = useState(0);
+    const [uf, setUf] = useState("");
+    const [estadoCivil, setEstadoCivil] = useState(0);
+
+    useEffect(() => {
+        setTipoPessoa(produtor.TipoPessoa);
+        setUf(produtor.EstadoExp);
+        setEstadoCivil(produtor.EstadoCivil);
+    }, [produtor])
+
     const OnBtnSave = () => {
 
     }
@@ -57,8 +73,6 @@ const EditProdutor = ({ Logo, UserImg, Responsive, BtnState, HambClick }: props)
     const [inputComponent, setinputComponent] = useState({
         inputComponent: CpfMaskCustom as any,
     });
-
-    const [tipoPessoa, setTipoPessoa] = useState(produtor.TipoPessoa);
 
     const OnTipoPessoaChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
         let value = Number(evt.target.value);
@@ -132,7 +146,7 @@ const EditProdutor = ({ Logo, UserImg, Responsive, BtnState, HambClick }: props)
                     <TextField name="OrgaoExp" id="OrgaoExp" label="Orgão de Expedição" variant="outlined" fullWidth required margin="normal" value={produtor.OrgaoExp} InputLabelProps={{
                         shrink: true,
                     }} />
-                    <TextField name="EstadoExp" id="EstadoExp" label="Estado de Expediçaõ" variant="outlined" select fullWidth required margin="normal" value={produtor.EstadoExp}>
+                    <TextField name="EstadoExp" id="EstadoExp" label="Estado de Expediçaõ" variant="outlined" select fullWidth required margin="normal" value={uf}>
                         {
                             ufs.map(uf => {
                                 return (
@@ -157,7 +171,7 @@ const EditProdutor = ({ Logo, UserImg, Responsive, BtnState, HambClick }: props)
                         required
                         value={produtor.DataExp}
                     />
-                    <TextField name="EstadoCivil" id="EstadoCivil" label="Estado Civil" variant="outlined" select fullWidth required margin="normal" value={produtor.EstadoCivil}>
+                    <TextField name="EstadoCivil" id="EstadoCivil" label="Estado Civil" variant="outlined" select fullWidth required margin="normal" value={estadoCivil}>
                         <MenuItem key={1} value={1}>
                             solteiro(a)
                         </MenuItem>
