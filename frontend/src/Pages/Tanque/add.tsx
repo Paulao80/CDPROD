@@ -57,7 +57,7 @@ const AddProdutorTanque = ({ Logo, UserImg, Responsive, BtnState, HambClick }: p
                     </TextField>
                 </Container>
             </Main>
-            <BtnSave OnBtnClick={OnBtnSave} />
+            <BtnSave />
             <Footer />
         </>
     );

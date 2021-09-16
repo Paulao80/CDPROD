@@ -12,7 +12,7 @@ import ApiUf from '../../Services/ApiUf';
 import { useState, useEffect } from 'react';
 import { ProdutoresData, PropriedadesData } from '../../Util/Data';
 import { useParams } from 'react-router-dom';
-
+import { Uf } from '../../Interfaces';
 
 type props = {
     Logo: string;
@@ -20,12 +20,6 @@ type props = {
     Responsive: string;
     BtnState: string;
     HambClick: Function;
-}
-
-interface Uf {
-    id: number;
-    sigla: string;
-    nome: string;
 }
 
 interface Param {
@@ -100,7 +94,7 @@ const EditPropriedade = ({ Logo, UserImg, Responsive, BtnState, HambClick }: pro
                     </TextField>
                 </Container>
             </Main>
-            <BtnSave OnBtnClick={OnBtnSave} />
+            <BtnSave />
             <Footer />
         </>
     );

@@ -11,6 +11,7 @@ import { NirfMaskCustom } from '../../Util/Mask';
 import ApiUf from '../../Services/ApiUf';
 import { useState, useEffect } from 'react';
 import { ProdutoresData } from '../../Util/Data';
+import { Uf } from '../../Interfaces';
 
 type props = {
     Logo: string;
@@ -18,12 +19,6 @@ type props = {
     Responsive: string;
     BtnState: string;
     HambClick: Function;
-}
-
-interface Uf {
-    id: number;
-    sigla: string;
-    nome: string;
 }
 
 const CreatePropriedade = ({ Logo, UserImg, Responsive, BtnState, HambClick }: props) => {
@@ -83,7 +78,7 @@ const CreatePropriedade = ({ Logo, UserImg, Responsive, BtnState, HambClick }: p
                     </TextField>
                 </Container>
             </Main>
-            <BtnSave OnBtnClick={OnBtnSave} />
+            <BtnSave />
             <Footer />
         </>
     );

@@ -5,10 +5,10 @@ import Footer from '../../Components/Footer';
 import Main from '../../Components/Main';
 import MUIDataTable from "mui-datatables";
 import ButtonAdd from '../../Components/ButtonAdd';
+import ButtonAct from '../../Components/ButtonAct';
 import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@material-ui/core";
-import { Link, useHistory } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { TanquesData } from '../../Util/Data';
-import { People } from '@material-ui/icons';
 
 
 type props = {
@@ -20,7 +20,6 @@ type props = {
 }
 
 const Tanque = ({ Logo, UserImg, Responsive, BtnState, HambClick }: props) => {
-    const history = useHistory();
 
     const customFotoRender = (value: string) => {
         return (
@@ -30,11 +29,11 @@ const Tanque = ({ Logo, UserImg, Responsive, BtnState, HambClick }: props) => {
 
     const customAcoesRender = (value: string) => {
         return (
-            <>
-                <Link className="btn-table btn-prod" to={`/tanque/produtores/${value}`}>
-                    <People fontSize="medium" />
-                </Link>
-            </>
+            <div className="div-act">
+                <ButtonAct to={`/tanque/produtores/${value}`} type="produtores" />
+                <ButtonAct to={`/tanque/edit/${value}`} type="editar" />
+                <ButtonAct to={`/tanque/details/${value}`} type="detalhes" />
+            </div>
         );
     }
 

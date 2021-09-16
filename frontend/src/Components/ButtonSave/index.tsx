@@ -1,13 +1,9 @@
 import './style.css';
 import { Save } from '@material-ui/icons';
 
-type props = {
-    OnBtnClick: Function;
-}
-
-const ButtonAdd = ({ OnBtnClick }: props) => {
+const ButtonAdd = () => {
     return (
-        <button className="btn-save" onClick={() => OnBtnClick()}><Save fontSize="large" /></button>
+        <button type="submit" className="btn-save"><Save fontSize="large" /></button>
     );
 }
 

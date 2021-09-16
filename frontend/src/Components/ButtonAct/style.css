@@ -1,0 +1,34 @@
+.btn-act {
+  text-decoration: none;
+  color: white;
+  display: flex;
+  width: 35px;
+  height: 35px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+}
+
+.btn-act.produtores {
+  background-color: green;
+}
+
+.btn-act.produtores:hover {
+  background-color: rgb(10, 145, 10);
+}
+
+.btn-act.editar {
+  background-color: rgb(238, 208, 36);
+}
+
+.btn-act.editar:hover {
+  background-color: rgb(233, 211, 89);
+}
+
+.btn-act.detalhes {
+  background-color: rgb(36, 76, 255);
+}
+
+.btn-act.detalhes:hover {
+  background-color: rgb(60, 91, 231);
+}

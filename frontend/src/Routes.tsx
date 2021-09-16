@@ -49,13 +49,13 @@ const Routes = () => {
                 </Route>
                 <Route path="/produtor">
                     <Produtor Logo={logoImg} UserImg={userImg} Responsive={responsive} BtnState={btnState} HambClick={HambClick} />
-                    <Route path="/produtor/create">
+                    <Route path="/produtor/create" exact>
                         <CreateProdutor Logo={logoImg} UserImg={userImg} Responsive={responsive} BtnState={btnState} HambClick={HambClick} />
                     </Route>
-                    <Route path="/produtor/details/:id">
+                    <Route path="/produtor/details/:id" exact>
                         <DetailsProdutor Logo={logoImg} UserImg={userImg} Responsive={responsive} BtnState={btnState} HambClick={HambClick} />
                     </Route>
-                    <Route path="/produtor/edit/:id">
+                    <Route path="/produtor/edit/:id" exact>
                         <EditProdutor Logo={logoImg} UserImg={userImg} Responsive={responsive} BtnState={btnState} HambClick={HambClick} />
                     </Route>
                 </Route>

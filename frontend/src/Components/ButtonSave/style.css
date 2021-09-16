@@ -7,7 +7,7 @@
   align-items: center;
   justify-content: center;
   border-radius: 50%;
-  position: absolute;
+  position: fixed;
   bottom: 57.5px;
   left: calc(300px + ((100% - 300px) / 2));
   transform: translateX(-50%);

@@ -13,3 +13,9 @@ export interface Produtor {
     Telefone: string;
     UltLaticinio: string;
 }
+
+export interface Uf {
+    id: number;
+    sigla: string;
+    nome: string;
+}

@@ -93,7 +93,7 @@ const CreateTanque = ({ Logo, UserImg, Responsive, BtnState, HambClick }: props)
                     <TextField name="Marca" id="Marca" label="Marca do Tanque" variant="outlined" fullWidth required margin="normal" />
                 </Container>
             </Main>
-            <BtnSave OnBtnClick={OnBtnSave} />
+            <BtnSave />
             <Footer />
         </>
     );

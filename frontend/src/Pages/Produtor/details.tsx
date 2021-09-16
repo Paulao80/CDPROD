@@ -32,10 +32,9 @@ const DetailsProdutor = ({ Logo, UserImg, Responsive, BtnState, HambClick }: pro
 
     useEffect(() => {
         Api.get(`/produtores/${id}`).then(response => {
-            console.log(response.data);
             setProdutor(response.data);
         });
-    }, []);
+    });
 
     return (
         <>

@@ -11,6 +11,7 @@ import { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import Api from '../../Services/Api';
 import { Produtor as IProdutor } from '../../Interfaces';
+import ButtonAct from '../../Components/ButtonAct';
 
 type props = {
     Logo: string;
@@ -21,16 +22,24 @@ type props = {
 }
 
 const Produtor = ({ Logo, UserImg, Responsive, BtnState, HambClick }: props) => {
+    const history = useHistory();
+
     const [produtores, setProdutores] = useState<IProdutor[]>([]);
 
     useEffect(() => {
         Api.get('/produtores').then(response => {
-            console.log(response.data);
             setProdutores(response.data);
         });
     }, []);
 
-    const history = useHistory();
+    const customAcoesRender = (value: string) => {
+        return (
+            <div className="div-act">
+                <ButtonAct to={`/produtor/edit/${value}`} type="editar" />
+                <ButtonAct to={`/produtor/details/${value}`} type="detalhes" />
+            </div>
+        );
+    }
 
     const columns = [
         {
@@ -65,81 +74,16 @@ const Produtor = ({ Logo, UserImg, Responsive, BtnState, HambClick }: props) => 
                 sort: false,
             },
         },
+        {
+            name: "ProdutorId",
+            label: "Ações",
+            options: {
+                filter: true,
+                sort: false,
+                customBodyRender: customAcoesRender
+            },
+        },
     ];
-
-    const renderExpandableRow = (rowData: any, rowMeta: any) => {
-
-        const item = produtores.filter(obj => obj.ProdutorId === rowData[0])[0];
-
-        return (
-            <>
-                <tr>
-                    <td colSpan={6}>
-                        <TableContainer component={Paper}>
-                            <Table>
-                                <TableHead>
-                                    <TableRow>
-                                        <TableCell>
-                                            Tipo de Pessoa
-                                        </TableCell>
-                                        <TableCell>
-                                            Data Nascimento
-                                        </TableCell>
-                                        <TableCell>
-                                            Nacionalidade
-                                        </TableCell>
-                                        <TableCell>
-                                            RG
-                                        </TableCell>
-                                        <TableCell>
-                                            Orgão Expeditor
-                                        </TableCell>
-                                        <TableCell>
-                                            Estado Expeditor
-                                        </TableCell>
-                                        <TableCell>
-                                            Data Expedição
-                                        </TableCell>
-                                        <TableCell>
-                                            Estado Civil
-                                        </TableCell>
-                                    </TableRow>
-                                </TableHead>
-                                <TableBody>
-                                    <TableRow key={item.ProdutorId}>
-                                        <TableCell>
-                                            {GetTipoPessoa(item.TipoPessoa)}
-                                        </TableCell>
-                                        <TableCell>
-                                            {item.DataNasc}
-                                        </TableCell>
-                                        <TableCell>
-                                            {item.Nacionalidade}
-                                        </TableCell>
-                                        <TableCell>
-                                            {item.RG}
-                                        </TableCell>
-                                        <TableCell>
-                                            {item.OrgaoExp}
-                                        </TableCell>
-                                        <TableCell>
-                                            {item.EstadoExp}
-                                        </TableCell>
-                                        <TableCell>
-                                            {item.DataExp}
-                                        </TableCell>
-                                        <TableCell>
-                                            {GetEstadoCivil(item.EstadoCivil)}
-                                        </TableCell>
-                                    </TableRow>
-                                </TableBody>
-                            </Table>
-                        </TableContainer>
-                    </td>
-                </tr>
-            </>
-        )
-    }
 
     const setRowProps = () => {
         return {
@@ -147,15 +91,13 @@ const Produtor = ({ Logo, UserImg, Responsive, BtnState, HambClick }: props) => 
         }
     }
 
-    const onRowClick = (rowData: any) => {
-        history.push(`/produtor/details/${rowData[0]}`)
+    const OnRowsDeleted = (data: any) => {
+        console.log(data);
     }
 
     const options = {
-        onRowClick,
-        expandableRows: true,
-        renderExpandableRow,
-        setRowProps
+        setRowProps,
+        OnRowsDeleted
     };
 
     return (
