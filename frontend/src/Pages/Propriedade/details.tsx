@@ -7,25 +7,26 @@ import Container from '../../Components/Container';
 import BtnEdt from '../../Components/ButtonEdt';
 import PainelNav from '../../Components/PainelNav';
 import { useParams } from 'react-router-dom';
-import { PropriedadesData } from '../../Util/Data';
 import ShowData from '../../Components/ShowData';
-
-type props = {
-    Logo: string;
-    UserImg: string;
-    Responsive: string;
-    BtnState: string;
-    HambClick: Function;
-}
+import { Props } from '../../Types';
+import { Propriedade, Produtor } from '../../Interfaces';
+import { useEffect, useState } from 'react';
+import Api from '../../Services/Api';
 
 interface Param {
     id: string;
 }
 
-const DetailsPropriedade = ({ Logo, UserImg, Responsive, BtnState, HambClick }: props) => {
+const DetailsPropriedade = ({ Logo, UserImg, Responsive, BtnState, HambClick }: Props) => {
     const { id } = useParams<Param>();
 
-    const propriedade = PropriedadesData.filter(obj => obj.PropriedadeId === parseInt(id))[0];
+    const [propriedade, setPropriedade] = useState<Propriedade>({ Produtor: {} } as Propriedade);
+
+    useEffect(() => {
+        Api.get(`/propriedades/${id}`).then(response => {
+            setPropriedade(response.data);
+        });
+    }, []);
 
     return (
         <>

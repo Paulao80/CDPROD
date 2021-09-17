@@ -34,7 +34,7 @@ const DetailsProdutor = ({ Logo, UserImg, Responsive, BtnState, HambClick }: pro
         Api.get(`/produtores/${id}`).then(response => {
             setProdutor(response.data);
         });
-    });
+    }, []);
 
     return (
         <>

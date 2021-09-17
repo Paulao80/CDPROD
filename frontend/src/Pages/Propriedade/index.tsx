@@ -4,28 +4,36 @@ import Footer from '../../Components/Footer';
 import Main from '../../Components/Main';
 import MUIDataTable from "mui-datatables";
 import ButtonAdd from '../../Components/ButtonAdd';
-import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@material-ui/core";
-import { useHistory } from 'react-router-dom';
-import { PropriedadesData } from '../../Util/Data';
+import { useLocation } from 'react-router-dom';
+import { Props } from '../../Types';
+import { Propriedade as IPropriedade, RowsDeleted } from '../../Interfaces';
+import { useState, useEffect } from 'react';
+import Api from '../../Services/Api';
+import ButtonAct from '../../Components/ButtonAct';
 
+const Propriedade = ({ Logo, UserImg, Responsive, BtnState, HambClick }: Props) => {
+    const location = useLocation();
 
-type props = {
-    Logo: string;
-    UserImg: string;
-    Responsive: string;
-    BtnState: string;
-    HambClick: Function;
-}
+    const [Propriedades, setPropriedades] = useState<IPropriedade[]>([]);
 
-interface produtor {
-    Nome: string;
-}
+    useEffect(() => {
+        Api.get('/propriedades')
+            .then((response) => {
+                setPropriedades(response.data);
+            })
+    }, [location]);
 
-const Propriedade = ({ Logo, UserImg, Responsive, BtnState, HambClick }: props) => {
-    const history = useHistory();
-
-    const customBodyRender = (value: produtor) => {
+    const customProdutorRender = (value: IPropriedade) => {
         return value.Nome;
+    }
+
+    const customAcoesRender = (value: string) => {
+        return (
+            <div className="div-act">
+                <ButtonAct to={`/propriedade/edit/${value}`} type="editar" />
+                <ButtonAct to={`/propriedade/details/${value}`} type="detalhes" />
+            </div>
+        );
     }
 
     const columns = [
@@ -59,60 +67,19 @@ const Propriedade = ({ Logo, UserImg, Responsive, BtnState, HambClick }: props) 
             options: {
                 filter: true,
                 sort: false,
-                customBodyRender
+                customBodyRender: customProdutorRender
+            }
+        },
+        {
+            name: "PropriedadeId",
+            label: "Ações",
+            options: {
+                filter: true,
+                sort: false,
+                customBodyRender: customAcoesRender
             }
         },
     ];
-
-    const renderExpandableRow = (rowData: any, rowMeta: any) => {
-
-        const propriedade = PropriedadesData.filter(obj => obj.PropriedadeId === rowData[0])[0];
-
-        return (
-            <>
-                <tr>
-                    <td colSpan={6}>
-                        <TableContainer component={Paper}>
-                            <Table>
-                                <TableHead>
-                                    <TableRow>
-                                        <TableCell>
-                                            Inscrição
-                                        </TableCell>
-                                        <TableCell>
-                                            Endereço
-                                        </TableCell>
-                                        <TableCell>
-                                            Municipio
-                                        </TableCell>
-                                        <TableCell>
-                                            Estado
-                                        </TableCell>
-                                    </TableRow>
-                                </TableHead>
-                                <TableBody>
-                                    <TableRow key={propriedade.PropriedadeId}>
-                                        <TableCell>
-                                            {propriedade.InscEstadual}
-                                        </TableCell>
-                                        <TableCell>
-                                            {propriedade.Endereco}
-                                        </TableCell>
-                                        <TableCell>
-                                            {propriedade.Municipio}
-                                        </TableCell>
-                                        <TableCell>
-                                            {propriedade.Estado}
-                                        </TableCell>
-                                    </TableRow>
-                                </TableBody>
-                            </Table>
-                        </TableContainer>
-                    </td>
-                </tr>
-            </>
-        )
-    }
 
     const setRowProps = () => {
         return {
@@ -120,15 +87,27 @@ const Propriedade = ({ Logo, UserImg, Responsive, BtnState, HambClick }: props) 
         }
     }
 
-    const onRowClick = (rowData: any) => {
-        history.push(`/propriedade/details/${rowData[0]}`)
+
+    const onRowsDelete = (rowsDeleted: RowsDeleted, newTableData: any) => {
+
+        rowsDeleted.data.map(async (row) => {
+
+            let propriedade = Propriedades[row.dataIndex];
+
+            await Api.delete(`/propriedades/${propriedade.PropriedadeId}`)
+                .then((response) => {
+                    alert(response.data.Message);
+                })
+                .catch(() => {
+                    alert("Error");
+                });
+        });
+
     }
 
     const options = {
         setRowProps,
-        onRowClick,
-        expandableRows: true,
-        renderExpandableRow
+        onRowsDelete
     };
 
     return (
@@ -138,7 +117,7 @@ const Propriedade = ({ Logo, UserImg, Responsive, BtnState, HambClick }: props) 
             <Main>
                 <MUIDataTable
                     title="Propriedades"
-                    data={PropriedadesData}
+                    data={Propriedades}
                     columns={columns}
                     options={options}
                 />

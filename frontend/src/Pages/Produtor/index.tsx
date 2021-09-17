@@ -5,32 +5,26 @@ import Footer from '../../Components/Footer';
 import Main from '../../Components/Main';
 import MUIDataTable from "mui-datatables";
 import ButtonAdd from '../../Components/ButtonAdd';
-import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@material-ui/core";
-import { GetTipoPessoa, GetEstadoCivil } from '../../Util/Functions';
 import { useState, useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import Api from '../../Services/Api';
-import { Produtor as IProdutor } from '../../Interfaces';
+import { Props } from '../../Types';
+import { Produtor as IProdutor, RowsDeleted } from '../../Interfaces';
 import ButtonAct from '../../Components/ButtonAct';
 
-type props = {
-    Logo: string;
-    UserImg: string;
-    Responsive: string;
-    BtnState: string;
-    HambClick: Function;
-}
 
-const Produtor = ({ Logo, UserImg, Responsive, BtnState, HambClick }: props) => {
-    const history = useHistory();
+
+const Produtor = ({ Logo, UserImg, Responsive, BtnState, HambClick }: Props) => {
+    const location = useLocation();
 
     const [produtores, setProdutores] = useState<IProdutor[]>([]);
 
     useEffect(() => {
-        Api.get('/produtores').then(response => {
-            setProdutores(response.data);
-        });
-    }, []);
+        Api.get('/produtores')
+            .then(response => {
+                setProdutores(response.data);
+            });
+    }, [location]);
 
     const customAcoesRender = (value: string) => {
         return (
@@ -91,13 +85,26 @@ const Produtor = ({ Logo, UserImg, Responsive, BtnState, HambClick }: props) => 
         }
     }
 
-    const OnRowsDeleted = (data: any) => {
-        console.log(data);
+    const onRowsDelete = (rowsDeleted: RowsDeleted, newTableData: any) => {
+
+        rowsDeleted.data.map(async (row) => {
+
+            let produtor = produtores[row.dataIndex];
+
+            await Api.delete(`/produtores/${produtor.ProdutorId}`)
+                .then((response) => {
+                    alert(response.data.Message);
+                })
+                .catch(() => {
+                    alert("Error");
+                });
+        });
+
     }
 
     const options = {
         setRowProps,
-        OnRowsDeleted
+        onRowsDelete
     };
 
     return (

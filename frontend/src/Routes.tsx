@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Switch } from 'react-router-dom'
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import logoImg from './Assets/images/logo.png';
 import userImg from './Assets/images/anonimos.jpg';
 import { useState } from 'react';
@@ -38,27 +38,27 @@ const Routes = () => {
     return (
         <BrowserRouter>
             <Switch>
-                <Route path="/" exact>
-                    <Landing />
-                </Route>
-                <Route path="/login">
-                    <Login />
-                </Route>
+                <Route path="/" component={Landing} exact />
+
+                <Route path="/login" component={Login} exact />
+
                 <Route path="/dashboard">
                     <Dashboard Logo={logoImg} UserImg={userImg} Responsive={responsive} BtnState={btnState} HambClick={HambClick} />
                 </Route>
+
                 <Route path="/produtor">
                     <Produtor Logo={logoImg} UserImg={userImg} Responsive={responsive} BtnState={btnState} HambClick={HambClick} />
-                    <Route path="/produtor/create" exact>
+                    <Route path="/produtor/create">
                         <CreateProdutor Logo={logoImg} UserImg={userImg} Responsive={responsive} BtnState={btnState} HambClick={HambClick} />
                     </Route>
-                    <Route path="/produtor/details/:id" exact>
+                    <Route path="/produtor/details/:id">
                         <DetailsProdutor Logo={logoImg} UserImg={userImg} Responsive={responsive} BtnState={btnState} HambClick={HambClick} />
                     </Route>
-                    <Route path="/produtor/edit/:id" exact>
+                    <Route path="/produtor/edit/:id">
                         <EditProdutor Logo={logoImg} UserImg={userImg} Responsive={responsive} BtnState={btnState} HambClick={HambClick} />
                     </Route>
                 </Route>
+
                 <Route path="/propriedade">
                     <Propriedade Logo={logoImg} UserImg={userImg} Responsive={responsive} BtnState={btnState} HambClick={HambClick} />
                     <Route path="/propriedade/create">
@@ -71,6 +71,7 @@ const Routes = () => {
                         <EditPropriedade Logo={logoImg} UserImg={userImg} Responsive={responsive} BtnState={btnState} HambClick={HambClick} />
                     </Route>
                 </Route>
+
                 <Route path="/tanque">
                     <Tanque Logo={logoImg} UserImg={userImg} Responsive={responsive} BtnState={btnState} HambClick={HambClick} />
                     <Route path="/tanque/create">
@@ -89,6 +90,7 @@ const Routes = () => {
                         </Route>
                     </Route>
                 </Route>
+
                 <Route path="/relatorios">
                     <Relatorios Logo={logoImg} UserImg={userImg} Responsive={responsive} BtnState={btnState} HambClick={HambClick} />
                 </Route>

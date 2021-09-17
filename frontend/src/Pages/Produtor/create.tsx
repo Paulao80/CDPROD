@@ -73,13 +73,17 @@ const CreateProdutor = ({ Logo, UserImg, Responsive, BtnState, HambClick }: prop
         })
             .then((response) => {
                 response.status === 201
-                    ? history.push('/produtor')
+                    ? redirect()
                     : alert("Não foi possivel adicionar o Produtor");
             })
             .catch((error) => {
                 console.log(error);
             });
 
+    }
+
+    const redirect = () => {
+        history.push('/produtor');
     }
 
     return (
