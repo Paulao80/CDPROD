@@ -25,6 +25,26 @@ export interface Propriedade {
     Produtor: Produtor;
 }
 
+export interface Tanque {
+    TanqueId: number;
+    Rota: string;
+    Capacidade: number;
+    MediaDiaria: number;
+    TipoTanque: number;
+    FotoPath: string;
+    NumeroSerie: string;
+    Marca: string;
+    Latitude: number;
+    Longitude: number;
+}
+
+export interface ProdutorTanque {
+    ProdutorTanqueId: number;
+    Responsavel: boolean;
+    Produtor: Produtor;
+    Tanque: Tanque;
+}
+
 export interface Uf {
     id: number;
     sigla: string;

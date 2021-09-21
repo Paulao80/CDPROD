@@ -10,26 +10,33 @@ import PainelNav from '../../Components/PainelNav';
 import { MapContainer, TileLayer, Marker } from 'react-leaflet';
 import { iconLocation } from '../../Util/Icons';
 import { useParams } from 'react-router-dom';
-import { TanquesData } from '../../Util/Data';
 import ShowData from '../../Components/ShowData';
 import { GetTipoTanque } from '../../Util/Functions';
-
-type props = {
-    Logo: string;
-    UserImg: string;
-    Responsive: string;
-    BtnState: string;
-    HambClick: Function;
-}
+import { Props } from '../../Types';
+import { Tanque } from '../../Interfaces';
+import { useState, useEffect } from 'react';
+import Api from '../../Services/Api';
 
 interface Param {
     id: string;
 }
 
-const DetailsTanque = ({ Logo, UserImg, Responsive, BtnState, HambClick }: props) => {
+const DetailsTanque = ({ Logo, UserImg, Responsive, BtnState, HambClick }: Props) => {
     const { id } = useParams<Param>();
 
-    const tanque = TanquesData.filter(obj => obj.TanqueId === parseInt(id))[0];
+    const [tanque, setTanque] = useState<Tanque>();
+
+    useEffect(() => {
+        Api.get(`/tanques/${id}`).then(response => {
+            setTanque(response.data);
+        });
+    }, [id]);
+
+    if (tanque === undefined) {
+        return (
+            <p>Carregando...</p>
+        );
+    }
 
     return (
         <>

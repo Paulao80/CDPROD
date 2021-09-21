@@ -9,16 +9,62 @@ import BtnSave from '../../Components/ButtonSave';
 import { TextField, MenuItem } from '@material-ui/core';
 import PainelNav from '../../Components/PainelNav';
 import { MapContainer, TileLayer, Marker, useMapEvents } from 'react-leaflet';
-import { FormEvent, ChangeEvent, useState } from 'react';
+import { FormEvent, ChangeEvent, useState, useEffect } from 'react';
 import { iconLocation } from '../../Util/Icons';
 import Api from '../../Services/Api';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import { Props } from '../../Types';
+import { Tanque } from '../../Interfaces';
 
-const CreateTanque = ({ Logo, UserImg, Responsive, BtnState, HambClick }: Props) => {
+interface Param {
+    id: string;
+}
+
+interface Position {
+    Latitude: number;
+    Longitude: number;
+}
+
+const EditTanque = ({ Logo, UserImg, Responsive, BtnState, HambClick }: Props) => {
+    const { id } = useParams<Param>();
+
     const history = useHistory();
 
-    const [position, setPosition] = useState({ Latitude: 0, Longitude: 0 })
+    const [tanque, setTanque] = useState<Tanque>({} as Tanque);
+    const [position, setPosition] = useState<Position>();
+
+    useEffect(() => {
+        Api.get(`/tanques/${id}`).then(response => {
+            setTanque(response.data);
+        });
+    }, [id]);
+
+    const [Rota, setRota] = useState("");
+    const [Capacidade, setCapacidade] = useState(0);
+    const [MediaDiaria, setMediaDiaria] = useState(0);
+    const [TipoTanque, setTipoTanque] = useState(1);
+    const [NumeroSerie, setNumeroSerie] = useState("");
+    const [Marca, setMarca] = useState("");
+    const [image, setImage] = useState<File[]>([]);
+    const [preview, setPreview] = useState<string[]>([]);
+
+    useEffect(() => {
+        setRota(tanque.Rota);
+        setCapacidade(tanque.Capacidade);
+        setMediaDiaria(tanque.MediaDiaria);
+        setTipoTanque(tanque.TipoTanque);
+        setNumeroSerie(tanque.NumeroSerie);
+        setMarca(tanque.Marca);
+        setPosition({
+            Latitude: tanque.Latitude,
+            Longitude: tanque.Longitude
+        });
+
+        let FotoPath = [];
+        FotoPath.push(tanque.FotoPath);
+
+        setPreview(FotoPath)
+    }, [tanque]);
 
     const LocationMarker = () => {
 
@@ -34,7 +80,7 @@ const CreateTanque = ({ Logo, UserImg, Responsive, BtnState, HambClick }: Props)
         })
 
         return (
-            position.Latitude !== 0 ?
+            position !== undefined ?
                 <Marker
                     position={[position.Latitude, position.Longitude]}
                     interactive={false}
@@ -44,39 +90,6 @@ const CreateTanque = ({ Logo, UserImg, Responsive, BtnState, HambClick }: Props)
                 : null
         )
 
-    }
-
-    const [Rota, setRota] = useState("");
-    const [Capacidade, setCapacidade] = useState(0);
-    const [MediaDiaria, setMediaDiaria] = useState(0);
-    const [TipoTanque, setTipoTanque] = useState(1);
-    const [NumeroSerie, setNumeroSerie] = useState("");
-    const [Marca, setMarca] = useState("");
-    const [image, setImage] = useState<File[]>([]);
-    const [preview, setPreview] = useState<string[]>([]);
-
-    const OnSubmit = async (event: FormEvent) => {
-        event.preventDefault();
-
-        const { Latitude, Longitude } = position;
-
-        const data = new FormData();
-
-        data.append('Rota', Rota);
-        data.append('Capacidade', String(Capacidade));
-        data.append('MediaDiaria', String(MediaDiaria));
-        data.append('TipoTanque', String(TipoTanque));
-        data.append('NumeroSerie', NumeroSerie);
-        data.append('Marca', Marca);
-        data.append('Latitude', String(Latitude));
-        data.append('Longitude', String(Longitude));
-        image.forEach(image => {
-            data.append('image', image);
-        })
-
-        await Api.post('/tanques', data);
-
-        history.push('/tanque');
     }
 
     const SelectedImages = (event: ChangeEvent<HTMLInputElement>) => {
@@ -96,17 +109,50 @@ const CreateTanque = ({ Logo, UserImg, Responsive, BtnState, HambClick }: Props)
         setPreview(imagensPreview);
     }
 
+
+    if (position?.Latitude === undefined || position?.Longitude === undefined) {
+        return (
+            <p>Carregando...</p>
+        )
+    }
+
+    const OnSubmit = async (event: FormEvent) => {
+        event.preventDefault();
+
+        const { Latitude, Longitude } = position;
+
+        const data = new FormData();
+
+        data.append('TanqueId', String(tanque.TanqueId));
+        data.append('Rota', Rota);
+        data.append('Capacidade', String(Capacidade));
+        data.append('MediaDiaria', String(MediaDiaria));
+        data.append('TipoTanque', String(TipoTanque));
+        data.append('NumeroSerie', NumeroSerie);
+        data.append('Marca', Marca);
+        data.append('Latitude', String(Latitude));
+        data.append('Longitude', String(Longitude));
+        image.forEach(image => {
+            data.append('image', image);
+        })
+
+        await Api.put('/tanques', data);
+
+        history.push('/tanque');
+    }
+
     return (
         <>
             <Header logo={Logo} titulo="CDTR" responsive={Responsive} btnState={BtnState} onHambClick={HambClick} />
             <Aside UserImg={UserImg} Active="tanque" responsive={Responsive} />
             <Main>
-                <PainelNav to="/tanque" titulo="Adicionar Tanque" />
+                <PainelNav to={`/tanque`} titulo="Editar Tanque" />
                 <Container>
 
                     <form onSubmit={OnSubmit}>
+
                         <MapContainer
-                            center={[-10.930750223902585, -61.927419334264975]}
+                            center={[position.Latitude, position.Longitude]}
                             zoom={14}
                             style={{
                                 width: '100%',
@@ -129,6 +175,9 @@ const CreateTanque = ({ Logo, UserImg, Responsive, BtnState, HambClick }: Props)
                             fullWidth
                             required
                             margin="normal"
+                            InputLabelProps={{
+                                shrink: true,
+                            }}
                             value={Rota}
                             onChange={event => setRota(event.target.value)}
                         />
@@ -142,6 +191,9 @@ const CreateTanque = ({ Logo, UserImg, Responsive, BtnState, HambClick }: Props)
                             fullWidth
                             required
                             margin="normal"
+                            InputLabelProps={{
+                                shrink: true,
+                            }}
                             value={Capacidade}
                             onChange={event => setCapacidade(Number(event.target.value))}
                         />
@@ -155,6 +207,9 @@ const CreateTanque = ({ Logo, UserImg, Responsive, BtnState, HambClick }: Props)
                             fullWidth
                             required
                             margin="normal"
+                            InputLabelProps={{
+                                shrink: true,
+                            }}
                             value={MediaDiaria}
                             onChange={event => setMediaDiaria(Number(event.target.value))}
                         />
@@ -188,7 +243,6 @@ const CreateTanque = ({ Logo, UserImg, Responsive, BtnState, HambClick }: Props)
                             variant="outlined"
                             type="file"
                             fullWidth
-                            required
                             margin="normal"
                             InputLabelProps={{
                                 shrink: true,
@@ -210,6 +264,9 @@ const CreateTanque = ({ Logo, UserImg, Responsive, BtnState, HambClick }: Props)
                             fullWidth
                             required
                             margin="normal"
+                            InputLabelProps={{
+                                shrink: true,
+                            }}
                             value={NumeroSerie}
                             onChange={event => setNumeroSerie(event.target.value)}
                         />
@@ -222,19 +279,23 @@ const CreateTanque = ({ Logo, UserImg, Responsive, BtnState, HambClick }: Props)
                             fullWidth
                             required
                             margin="normal"
+                            InputLabelProps={{
+                                shrink: true,
+                            }}
                             value={Marca}
                             onChange={event => setMarca(event.target.value)}
                         />
 
                         <BtnSave />
+
                     </form>
 
                 </Container>
             </Main>
-
             <Footer />
         </>
-    );
+    )
+
 }
 
-export default CreateTanque;
+export default EditTanque;

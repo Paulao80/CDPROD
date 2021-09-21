@@ -28,13 +28,19 @@ interface Param {
 const DetailsProdutor = ({ Logo, UserImg, Responsive, BtnState, HambClick }: props) => {
     const { id } = useParams<Param>();
 
-    const [produtor, setProdutor] = useState<Produtor>({} as Produtor);
+    const [produtor, setProdutor] = useState<Produtor>();
 
     useEffect(() => {
         Api.get(`/produtores/${id}`).then(response => {
             setProdutor(response.data);
         });
-    }, []);
+    }, [id]);
+
+    if (produtor === undefined) {
+        return (
+            <p>Carregando...</p>
+        );
+    }
 
     return (
         <>

@@ -51,7 +51,7 @@ const EditProdutor = ({ Logo, UserImg, Responsive, BtnState, HambClick }: props)
         }).then(response => {
             setUfs(response.data);
         });
-    }, []);
+    }, [id]);
 
     const [Nome, setNome] = useState("");
     const [DataNasc, setDataNasc] = useState("");

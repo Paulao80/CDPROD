@@ -200,11 +200,20 @@ export default {
         let tanque = await TanquesRepository.findOne(data.TanqueId);
 
         if(tanque !== null && tanque !== undefined){
-            if(tanque.FotoPath !== undefined && tanque.FotoPath !== "" && tanque.FotoPath !== null){
-                let pathFoto = path.join(__dirname, '..', '..', 'uploads', tanque.FotoPath);
-                fs.unlinkSync(pathFoto);
+        
+            if(data.FotoPath !== undefined && data.FotoPath !== null) {                     
+
+                if(tanque.FotoPath !== undefined && tanque.FotoPath !== "" && tanque.FotoPath !== null){    
+                    let pathFoto = path.join(__dirname, '..', '..', 'uploads', tanque.FotoPath);
+                    if(fs.existsSync(pathFoto)) fs.unlinkSync(pathFoto);
+                }
+                
+            }
+            else{
+                data.FotoPath = tanque.FotoPath;
             }
         }
+
 
         tanque = TanquesRepository.create(data);
 

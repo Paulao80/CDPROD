@@ -9,7 +9,7 @@ import PainelNav from '../../Components/PainelNav';
 import { useParams } from 'react-router-dom';
 import ShowData from '../../Components/ShowData';
 import { Props } from '../../Types';
-import { Propriedade, Produtor } from '../../Interfaces';
+import { Propriedade } from '../../Interfaces';
 import { useEffect, useState } from 'react';
 import Api from '../../Services/Api';
 
@@ -20,13 +20,19 @@ interface Param {
 const DetailsPropriedade = ({ Logo, UserImg, Responsive, BtnState, HambClick }: Props) => {
     const { id } = useParams<Param>();
 
-    const [propriedade, setPropriedade] = useState<Propriedade>({ Produtor: {} } as Propriedade);
+    const [propriedade, setPropriedade] = useState<Propriedade>();
 
     useEffect(() => {
         Api.get(`/propriedades/${id}`).then(response => {
             setPropriedade(response.data);
         });
-    }, []);
+    }, [id]);
+
+    if (propriedade === undefined) {
+        return (
+            <p>Carregando...</p>
+        )
+    }
 
     return (
         <>

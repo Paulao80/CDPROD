@@ -25,10 +25,6 @@ interface Param {
 const AddProdutorTanque = ({ Logo, UserImg, Responsive, BtnState, HambClick }: props) => {
     const { id } = useParams<Param>();
 
-    const OnBtnSave = () => {
-
-    }
-
     return (
         <>
             <Header logo={Logo} titulo="CDTR" responsive={Responsive} btnState={BtnState} onHambClick={HambClick} />

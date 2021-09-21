@@ -17,6 +17,7 @@
   position: relative;
   left: 50%;
   transform: translateX(-50%);
+  margin-top: 7.5px;
 }
 
 .leaflet-container {

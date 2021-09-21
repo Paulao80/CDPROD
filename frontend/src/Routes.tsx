@@ -17,6 +17,7 @@ import DetailsPropriedade from './Pages/Propriedade/details';
 import EditPropriedade from './Pages/Propriedade/edit';
 import CreateTanque from './Pages/Tanque/create';
 import DetailsTanque from './Pages/Tanque/details';
+import EditTanque from './Pages/Tanque/edit';
 import ProdutoresTanques from './Pages/Tanque/produtores';
 import AddProdutorTanque from './Pages/Tanque/add';
 
@@ -79,6 +80,9 @@ const Routes = () => {
                     </Route>
                     <Route path="/tanque/details/:id">
                         <DetailsTanque Logo={logoImg} UserImg={userImg} Responsive={responsive} BtnState={btnState} HambClick={HambClick} />
+                    </Route>
+                    <Route path="/tanque/edit/:id">
+                        <EditTanque Logo={logoImg} UserImg={userImg} Responsive={responsive} BtnState={btnState} HambClick={HambClick} />
                     </Route>
                     <Route path="/tanque/produtores">
                         <Route path="/tanque/produtores/:id">

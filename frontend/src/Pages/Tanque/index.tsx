@@ -6,20 +6,23 @@ import Main from '../../Components/Main';
 import MUIDataTable from "mui-datatables";
 import ButtonAdd from '../../Components/ButtonAdd';
 import ButtonAct from '../../Components/ButtonAct';
-import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@material-ui/core";
-import { Link } from 'react-router-dom';
-import { TanquesData } from '../../Util/Data';
+import { Props } from '../../Types';
+import { Tanque as ITanque } from '../../Interfaces';
+import { useState, useEffect } from 'react';
+import Api from '../../Services/Api';
+import { useLocation } from 'react-router-dom';
 
+const Tanque = ({ Logo, UserImg, Responsive, BtnState, HambClick }: Props) => {
+    const location = useLocation();
 
-type props = {
-    Logo: string;
-    UserImg: string;
-    Responsive: string;
-    BtnState: string;
-    HambClick: Function;
-}
+    const [Tanques, setTanques] = useState<ITanque[]>([]);
 
-const Tanque = ({ Logo, UserImg, Responsive, BtnState, HambClick }: props) => {
+    useEffect(() => {
+        Api.get('/tanques')
+            .then((response) => {
+                setTanques(response.data);
+            })
+    }, [location]);
 
     const customFotoRender = (value: string) => {
         return (
@@ -82,78 +85,14 @@ const Tanque = ({ Logo, UserImg, Responsive, BtnState, HambClick }: props) => {
         }
     ];
 
-    const renderExpandableRow = (rowData: any, rowMeta: any) => {
-
-        const tanque = TanquesData.filter(obj => obj.TanqueId === rowData[1])[0];
-
-        const GetTipoTanque = (TipoTanque: number) => {
-            switch (TipoTanque) {
-                case 1: return "Individual";
-                case 2: return "Comunitário";
-                default: return "Error";
-            }
-        }
-
-        return (
-            <>
-                <tr>
-                    <td colSpan={6}>
-                        <TableContainer component={Paper}>
-                            <Table>
-                                <TableHead>
-                                    <TableRow>
-                                        <TableCell>
-                                            Rota
-                                        </TableCell>
-                                        <TableCell>
-                                            Média Diária
-                                        </TableCell>
-                                        <TableCell>
-                                            Tipo
-                                        </TableCell>
-                                        <TableCell>
-                                            Nº de Série
-                                        </TableCell>
-                                    </TableRow>
-                                </TableHead>
-                                <TableBody>
-                                    <TableRow key={tanque.TanqueId}>
-                                        <TableCell>
-                                            {tanque.Rota}
-                                        </TableCell>
-                                        <TableCell>
-                                            {tanque.MediaDiaria}
-                                        </TableCell>
-                                        <TableCell>
-                                            {GetTipoTanque(tanque.TipoTanque)}
-                                        </TableCell>
-                                        <TableCell>
-                                            {tanque.NumeroSerie}
-                                        </TableCell>
-                                    </TableRow>
-                                </TableBody>
-                            </Table>
-                        </TableContainer>
-                    </td>
-                </tr>
-            </>
-        )
-    }
-
     const setRowProps = () => {
         return {
             style: { cursor: 'pointer' }
         }
     }
 
-    // const onRowClick = (rowData: any) => {
-    //     history.push(`/tanque/details/${rowData[1]}`)
-    // }
-
     const options = {
-        setRowProps,
-        expandableRows: true,
-        renderExpandableRow
+        setRowProps
     };
 
     return (
@@ -163,7 +102,7 @@ const Tanque = ({ Logo, UserImg, Responsive, BtnState, HambClick }: props) => {
             <Main>
                 <MUIDataTable
                     title="Tanques"
-                    data={TanquesData}
+                    data={Tanques}
                     columns={columns}
                     options={options}
                 />

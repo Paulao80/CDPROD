@@ -46,7 +46,7 @@ const EditPropriedade = ({ Logo, UserImg, Responsive, BtnState, HambClick }: Pro
         Api.get(`/propriedades/${id}`).then(response => {
             setPropriedade(response.data);
         });
-    }, []);
+    }, [id]);
 
     const [Nirf, setNirf] = useState("");
     const [Nome, setNome] = useState("");
