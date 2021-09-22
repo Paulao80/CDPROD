@@ -7,7 +7,7 @@ import MUIDataTable from "mui-datatables";
 import ButtonAdd from '../../Components/ButtonAdd';
 import ButtonAct from '../../Components/ButtonAct';
 import { Props } from '../../Types';
-import { Tanque as ITanque } from '../../Interfaces';
+import { RowsDeleted, Tanque as ITanque } from '../../Interfaces';
 import { useState, useEffect } from 'react';
 import Api from '../../Services/Api';
 import { useLocation } from 'react-router-dom';
@@ -91,8 +91,26 @@ const Tanque = ({ Logo, UserImg, Responsive, BtnState, HambClick }: Props) => {
         }
     }
 
+    const onRowsDelete = (rowsDeleted: RowsDeleted, newTableData: any) => {
+
+        rowsDeleted.data.map(async (row) => {
+
+            let tanque = Tanques[row.dataIndex];
+
+            await Api.delete(`/tanques/${tanque.TanqueId}`)
+                .then((response) => {
+                    alert(response.data.Message);
+                })
+                .catch(() => {
+                    alert("Error");
+                });
+        });
+
+    }
+
     const options = {
-        setRowProps
+        setRowProps,
+        onRowsDelete
     };
 
     return (

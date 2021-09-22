@@ -5,32 +5,28 @@ import Footer from '../../Components/Footer';
 import Main from '../../Components/Main';
 import MUIDataTable from "mui-datatables";
 import ButtonAdd from '../../Components/ButtonAdd';
-import { useParams } from 'react-router-dom';
-import { TanquesData } from '../../Util/Data';
+import { useLocation, useParams } from 'react-router-dom';
 import PainelNav from '../../Components/PainelNav';
-
-type props = {
-    Logo: string;
-    UserImg: string;
-    Responsive: string;
-    BtnState: string;
-    HambClick: Function;
-}
+import { Props } from '../../Types';
+import { useState, useEffect } from 'react';
+import Api from '../../Services/Api';
+import { Tanque, Produtor, RowsDeleted } from '../../Interfaces';
 
 interface Param {
     id: string;
 }
 
-interface Produtor {
-    ProdutorId: number;
-    Nome: string;
-    CpfCnpj: string;
-}
-
-const ProdutoresTanques = ({ Logo, UserImg, Responsive, BtnState, HambClick }: props) => {
+const ProdutoresTanques = ({ Logo, UserImg, Responsive, BtnState, HambClick }: Props) => {
     const { id } = useParams<Param>();
+    const location = useLocation();
 
-    const tanque = TanquesData.filter(obj => obj.TanqueId === parseInt(id))[0];
+    const [tanque, setTanque] = useState<Tanque>({} as Tanque);
+
+    useEffect(() => {
+        Api.get(`/tanques/${id}`).then((response) => {
+            setTanque(response.data);
+        });
+    }, [location, id]);
 
     const columns = [
         {
@@ -90,8 +86,26 @@ const ProdutoresTanques = ({ Logo, UserImg, Responsive, BtnState, HambClick }: p
         }
     }
 
+    const onRowsDelete = (rowsDeleted: RowsDeleted, newTableData: any) => {
+
+        rowsDeleted.data.map(async (row) => {
+
+            let prodTanque = tanque.ProdutoresTanques[row.dataIndex];
+
+            await Api.delete(`/prodtanques/${prodTanque.ProdutorTanqueId}`)
+                .then((response) => {
+                    alert(response.data.Message);
+                })
+                .catch(() => {
+                    alert("Error");
+                });
+        });
+
+    }
+
     const options = {
-        setRowProps
+        setRowProps,
+        onRowsDelete
     };
 
     return (

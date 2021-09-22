@@ -36,6 +36,7 @@ export interface Tanque {
     Marca: string;
     Latitude: number;
     Longitude: number;
+    ProdutoresTanques: ProdutoresTanques[];
 }
 
 export interface ProdutorTanque {
@@ -44,6 +45,12 @@ export interface ProdutorTanque {
     Produtor: Produtor;
     Tanque: Tanque;
 }
+
+export interface ProdutoresTanques {
+    ProdutorTanqueId: number;
+    Responsavel: boolean;
+    Produtor: Produtor;
+} 
 
 export interface Uf {
     id: number;
