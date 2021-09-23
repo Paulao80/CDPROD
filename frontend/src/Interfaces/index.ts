@@ -73,3 +73,15 @@ export interface RowsDeleted {
         dataIndex: number
     }[];
 }
+
+export interface SeriesData {
+    name: string;
+    data: number[];
+}
+
+export interface ChartData{
+    labels: { 
+        categories: string[];
+    };
+    series: SeriesData[];
+}

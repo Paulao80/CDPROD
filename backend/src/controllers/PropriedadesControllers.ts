@@ -7,15 +7,29 @@ import * as Yup from 'yup';
 
 export default {
     async index(request: Request, response: Response){
+        const {group} = request.query;
+
         const PropriedadesRepository = getRepository(Propriedade);
 
-        const propriedades = await PropriedadesRepository.find({
-            relations: [
-                'Produtor'
-            ]
-        });
-
-        return response.json(PropriedadeView.renderMany(propriedades));
+        switch(group) {
+            case "Municipio":
+                const municipios = await PropriedadesRepository
+                .createQueryBuilder("P")
+                .select(["P.Municipio AS Municipio", "COUNT(P.Municipio) AS QTD"])
+                .groupBy("P.Municipio")
+                .getRawMany();
+                return response.json(municipios);
+            case undefined: 
+                const propriedades = await PropriedadesRepository.find({
+                relations: [
+                    'Produtor'
+                ]
+                 });
+    
+                return response.json(PropriedadeView.renderMany(propriedades));
+            default: 
+                 return response.json([]);
+        }
     },
     async show(request: Request, response: Response){
         const {id} = request.params;
