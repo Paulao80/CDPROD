@@ -12,6 +12,15 @@ export interface Produtor {
     EstadoCivil: number;
     Telefone: string;
     UltLaticinio: string;
+    ContasBancarias: ContasBancarias[]
+}
+
+export interface ContasBancarias{
+    ContaId: number;
+    NomePertence: string;
+    Banco: string;
+    Agencia: string;
+    Conta: string;
 }
 
 export interface Propriedade {

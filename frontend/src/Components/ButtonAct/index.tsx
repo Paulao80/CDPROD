@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import './style.css';
-import { People, Edit, List } from '@material-ui/icons';
+import { People, Edit, List, AccountBalance } from '@material-ui/icons';
 
 type props = {
     to: string;
@@ -22,7 +22,11 @@ const ButtonAct = ({ to, type }: props) => {
             case "detalhes":
                 return (
                     <List fontSize="medium" />
-                )
+                );
+            case "contas":
+                return (
+                    <AccountBalance fontSize="medium" />
+                );
         }
     }
 

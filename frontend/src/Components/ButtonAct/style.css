@@ -32,3 +32,11 @@
 .btn-act.detalhes:hover {
   background-color: rgb(60, 91, 231);
 }
+
+.btn-act.contas {
+  background-color: rgb(253, 47, 47);
+}
+
+.btn-act.contas:hover {
+  background-color: rgb(241, 75, 75);
+}

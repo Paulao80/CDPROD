@@ -12,8 +12,6 @@ import { Props } from '../../Types';
 import { Produtor as IProdutor, RowsDeleted } from '../../Interfaces';
 import ButtonAct from '../../Components/ButtonAct';
 
-
-
 const Produtor = ({ Logo, UserImg, Responsive, BtnState, HambClick }: Props) => {
     const location = useLocation();
 
@@ -29,6 +27,7 @@ const Produtor = ({ Logo, UserImg, Responsive, BtnState, HambClick }: Props) => 
     const customAcoesRender = (value: string) => {
         return (
             <div className="div-act">
+                <ButtonAct to={`/produtor/contas/${value}`} type="contas" />
                 <ButtonAct to={`/produtor/edit/${value}`} type="editar" />
                 <ButtonAct to={`/produtor/details/${value}`} type="detalhes" />
             </div>

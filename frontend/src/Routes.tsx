@@ -12,6 +12,8 @@ import Relatorios from './Pages/Relatorios';
 import CreateProdutor from './Pages/Produtor/create';
 import DetailsProdutor from './Pages/Produtor/details';
 import EditProdutor from './Pages/Produtor/edit';
+import Contas from './Pages/Produtor/contas';
+import AddContas from './Pages/Produtor/add';
 import CreatePropriedade from './Pages/Propriedade/create';
 import DetailsPropriedade from './Pages/Propriedade/details';
 import EditPropriedade from './Pages/Propriedade/edit';
@@ -57,6 +59,14 @@ const Routes = () => {
                     </Route>
                     <Route path="/produtor/edit/:id">
                         <EditProdutor Logo={logoImg} UserImg={userImg} Responsive={responsive} BtnState={btnState} HambClick={HambClick} />
+                    </Route>
+                    <Route path="/produtor/contas">
+                        <Route path="/produtor/contas/:id">
+                            <Contas Logo={logoImg} UserImg={userImg} Responsive={responsive} BtnState={btnState} HambClick={HambClick} />
+                        </Route>
+                        <Route path="/produtor/contas/:id/add">
+                            <AddContas Logo={logoImg} UserImg={userImg} Responsive={responsive} BtnState={btnState} HambClick={HambClick} />
+                        </Route>
                     </Route>
                 </Route>
 

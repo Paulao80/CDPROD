@@ -13,16 +13,9 @@ import Api from '../../Services/Api';
 import PainelNav from '../../Components/PainelNav';
 import { Uf } from '../../Interfaces';
 import { useHistory } from 'react-router-dom';
+import { Props } from '../../Types';
 
-type props = {
-    Logo: string;
-    UserImg: string;
-    Responsive: string;
-    BtnState: string;
-    HambClick: Function;
-}
-
-const CreateProdutor = ({ Logo, UserImg, Responsive, BtnState, HambClick }: props) => {
+const CreateProdutor = ({ Logo, UserImg, Responsive, BtnState, HambClick }: Props) => {
     const history = useHistory();
 
     const [ufs, setUfs] = useState<Uf[]>([]);

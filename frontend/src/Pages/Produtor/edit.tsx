@@ -14,21 +14,13 @@ import PainelNav from '../../Components/PainelNav';
 import { useHistory, useParams } from 'react-router-dom';
 import { Produtor } from '../../Interfaces';
 import { Uf } from '../../Interfaces';
-
-
-type props = {
-    Logo: string;
-    UserImg: string;
-    Responsive: string;
-    BtnState: string;
-    HambClick: Function;
-}
+import { Props } from '../../Types';
 
 interface Param {
     id: string;
 }
 
-const EditProdutor = ({ Logo, UserImg, Responsive, BtnState, HambClick }: props) => {
+const EditProdutor = ({ Logo, UserImg, Responsive, BtnState, HambClick }: Props) => {
 
     const { id } = useParams<Param>();
 

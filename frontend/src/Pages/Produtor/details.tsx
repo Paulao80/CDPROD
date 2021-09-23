@@ -12,20 +12,13 @@ import ShowData from '../../Components/ShowData';
 import Api from '../../Services/Api';
 import { useState, useEffect } from 'react';
 import { Produtor } from '../../Interfaces';
-
-type props = {
-    Logo: string;
-    UserImg: string;
-    Responsive: string;
-    BtnState: string;
-    HambClick: Function;
-}
+import { Props } from '../../Types';
 
 interface Param {
     id: string;
 }
 
-const DetailsProdutor = ({ Logo, UserImg, Responsive, BtnState, HambClick }: props) => {
+const DetailsProdutor = ({ Logo, UserImg, Responsive, BtnState, HambClick }: Props) => {
     const { id } = useParams<Param>();
 
     const [produtor, setProdutor] = useState<Produtor>();
