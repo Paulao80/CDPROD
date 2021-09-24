@@ -1,0 +1,36 @@
+.static {
+  color: white;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+
+.static .item {
+  height: 125px;
+  width: 275px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-left: 10px;
+  box-sizing: border-box;
+  border-radius: 10px;
+  margin-bottom: 10px;
+}
+
+.static .item .item-valor {
+  font-size: 36px;
+  font-weight: 700;
+}
+
+.static .item .item-nome {
+  font-size: 20px;
+}
+
+.static .item .item-icon {
+  font-size: 80px;
+  position: absolute;
+  bottom: 0;
+  right: 5px;
+  color: rgba(255, 255, 255, 0.507);
+}

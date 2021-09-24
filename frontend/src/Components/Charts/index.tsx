@@ -8,6 +8,11 @@ interface Municipios {
     QTD: number;
 }
 
+interface Tipos {
+    TipoTanque: number;
+    QTD: number;
+}
+
 export const ChartMedia = () => {
 
     const [chartData, setChartData] = useState<ChartData>({
@@ -61,7 +66,7 @@ export const ChartMedia = () => {
             options={{ ...options, xaxis: chartData.labels }}
             series={chartData.series}
             type="bar"
-            height="400"
+            height="300"
         />
     );
 
@@ -105,11 +110,6 @@ export const ChartPropByMunicipio = () => {
         });
     }, []);
 
-    useEffect(() => {
-
-
-    }, []);
-
     const options = {
         legend: {
             show: true
@@ -121,7 +121,73 @@ export const ChartPropByMunicipio = () => {
             options={{ ...options, labels: chartData.labels.categories }}
             series={chartData.series[0].data}
             type="donut"
-            height="400"
+            height="240"
         />
     );
+}
+
+
+export const ChartTipoTanque = () => {
+
+    const [chartData, setChartData] = useState<ChartData>({
+        labels: {
+            categories: []
+        },
+        series: [
+            {
+                name: "",
+                data: []
+            }
+        ]
+    });
+
+    useEffect(() => {
+        Api.get('/tanques', {
+            params: {
+                group: "TipoTanque"
+            }
+        }).then((response) => {
+            const data = response.data as Tipos[];
+            const myLabels = data.map(x => {
+                switch (x.TipoTanque) {
+                    case 1:
+                        return "Individual";
+                    default:
+                        return "Comunitário";
+                }
+            });
+            const mySeries = data.map(x => x.QTD);
+
+            setChartData({
+                labels: {
+                    categories: myLabels
+                },
+                series: [
+                    {
+                        name: "Tipo de Tanque",
+                        data: mySeries
+                    }
+                ]
+            });
+
+        });
+    }, []);
+
+    const options = {
+        plotOptions: {
+            bar: {
+                horizontal: true,
+            }
+        },
+    };
+
+    return (
+        <Chart
+            options={{ ...options, xaxis: chartData.labels }}
+            series={chartData.series}
+            type="bar"
+            height="240"
+        />
+    );
+
 }

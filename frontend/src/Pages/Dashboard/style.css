@@ -1,0 +1,44 @@
+.charts {
+  display: flex;
+  margin-bottom: 10px;
+}
+
+.charts .chart {
+  background-color: #eaeaea;
+  width: calc(50% - 5px);
+}
+
+.charts .chart.ch1 {
+  margin-right: 5px;
+}
+
+.charts .chart.ch2 {
+  margin-left: 5px;
+}
+
+.charts .chart h3 {
+  text-align: center;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+@media screen and (max-width: 1000px) {
+  .charts {
+    flex-direction: column;
+    margin: 0;
+  }
+
+  .charts .chart.ch1 {
+    margin: 0;
+    margin-bottom: 10px;
+  }
+
+  .charts .chart.ch2 {
+    margin: 0;
+    margin-bottom: 10px;
+  }
+
+  .charts .chart {
+    width: 100%;
+  }
+}

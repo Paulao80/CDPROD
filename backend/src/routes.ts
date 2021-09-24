@@ -6,6 +6,7 @@ import ContasControllers from './controllers/ContasControllers';
 import PropriedadesControllers from './controllers/PropriedadesControllers';
 import TanquesControllers from './controllers/TanquesControllers';
 import ProdutoresTanquesControllers from './controllers/ProdutoresTanquesControllers';
+import InfoControllers from './controllers/InfoControllers';
 
 
 const routes = Router();
@@ -39,5 +40,7 @@ routes.get('/prodtanques', ProdutoresTanquesControllers.index);
 routes.get('/prodtanques/:id', ProdutoresTanquesControllers.show);
 routes.post('/prodtanques', ProdutoresTanquesControllers.create);
 routes.delete('/prodtanques/:id', ProdutoresTanquesControllers.delete);
+
+routes.get('/info', InfoControllers.index)
 
 export default routes;

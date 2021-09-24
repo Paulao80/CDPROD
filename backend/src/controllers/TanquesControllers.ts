@@ -9,16 +9,32 @@ import path from "path";
 
 export default {
     async index(request: Request, response: Response){
+        const {group} = request.query;
+
         const TanquesRepository = getRepository(Tanque);
 
-        const tanques = await TanquesRepository.find({
-            relations: [
-                'ProdutoresTanques',
-                'ProdutoresTanques.Produtor'     
-            ]
-        });
+        switch (group) {
+            case "TipoTanque": 
+                const tipos = await TanquesRepository
+                    .createQueryBuilder("T")
+                    .select(["T.TipoTanque AS TipoTanque","COUNT(T.TipoTanque) AS QTD"])
+                    .groupBy("T.TipoTanque")
+                    .getRawMany();
+                    return response.json(tipos);
 
-        return response.json(TanqueView.renderMany(tanques));
+            case undefined:
+                const tanques = await TanquesRepository.find({
+                    relations: [
+                        'ProdutoresTanques',
+                        'ProdutoresTanques.Produtor'     
+                    ]
+                });
+        
+                return response.json(TanqueView.renderMany(tanques));
+
+            default:
+                return response.json([]);
+        }
     },
     async show(request: Request, response: Response){
         const {id} = request.params;
