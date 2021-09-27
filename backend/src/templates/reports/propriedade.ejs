@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Produtores</title>
+    <style type="text/css">
+        .titulo {
+            font-size: 16px;
+            font-family: Arial, Helvetica, sans-serif;
+            text-align: center;
+            font-weight: 700;
+        }
+
+        table {
+            font-family: Arial, Helvetica, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+            font-size: 12px;
+        }
+
+        td,
+        th {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        tr:nth-child(even) {
+            background-color: #dddddd;
+        }
+    </style>
+</head>
+
+<body>
+    <h1 class="titulo">Propriedades</h1>
+    <br />
+    <table>
+        <tr>
+            <th>Id</th>
+            <th>NIRF</th>
+            <th>Nome</th>
+            <th>Endereco</th>
+            <th>Municipio</th>
+            <th>Estado</th>
+        </tr>
+        <% for (var i=0; i < data.length; i++) { %>
+            <tr>
+                <td>
+                    <%= data[i].PropriedadeId%>
+                </td>
+                <td>
+                    <%= data[i].Nirf%>
+                </td>
+                <td>
+                    <%= data[i].Nome%>
+                </td>
+                <td>
+                    <%= data[i].Endereco%>
+                </td>
+                <td>
+                    <%= data[i].Municipio%>
+                </td>
+                <td>
+                    <%= data[i].Estado%>
+                </td>
+            </tr>
+            <% } %>
+    </table>
+</body>
+
+</html>

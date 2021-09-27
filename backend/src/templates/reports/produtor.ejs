@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Produtores</title>
+    <style type="text/css">
+        .titulo {
+            font-size: 16px;
+            font-family: Arial, Helvetica, sans-serif;
+            text-align: center;
+            font-weight: 700;
+        }
+
+        table {
+            font-family: Arial, Helvetica, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+            font-size: 12px;
+        }
+
+        td,
+        th {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        tr:nth-child(even) {
+            background-color: #dddddd;
+        }
+    </style>
+</head>
+
+<body>
+    <h1 class="titulo">Produtores</h1>
+    <br />
+    <table>
+        <tr>
+            <th>Id</th>
+            <th>Nome</th>
+            <th>Data de Nascimento</th>
+            <th>RG</th>
+            <th>CPF/CNPJ</th>
+            <th>Telefone</th>
+        </tr>
+        <% for (var i=0; i < data.length; i++) { %>
+            <tr>
+                <td>
+                    <%= data[i].ProdutorId%>
+                </td>
+                <td>
+                    <%= data[i].Nome%>
+                </td>
+                <td>
+                    <%= data[i].DataNasc%>
+                </td>
+                <td>
+                    <%= data[i].RG%>
+                </td>
+                <td>
+                    <%= data[i].CpfCnpj%>
+                </td>
+                <td>
+                    <%= data[i].Telefone%>
+                </td>
+            </tr>
+            <% } %>
+    </table>
+</body>
+
+</html>

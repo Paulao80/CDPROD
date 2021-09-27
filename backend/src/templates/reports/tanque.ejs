@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Produtores</title>
+    <style type="text/css">
+        .titulo {
+            font-size: 16px;
+            font-family: Arial, Helvetica, sans-serif;
+            text-align: center;
+            font-weight: 700;
+        }
+
+        table {
+            font-family: Arial, Helvetica, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+            font-size: 12px;
+        }
+
+        td,
+        th {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        tr:nth-child(even) {
+            background-color: #dddddd;
+        }
+
+        .foto {
+            width: 75px;
+            height: 75px;
+            border: 2px solid black;
+            border-radius: 50%;
+            object-fit: cover;
+            object-position: center;
+        }
+    </style>
+</head>
+
+<body>
+    <h1 class="titulo">Tanques</h1>
+    <br />
+    <table>
+        <tr>
+            <th>Id</th>
+            <th>Foto</th>
+            <th>Capacidade</th>
+            <th>Média Diária</th>
+            <th>Marca</th>
+            <th>Latitude</th>
+            <th>Longitude</th>
+        </tr>
+        <% for (var i=0; i < data.length; i++) { %>
+            <tr>
+                <td>
+                    <%= data[i].TanqueId%>
+                </td>
+                <td>
+                    <img class="foto" src="http://localhost:3333/uploads/<%= data[i].FotoPath%>" alt="Foto" />
+                </td>
+                <td>
+                    <%= data[i].Capacidade%>
+                </td>
+                <td>
+                    <%= data[i].MediaDiaria%>
+                </td>
+                <td>
+                    <%= data[i].Marca%>
+                </td>
+                <td>
+                    <%= data[i].Latitude%>
+                </td>
+                <td>
+                    <%= data[i].Longitude%>
+                </td>
+            </tr>
+            <% } %>
+    </table>
+</body>
+
+</html>
