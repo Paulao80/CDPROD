@@ -13,6 +13,7 @@ export default {
 
         let caminho = "";
         let data = [] as any[];
+        const url = `${process.env.BASE_URL}`;
 
         switch(tipo){
             case "produtor":
@@ -33,7 +34,7 @@ export default {
             default: return response.status(500).json({message: "Informe um tipo de Relatório correto!"})
         }
 
-        ejs.renderFile(caminho, {data}, (err, html) => {
+        ejs.renderFile(caminho, {data,url}, (err, html) => {
             if(err) return response.status(500).json(err);
 
             pdf.create(html,{

@@ -18,7 +18,7 @@ export default {
             Capacidade: tanque.Capacidade,
             MediaDiaria: tanque.MediaDiaria,
             TipoTanque: tanque.TipoTanque,
-            FotoPath: `http://localhost:3333/uploads/${tanque.FotoPath}`,
+            FotoPath: `${process.env.BASE_URL}/uploads/${tanque.FotoPath}`,
             NumeroSerie: tanque.NumeroSerie,
             Marca: tanque.Marca,
             Latitude: tanque.Latitude,
