@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import multer from 'multer';
 import uploadConfig from './config/upload';
+import UsersControllers from './controllers/UsersControllers';
 import ProdutoresControllers from './controllers/ProdutoresControllers';
 import ContasControllers from './controllers/ContasControllers';
 import PropriedadesControllers from './controllers/PropriedadesControllers';
@@ -12,6 +13,9 @@ import RelatorioControllers from './controllers/RelatorioControllers';
 
 const routes = Router();
 const upload = multer(uploadConfig);
+
+routes.post('/user/register', upload.single('image'), UsersControllers.register);
+routes.post('/user/login', UsersControllers.login);
 
 routes.get('/produtores',ProdutoresControllers.index);
 routes.get('/produtores/:id',ProdutoresControllers.show);
