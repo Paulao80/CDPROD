@@ -1,4 +1,5 @@
 import {Request, Response} from 'express';
+import {RequestWithUser} from '../interfaces';
 import {getRepository} from 'typeorm';
 import Produtor from '../models/Produtor';
 import ProdutorView from '../views/ProdutorView';
@@ -6,7 +7,7 @@ import * as Yup from 'yup';
 
 export default {
 
-    async index(request: Request, response: Response){
+    async index(request: RequestWithUser, response: Response){
         const ProdutoresRepository = getRepository(Produtor);
 
         const produtores = await ProdutoresRepository.find({
@@ -20,7 +21,7 @@ export default {
 
         return response.json(ProdutorView.renderMany(produtores));
     },
-    async show(request: Request, response: Response){
+    async show(request: RequestWithUser, response: Response){
         const {id} = request.params;
 
         const ProdutoresRepository = getRepository(Produtor);
@@ -36,7 +37,7 @@ export default {
 
         return response.json(ProdutorView.render(produtor));
     },
-    async create(request: Request, response: Response){
+    async create(request: RequestWithUser, response: Response){
         const {
             Nome,
             DataNasc,
@@ -117,7 +118,7 @@ export default {
     
         return response.status(201).json(produtor);
     },
-    async update(request: Request, response: Response){
+    async update(request: RequestWithUser, response: Response){
         const {
             ProdutorId,
             Nome,
@@ -178,7 +179,7 @@ export default {
     
         return response.status(200).json(produtor);
     },
-    async delete(request: Request, response: Response){
+    async delete(request: RequestWithUser, response: Response){
         const {id} = request.params;
 
         const ProdutoresRepository = getRepository(Produtor);    
