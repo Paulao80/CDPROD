@@ -15,7 +15,7 @@ import Api from '../../Services/Api';
 import { useHistory } from 'react-router-dom';
 import { Props } from '../../Types';
 
-const CreateTanque = ({ Logo, UserImg, Responsive, BtnState, HambClick }: Props) => {
+const CreateTanque = ({ Logo, UserImg }: Props) => {
     const history = useHistory();
 
     const [position, setPosition] = useState({ Latitude: 0, Longitude: 0 })
@@ -98,8 +98,8 @@ const CreateTanque = ({ Logo, UserImg, Responsive, BtnState, HambClick }: Props)
 
     return (
         <>
-            <Header logo={Logo} titulo="CDTR" responsive={Responsive} btnState={BtnState} onHambClick={HambClick} />
-            <Aside UserImg={UserImg} Active="tanque" responsive={Responsive} />
+            <Header logo={Logo} titulo="CDTR" />
+            <Aside UserImg={UserImg} />
             <Main>
                 <PainelNav to="/tanque" titulo="Adicionar Tanque" />
                 <Container>

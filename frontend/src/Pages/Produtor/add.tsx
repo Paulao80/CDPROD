@@ -17,7 +17,7 @@ interface Param {
     id: string;
 }
 
-const AddContas = ({ Logo, UserImg, Responsive, BtnState, HambClick }: Props) => {
+const AddContas = ({ Logo, UserImg }: Props) => {
     const { id } = useParams<Param>();
     const history = useHistory();
 
@@ -56,8 +56,8 @@ const AddContas = ({ Logo, UserImg, Responsive, BtnState, HambClick }: Props) =>
 
     return (
         <>
-            <Header logo={Logo} titulo="CDTR" responsive={Responsive} btnState={BtnState} onHambClick={HambClick} />
-            <Aside UserImg={UserImg} Active="produtor" responsive={Responsive} />
+            <Header logo={Logo} titulo="CDTR" />
+            <Aside UserImg={UserImg} />
             <Main>
                 <PainelNav to={`/produtor/contas/${id}`} titulo="Adicionar Conta Bancária" />
                 <Container>

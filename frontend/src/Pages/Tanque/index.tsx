@@ -11,8 +11,14 @@ import { RowsDeleted, Tanque as ITanque } from '../../Interfaces';
 import { useState, useEffect } from 'react';
 import Api from '../../Services/Api';
 import { useLocation } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { TanquesActive } from '../../Actions/PageActiveActions';
 
-const Tanque = ({ Logo, UserImg, Responsive, BtnState, HambClick }: Props) => {
+const Tanque = ({ Logo, UserImg }: Props) => {
+    const dispatch = useDispatch();
+
+    dispatch(TanquesActive());
+
     const location = useLocation();
 
     const [Tanques, setTanques] = useState<ITanque[]>([]);
@@ -115,8 +121,8 @@ const Tanque = ({ Logo, UserImg, Responsive, BtnState, HambClick }: Props) => {
 
     return (
         <>
-            <Header logo={Logo} titulo="CDTR" responsive={Responsive} btnState={BtnState} onHambClick={HambClick} />
-            <Aside UserImg={UserImg} Active="tanque" responsive={Responsive} />
+            <Header logo={Logo} titulo="CDTR" />
+            <Aside UserImg={UserImg} />
             <Main>
                 <MUIDataTable
                     title="Tanques"

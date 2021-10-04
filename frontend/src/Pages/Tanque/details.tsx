@@ -21,7 +21,7 @@ interface Param {
     id: string;
 }
 
-const DetailsTanque = ({ Logo, UserImg, Responsive, BtnState, HambClick }: Props) => {
+const DetailsTanque = ({ Logo, UserImg }: Props) => {
     const { id } = useParams<Param>();
 
     const [tanque, setTanque] = useState<Tanque>();
@@ -40,8 +40,8 @@ const DetailsTanque = ({ Logo, UserImg, Responsive, BtnState, HambClick }: Props
 
     return (
         <>
-            <Header logo={Logo} titulo="CDTR" responsive={Responsive} btnState={BtnState} onHambClick={HambClick} />
-            <Aside UserImg={UserImg} Active="tanque" responsive={Responsive} />
+            <Header logo={Logo} titulo="CDTR" />
+            <Aside UserImg={UserImg} />
             <Main>
                 <PainelNav to="/tanque" titulo="Detalhes do Tanque" />
                 <Container>

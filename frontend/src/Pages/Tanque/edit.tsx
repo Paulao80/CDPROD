@@ -25,7 +25,7 @@ interface Position {
     Longitude: number;
 }
 
-const EditTanque = ({ Logo, UserImg, Responsive, BtnState, HambClick }: Props) => {
+const EditTanque = ({ Logo, UserImg }: Props) => {
     const { id } = useParams<Param>();
 
     const history = useHistory();
@@ -143,8 +143,8 @@ const EditTanque = ({ Logo, UserImg, Responsive, BtnState, HambClick }: Props) =
 
     return (
         <>
-            <Header logo={Logo} titulo="CDTR" responsive={Responsive} btnState={BtnState} onHambClick={HambClick} />
-            <Aside UserImg={UserImg} Active="tanque" responsive={Responsive} />
+            <Header logo={Logo} titulo="CDTR" />
+            <Aside UserImg={UserImg} />
             <Main>
                 <PainelNav to={`/tanque`} titulo="Editar Tanque" />
                 <Container>

@@ -20,7 +20,7 @@ interface Param {
     id: string;
 }
 
-const EditProdutor = ({ Logo, UserImg, Responsive, BtnState, HambClick }: Props) => {
+const EditProdutor = ({ Logo, UserImg }: Props) => {
 
     const { id } = useParams<Param>();
 
@@ -107,8 +107,8 @@ const EditProdutor = ({ Logo, UserImg, Responsive, BtnState, HambClick }: Props)
 
     return (
         <>
-            <Header logo={Logo} titulo="CDTR" responsive={Responsive} btnState={BtnState} onHambClick={HambClick} />
-            <Aside UserImg={UserImg} Active="produtor" responsive={Responsive} />
+            <Header logo={Logo} titulo="CDTR" />
+            <Aside UserImg={UserImg} />
             <Main>
                 <PainelNav to={`/produtor/details/${id}`} titulo="Editar Produtor" />
 

@@ -1,7 +1,6 @@
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import logoImg from './Assets/images/logo.png';
 import userImg from './Assets/images/anonimos.jpg';
-import { useState } from 'react';
 import Landing from './Pages/Landing';
 import Login from './Pages/Login';
 import Dashboard from './Pages/Dashboard';
@@ -24,19 +23,6 @@ import ProdutoresTanques from './Pages/Tanque/produtores';
 import AddProdutorTanque from './Pages/Tanque/add';
 
 const Routes = () => {
-    const [responsive, setResponsive] = useState('responsive-none');
-    const [btnState, SetBtnState] = useState('btn-off');
-
-    const HambClick = () => {
-        if (responsive === 'responsive-none' && btnState === 'btn-off') {
-            setResponsive('responsive-show');
-            SetBtnState('btn-on');
-        }
-        else {
-            setResponsive('responsive-none');
-            SetBtnState('btn-off');
-        }
-    }
 
     return (
         <BrowserRouter>
@@ -46,67 +32,67 @@ const Routes = () => {
                 <Route path="/login" component={Login} exact />
 
                 <Route path="/dashboard">
-                    <Dashboard Logo={logoImg} UserImg={userImg} Responsive={responsive} BtnState={btnState} HambClick={HambClick} />
+                    <Dashboard Logo={logoImg} UserImg={userImg} />
                 </Route>
 
                 <Route path="/produtor">
-                    <Produtor Logo={logoImg} UserImg={userImg} Responsive={responsive} BtnState={btnState} HambClick={HambClick} />
+                    <Produtor Logo={logoImg} UserImg={userImg} />
                     <Route path="/produtor/create">
-                        <CreateProdutor Logo={logoImg} UserImg={userImg} Responsive={responsive} BtnState={btnState} HambClick={HambClick} />
+                        <CreateProdutor Logo={logoImg} UserImg={userImg} />
                     </Route>
                     <Route path="/produtor/details/:id">
-                        <DetailsProdutor Logo={logoImg} UserImg={userImg} Responsive={responsive} BtnState={btnState} HambClick={HambClick} />
+                        <DetailsProdutor Logo={logoImg} UserImg={userImg} />
                     </Route>
                     <Route path="/produtor/edit/:id">
-                        <EditProdutor Logo={logoImg} UserImg={userImg} Responsive={responsive} BtnState={btnState} HambClick={HambClick} />
+                        <EditProdutor Logo={logoImg} UserImg={userImg} />
                     </Route>
                     <Route path="/produtor/contas">
                         <Route path="/produtor/contas/:id">
-                            <Contas Logo={logoImg} UserImg={userImg} Responsive={responsive} BtnState={btnState} HambClick={HambClick} />
+                            <Contas Logo={logoImg} UserImg={userImg} />
                         </Route>
                         <Route path="/produtor/contas/:id/add">
-                            <AddContas Logo={logoImg} UserImg={userImg} Responsive={responsive} BtnState={btnState} HambClick={HambClick} />
+                            <AddContas Logo={logoImg} UserImg={userImg} />
                         </Route>
                     </Route>
                 </Route>
 
                 <Route path="/propriedade">
-                    <Propriedade Logo={logoImg} UserImg={userImg} Responsive={responsive} BtnState={btnState} HambClick={HambClick} />
+                    <Propriedade Logo={logoImg} UserImg={userImg} />
                     <Route path="/propriedade/create">
-                        <CreatePropriedade Logo={logoImg} UserImg={userImg} Responsive={responsive} BtnState={btnState} HambClick={HambClick} />
+                        <CreatePropriedade Logo={logoImg} UserImg={userImg} />
                     </Route>
                     <Route path="/propriedade/details/:id">
-                        <DetailsPropriedade Logo={logoImg} UserImg={userImg} Responsive={responsive} BtnState={btnState} HambClick={HambClick} />
+                        <DetailsPropriedade Logo={logoImg} UserImg={userImg} />
                     </Route>
                     <Route path="/propriedade/edit/:id">
-                        <EditPropriedade Logo={logoImg} UserImg={userImg} Responsive={responsive} BtnState={btnState} HambClick={HambClick} />
+                        <EditPropriedade Logo={logoImg} UserImg={userImg} />
                     </Route>
                 </Route>
 
                 <Route path="/tanque">
-                    <Tanque Logo={logoImg} UserImg={userImg} Responsive={responsive} BtnState={btnState} HambClick={HambClick} />
+                    <Tanque Logo={logoImg} UserImg={userImg} />
                     <Route path="/tanque/create">
-                        <CreateTanque Logo={logoImg} UserImg={userImg} Responsive={responsive} BtnState={btnState} HambClick={HambClick} />
+                        <CreateTanque Logo={logoImg} UserImg={userImg} />
                     </Route>
                     <Route path="/tanque/details/:id">
-                        <DetailsTanque Logo={logoImg} UserImg={userImg} Responsive={responsive} BtnState={btnState} HambClick={HambClick} />
+                        <DetailsTanque Logo={logoImg} UserImg={userImg} />
                     </Route>
                     <Route path="/tanque/edit/:id">
-                        <EditTanque Logo={logoImg} UserImg={userImg} Responsive={responsive} BtnState={btnState} HambClick={HambClick} />
+                        <EditTanque Logo={logoImg} UserImg={userImg} />
                     </Route>
                     <Route path="/tanque/produtores">
                         <Route path="/tanque/produtores/:id">
-                            <ProdutoresTanques Logo={logoImg} UserImg={userImg} Responsive={responsive} BtnState={btnState} HambClick={HambClick} />
+                            <ProdutoresTanques Logo={logoImg} UserImg={userImg} />
                         </Route>
 
                         <Route path="/tanque/produtores/:id/add">
-                            <AddProdutorTanque Logo={logoImg} UserImg={userImg} Responsive={responsive} BtnState={btnState} HambClick={HambClick} />
+                            <AddProdutorTanque Logo={logoImg} UserImg={userImg} />
                         </Route>
                     </Route>
                 </Route>
 
                 <Route path="/relatorios">
-                    <Relatorios Logo={logoImg} UserImg={userImg} Responsive={responsive} BtnState={btnState} HambClick={HambClick} />
+                    <Relatorios Logo={logoImg} UserImg={userImg} />
                 </Route>
             </Switch>
         </BrowserRouter>

@@ -16,7 +16,7 @@ interface Param {
     id: string;
 }
 
-const ProdutoresTanques = ({ Logo, UserImg, Responsive, BtnState, HambClick }: Props) => {
+const ProdutoresTanques = ({ Logo, UserImg }: Props) => {
     const { id } = useParams<Param>();
     const location = useLocation();
 
@@ -110,8 +110,8 @@ const ProdutoresTanques = ({ Logo, UserImg, Responsive, BtnState, HambClick }: P
 
     return (
         <>
-            <Header logo={Logo} titulo="CDTR" responsive={Responsive} btnState={BtnState} onHambClick={HambClick} />
-            <Aside UserImg={UserImg} Active="tanque" responsive={Responsive} />
+            <Header logo={Logo} titulo="CDTR" />
+            <Aside UserImg={UserImg} />
             <Main>
                 <PainelNav to={`/tanque`} titulo="Produtores" />
                 <MUIDataTable

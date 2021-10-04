@@ -18,7 +18,7 @@ interface Param {
     id: string;
 }
 
-const DetailsProdutor = ({ Logo, UserImg, Responsive, BtnState, HambClick }: Props) => {
+const DetailsProdutor = ({ Logo, UserImg }: Props) => {
     const { id } = useParams<Param>();
 
     const [produtor, setProdutor] = useState<Produtor>();
@@ -37,8 +37,8 @@ const DetailsProdutor = ({ Logo, UserImg, Responsive, BtnState, HambClick }: Pro
 
     return (
         <>
-            <Header logo={Logo} titulo="CDTR" responsive={Responsive} btnState={BtnState} onHambClick={HambClick} />
-            <Aside UserImg={UserImg} Active="produtor" responsive={Responsive} />
+            <Header logo={Logo} titulo="CDTR" />
+            <Aside UserImg={UserImg} />
             <Main>
                 <PainelNav to="/produtor" titulo="Detalhes do Produtor" />
                 <Container>

@@ -85,3 +85,16 @@ export interface ChartData{
     };
     series: SeriesData[];
 }
+
+export interface StateMenu {
+    aside: string;
+    button: string;
+}
+
+export interface StatePageActive {
+    Dashboard: string;
+    Produtores: string;
+    Propriedades: string;
+    Tanques: string;
+    Relatorios: string;
+}

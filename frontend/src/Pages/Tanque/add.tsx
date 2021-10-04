@@ -17,7 +17,7 @@ interface Param {
     id: string;
 }
 
-const AddProdutorTanque = ({ Logo, UserImg, Responsive, BtnState, HambClick }: Props) => {
+const AddProdutorTanque = ({ Logo, UserImg }: Props) => {
     const { id } = useParams<Param>();
     const history = useHistory();
 
@@ -53,8 +53,8 @@ const AddProdutorTanque = ({ Logo, UserImg, Responsive, BtnState, HambClick }: P
 
     return (
         <>
-            <Header logo={Logo} titulo="CDTR" responsive={Responsive} btnState={BtnState} onHambClick={HambClick} />
-            <Aside UserImg={UserImg} Active="tanque" responsive={Responsive} />
+            <Header logo={Logo} titulo="CDTR" />
+            <Aside UserImg={UserImg} />
             <Main>
                 <PainelNav to={`/tanque/produtores/${id}`} titulo="Adicionar Propriedade" />
                 <Container>

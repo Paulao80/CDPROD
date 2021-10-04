@@ -8,8 +8,13 @@ import Painel from '../../Components/Painel';
 import { Props } from '../../Types';
 import { People, House, LocalDrink } from '@material-ui/icons';
 import Api from '../../Services/Api';
+import { useDispatch } from 'react-redux';
+import { RelatoriosActive } from '../../Actions/PageActiveActions';
 
-const Relatorios = ({ Logo, UserImg, Responsive, BtnState, HambClick }: Props) => {
+const Relatorios = ({ Logo, UserImg }: Props) => {
+    const dispatch = useDispatch();
+
+    dispatch(RelatoriosActive());
 
     const BtnClick = (tipo: string) => {
 
@@ -25,12 +30,12 @@ const Relatorios = ({ Logo, UserImg, Responsive, BtnState, HambClick }: Props) =
 
                 window.open(url);
             });
-    }
+    };
 
     return (
         <>
-            <Header logo={Logo} titulo="CDTR" responsive={Responsive} btnState={BtnState} onHambClick={HambClick} />
-            <Aside UserImg={UserImg} Active="relatorios" responsive={Responsive} />
+            <Header logo={Logo} titulo="CDTR" />
+            <Aside UserImg={UserImg} />
             <Main>
                 <Painel titulo="Relatórios" />
                 <Container>

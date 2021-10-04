@@ -15,7 +15,7 @@ import { Uf } from '../../Interfaces';
 import { useHistory } from 'react-router-dom';
 import { Props } from '../../Types';
 
-const CreateProdutor = ({ Logo, UserImg, Responsive, BtnState, HambClick }: Props) => {
+const CreateProdutor = ({ Logo, UserImg }: Props) => {
     const history = useHistory();
 
     const [ufs, setUfs] = useState<Uf[]>([]);
@@ -81,8 +81,8 @@ const CreateProdutor = ({ Logo, UserImg, Responsive, BtnState, HambClick }: Prop
 
     return (
         <>
-            <Header logo={Logo} titulo="CDTR" responsive={Responsive} btnState={BtnState} onHambClick={HambClick} />
-            <Aside UserImg={UserImg} Active="produtor" responsive={Responsive} />
+            <Header logo={Logo} titulo="CDTR" />
+            <Aside UserImg={UserImg} />
             <Main>
                 <PainelNav to="/produtor" titulo="Adicionar Produtor" />
 

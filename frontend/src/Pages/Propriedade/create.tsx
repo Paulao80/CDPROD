@@ -15,7 +15,7 @@ import { Uf, Produtor } from '../../Interfaces';
 import { useHistory } from 'react-router-dom';
 import { Props } from '../../Types';
 
-const CreatePropriedade = ({ Logo, UserImg, Responsive, BtnState, HambClick }: Props) => {
+const CreatePropriedade = ({ Logo, UserImg }: Props) => {
     const history = useHistory();
 
     const [ufs, setUfs] = useState<Uf[]>([]);
@@ -71,8 +71,8 @@ const CreatePropriedade = ({ Logo, UserImg, Responsive, BtnState, HambClick }: P
 
     return (
         <>
-            <Header logo={Logo} titulo="CDTR" responsive={Responsive} btnState={BtnState} onHambClick={HambClick} />
-            <Aside UserImg={UserImg} Active="propriedade" responsive={Responsive} />
+            <Header logo={Logo} titulo="CDTR" />
+            <Aside UserImg={UserImg} />
             <Main>
 
                 <PainelNav to="/propriedade" titulo="Adicionar Propriedade" />

@@ -17,7 +17,7 @@ interface Param {
     id: string;
 }
 
-const DetailsPropriedade = ({ Logo, UserImg, Responsive, BtnState, HambClick }: Props) => {
+const DetailsPropriedade = ({ Logo, UserImg }: Props) => {
     const { id } = useParams<Param>();
 
     const [propriedade, setPropriedade] = useState<Propriedade>();
@@ -36,8 +36,8 @@ const DetailsPropriedade = ({ Logo, UserImg, Responsive, BtnState, HambClick }: 
 
     return (
         <>
-            <Header logo={Logo} titulo="CDTR" responsive={Responsive} btnState={BtnState} onHambClick={HambClick} />
-            <Aside UserImg={UserImg} Active="propriedade" responsive={Responsive} />
+            <Header logo={Logo} titulo="CDTR" />
+            <Aside UserImg={UserImg} />
             <Main>
                 <PainelNav to="/propriedade" titulo="Detalhes da Propriedade" />
                 <Container>

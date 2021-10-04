@@ -11,8 +11,14 @@ import Api from '../../Services/Api';
 import { Props } from '../../Types';
 import { Produtor as IProdutor, RowsDeleted } from '../../Interfaces';
 import ButtonAct from '../../Components/ButtonAct';
+import { useDispatch } from 'react-redux';
+import { ProdutoresActive } from '../../Actions/PageActiveActions';
 
-const Produtor = ({ Logo, UserImg, Responsive, BtnState, HambClick }: Props) => {
+const Produtor = ({ Logo, UserImg }: Props) => {
+    const dispatch = useDispatch();
+
+    dispatch(ProdutoresActive());
+
     const location = useLocation();
 
     const [produtores, setProdutores] = useState<IProdutor[]>([]);
@@ -108,8 +114,8 @@ const Produtor = ({ Logo, UserImg, Responsive, BtnState, HambClick }: Props) => 
 
     return (
         <>
-            <Header logo={Logo} titulo="CDTR" responsive={Responsive} btnState={BtnState} onHambClick={HambClick} />
-            <Aside UserImg={UserImg} Active="produtor" responsive={Responsive} />
+            <Header logo={Logo} titulo="CDTR" />
+            <Aside UserImg={UserImg} />
             <Main>
                 <MUIDataTable
                     title={"Produtores"}

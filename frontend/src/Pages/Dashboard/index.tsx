@@ -7,13 +7,19 @@ import Main from '../../Components/Main';
 import Container2 from '../../Components/Container2';
 import { ChartMedia, ChartPropByMunicipio, ChartTipoTanque } from '../../Components/Charts';
 import Static from '../../Components/Static';
+import { useDispatch } from 'react-redux';
+import { DashboardActive } from '../../Actions/PageActiveActions';
 
-const Dashboard = ({ Logo, UserImg, Responsive, BtnState, HambClick }: Props) => {
+const Dashboard = ({ Logo, UserImg }: Props) => {
+
+    const dispatch = useDispatch();
+
+    dispatch(DashboardActive());
 
     return (
         <>
-            <Header logo={Logo} titulo="CDTR" responsive={Responsive} btnState={BtnState} onHambClick={HambClick} />
-            <Aside UserImg={UserImg} Active="dashboard" responsive={Responsive} />
+            <Header logo={Logo} titulo="CDTR" />
+            <Aside UserImg={UserImg} />
             <Main>
                 <Container2>
                     <Static />

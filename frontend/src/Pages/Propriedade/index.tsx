@@ -10,8 +10,14 @@ import { Propriedade as IPropriedade, RowsDeleted } from '../../Interfaces';
 import { useState, useEffect } from 'react';
 import Api from '../../Services/Api';
 import ButtonAct from '../../Components/ButtonAct';
+import { useDispatch } from 'react-redux';
+import { PropriedadesActive } from '../../Actions/PageActiveActions';
 
-const Propriedade = ({ Logo, UserImg, Responsive, BtnState, HambClick }: Props) => {
+const Propriedade = ({ Logo, UserImg }: Props) => {
+    const dispatch = useDispatch();
+
+    dispatch(PropriedadesActive());
+
     const location = useLocation();
 
     const [Propriedades, setPropriedades] = useState<IPropriedade[]>([]);
@@ -112,8 +118,8 @@ const Propriedade = ({ Logo, UserImg, Responsive, BtnState, HambClick }: Props) 
 
     return (
         <>
-            <Header logo={Logo} titulo="CDTR" responsive={Responsive} btnState={BtnState} onHambClick={HambClick} />
-            <Aside UserImg={UserImg} Active="propriedade" responsive={Responsive} />
+            <Header logo={Logo} titulo="CDTR" />
+            <Aside UserImg={UserImg} />
             <Main>
                 <MUIDataTable
                     title="Propriedades"

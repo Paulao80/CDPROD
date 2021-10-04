@@ -19,7 +19,7 @@ interface Param {
     id: string;
 }
 
-const EditPropriedade = ({ Logo, UserImg, Responsive, BtnState, HambClick }: Props) => {
+const EditPropriedade = ({ Logo, UserImg }: Props) => {
     const { id } = useParams<Param>();
 
     const history = useHistory();
@@ -93,8 +93,8 @@ const EditPropriedade = ({ Logo, UserImg, Responsive, BtnState, HambClick }: Pro
 
     return (
         <>
-            <Header logo={Logo} titulo="CDTR" responsive={Responsive} btnState={BtnState} onHambClick={HambClick} />
-            <Aside UserImg={UserImg} Active="propriedade" responsive={Responsive} />
+            <Header logo={Logo} titulo="CDTR" />
+            <Aside UserImg={UserImg} />
             <Main>
                 <PainelNav to={`/propriedade/details/${id}`} titulo="Editar Propriedade" />
                 <Container>
