@@ -112,7 +112,7 @@ const Contas = ({ Logo, UserImg }: Props) => {
                     options={options}
                 />
             </Main>
-            <ButtonAdd to={`/produtor/contas/${produtor.ProdutorId}/add`} />
+            <ButtonAdd to={`/produtor/contas/add/${produtor.ProdutorId}`} />
             <Footer />
         </>
     );

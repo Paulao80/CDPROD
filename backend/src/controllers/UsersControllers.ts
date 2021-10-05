@@ -97,7 +97,9 @@ export default {
             });
 
             response.header('authorization-token', token);
-            return response.json({Message: "User Logged"});
+            return response.json({               
+                Message: "User Logged"
+            });
         }
 
         return response.status(400).json({ message: "Failed generated token!"});

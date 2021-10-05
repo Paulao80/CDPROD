@@ -121,7 +121,7 @@ const ProdutoresTanques = ({ Logo, UserImg }: Props) => {
                     options={options}
                 />
             </Main>
-            <ButtonAdd to={`/tanque/produtores/${tanque.TanqueId}/add`} />
+            <ButtonAdd to={`/tanque/produtores/add/${tanque.TanqueId}`} />
             <Footer />
         </>
     )

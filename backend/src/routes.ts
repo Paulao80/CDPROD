@@ -17,7 +17,7 @@ const upload = multer(uploadConfig);
 
 routes.post('/user/register', upload.single('image'), UsersControllers.register);
 routes.post('/user/login', UsersControllers.login);
-routes.get('/user/:id', Auth.verify, UsersControllers.show);
+routes.get('/user', Auth.verify, UsersControllers.show);
 
 routes.get('/produtores', Auth.verify, ProdutoresControllers.index);
 routes.get('/produtores/:id', Auth.verify, ProdutoresControllers.show);

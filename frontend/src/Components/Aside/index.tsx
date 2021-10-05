@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { Dashboard, People, House, LocalDrink, FileCopy } from '@material-ui/icons';
 import { useSelector } from 'react-redux';
 import { StateMenu, StatePageActive } from '../../Interfaces';
+import { logout } from '../../Services/Auth';
 
 type props = {
     UserImg: string;
@@ -30,7 +31,7 @@ const Aside = ({ UserImg }: props) => {
                     <img src={UserImg} alt="user Imagem" />
                 </div>
                 <h2>Anonimo</h2>
-                <Link to="#">Sair</Link>
+                <Link to="#" onClick={() => logout()}>Sair</Link>
             </div>
             <div className="menu_lateral">
                 <ul>

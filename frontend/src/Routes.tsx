@@ -1,4 +1,5 @@
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import PrivateRoute from './Components/PrivateRoute';
 import logoImg from './Assets/images/logo.png';
 import userImg from './Assets/images/anonimos.jpg';
 import Landing from './Pages/Landing';
@@ -31,69 +32,87 @@ const Routes = () => {
 
                 <Route path="/login" component={Login} exact />
 
-                <Route path="/dashboard">
+                {/* -------------------------------------------------------- */}
+
+                <PrivateRoute path="/dashboard">
                     <Dashboard Logo={logoImg} UserImg={userImg} />
-                </Route>
+                </PrivateRoute>
 
-                <Route path="/produtor">
+                {/* -------------------------------------------------------- */}
+
+                <PrivateRoute path="/produtor/create">
+                    <CreateProdutor Logo={logoImg} UserImg={userImg} />
+                </PrivateRoute>
+
+                <PrivateRoute path="/produtor/details/:id">
+                    <DetailsProdutor Logo={logoImg} UserImg={userImg} />
+                </PrivateRoute>
+
+                <PrivateRoute path="/produtor/edit/:id">
+                    <EditProdutor Logo={logoImg} UserImg={userImg} />
+                </PrivateRoute>
+
+                <PrivateRoute path="/produtor/contas/add/:id">
+                    <AddContas Logo={logoImg} UserImg={userImg} />
+                </PrivateRoute>
+
+                <PrivateRoute path="/produtor/contas/:id">
+                    <Contas Logo={logoImg} UserImg={userImg} />
+                </PrivateRoute>
+
+                <PrivateRoute path="/produtor">
                     <Produtor Logo={logoImg} UserImg={userImg} />
-                    <Route path="/produtor/create">
-                        <CreateProdutor Logo={logoImg} UserImg={userImg} />
-                    </Route>
-                    <Route path="/produtor/details/:id">
-                        <DetailsProdutor Logo={logoImg} UserImg={userImg} />
-                    </Route>
-                    <Route path="/produtor/edit/:id">
-                        <EditProdutor Logo={logoImg} UserImg={userImg} />
-                    </Route>
-                    <Route path="/produtor/contas">
-                        <Route path="/produtor/contas/:id">
-                            <Contas Logo={logoImg} UserImg={userImg} />
-                        </Route>
-                        <Route path="/produtor/contas/:id/add">
-                            <AddContas Logo={logoImg} UserImg={userImg} />
-                        </Route>
-                    </Route>
-                </Route>
+                </PrivateRoute>
 
-                <Route path="/propriedade">
+                {/* -------------------------------------------------------- */}
+
+                <PrivateRoute path="/propriedade/create">
+                    <CreatePropriedade Logo={logoImg} UserImg={userImg} />
+                </PrivateRoute>
+
+                <PrivateRoute path="/propriedade/details/:id">
+                    <DetailsPropriedade Logo={logoImg} UserImg={userImg} />
+                </PrivateRoute>
+
+                <PrivateRoute path="/propriedade/edit/:id">
+                    <EditPropriedade Logo={logoImg} UserImg={userImg} />
+                </PrivateRoute>
+
+                <PrivateRoute path="/propriedade">
                     <Propriedade Logo={logoImg} UserImg={userImg} />
-                    <Route path="/propriedade/create">
-                        <CreatePropriedade Logo={logoImg} UserImg={userImg} />
-                    </Route>
-                    <Route path="/propriedade/details/:id">
-                        <DetailsPropriedade Logo={logoImg} UserImg={userImg} />
-                    </Route>
-                    <Route path="/propriedade/edit/:id">
-                        <EditPropriedade Logo={logoImg} UserImg={userImg} />
-                    </Route>
-                </Route>
+                </PrivateRoute>
 
-                <Route path="/tanque">
+                {/* -------------------------------------------------------- */}
+
+                <PrivateRoute path="/tanque/create">
+                    <CreateTanque Logo={logoImg} UserImg={userImg} />
+                </PrivateRoute>
+
+                <PrivateRoute path="/tanque/details/:id">
+                    <DetailsTanque Logo={logoImg} UserImg={userImg} />
+                </PrivateRoute>
+
+                <PrivateRoute path="/tanque/edit/:id">
+                    <EditTanque Logo={logoImg} UserImg={userImg} />
+                </PrivateRoute>
+
+                <PrivateRoute path="/tanque/produtores/add/:id">
+                    <AddProdutorTanque Logo={logoImg} UserImg={userImg} />
+                </PrivateRoute>
+
+                <PrivateRoute path="/tanque/produtores/:id">
+                    <ProdutoresTanques Logo={logoImg} UserImg={userImg} />
+                </PrivateRoute>
+
+                <PrivateRoute path="/tanque">
                     <Tanque Logo={logoImg} UserImg={userImg} />
-                    <Route path="/tanque/create">
-                        <CreateTanque Logo={logoImg} UserImg={userImg} />
-                    </Route>
-                    <Route path="/tanque/details/:id">
-                        <DetailsTanque Logo={logoImg} UserImg={userImg} />
-                    </Route>
-                    <Route path="/tanque/edit/:id">
-                        <EditTanque Logo={logoImg} UserImg={userImg} />
-                    </Route>
-                    <Route path="/tanque/produtores">
-                        <Route path="/tanque/produtores/:id">
-                            <ProdutoresTanques Logo={logoImg} UserImg={userImg} />
-                        </Route>
+                </PrivateRoute>
 
-                        <Route path="/tanque/produtores/:id/add">
-                            <AddProdutorTanque Logo={logoImg} UserImg={userImg} />
-                        </Route>
-                    </Route>
-                </Route>
+                {/* -------------------------------------------------------- */}
 
-                <Route path="/relatorios">
+                <PrivateRoute path="/relatorios">
                     <Relatorios Logo={logoImg} UserImg={userImg} />
-                </Route>
+                </PrivateRoute>
             </Switch>
         </BrowserRouter>
     );
