@@ -98,3 +98,12 @@ export interface StatePageActive {
     Tanques: string;
     Relatorios: string;
 }
+
+export interface User {
+    UserId: number;
+    Name: string;
+    User: string;
+    Email: string;
+    FotoPath: string;
+    AccessToken: string;
+}

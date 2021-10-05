@@ -1,15 +1,15 @@
 import axios, { AxiosRequestConfig } from 'axios';
-import {getToken} from './Auth';
+import {getUser} from './Auth';
 
 const Api = axios.create({
     baseURL: `${process.env.REACT_APP_API}`
 });
 
 const onFulfilled = async (config:AxiosRequestConfig) => {
-    const token = getToken();
+    const user = getUser();
 
-    if(token) {
-        config.headers['authorization-token'] = token;
+    if(user) {
+        config.headers['authorization-token'] = user.AccessToken;
     }
 
     return config;

@@ -3,7 +3,6 @@ import { TextField } from '@material-ui/core';
 import { Link, useHistory, useLocation } from 'react-router-dom';
 import Logo from '../../Assets/images/vaca.png';
 import { FormEvent, useState } from 'react';
-import Api from '../../Services/Api';
 import { login } from '../../Services/Auth';
 
 interface stateType {
@@ -21,18 +20,15 @@ const Login = () => {
     const onSubmit = (event: FormEvent) => {
         event.preventDefault();
 
-        Api.post('/user/login', {
-            EmailOrUser,
-            Password
-        })
-            .then((response) => {
-                login(response.headers['authorization-token']);
+        login(EmailOrUser, Password).then((response) => {
+            if (response !== false) {
                 const { from } = location.state || { from: { pathname: "/" } };
                 history.replace(from);
-            })
-            .catch((error) => {
-                console.log(error.response.data);
-            })
+            }
+            else {
+                console.log(response);
+            }
+        });
     }
 
     return (
