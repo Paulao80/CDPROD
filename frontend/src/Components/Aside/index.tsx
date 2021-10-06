@@ -4,17 +4,19 @@ import { Dashboard, People, House, LocalDrink, FileCopy } from '@material-ui/ico
 import { useSelector } from 'react-redux';
 import { StateMenu, StatePageActive } from '../../Interfaces';
 import { logout } from '../../Services/Auth';
-
-type props = {
-    UserImg: string;
-};
+import { useEffect, useState } from 'react';
+import { getUser } from '../../Services/Auth';
+import { User } from '../../Interfaces';
+import userImg from '../../Assets/images/anonimos.jpg';
 
 interface Reducers {
     MenuReducer: StateMenu;
     PageActiveReducer: StatePageActive
 }
 
-const Aside = ({ UserImg }: props) => {
+const Aside = () => {
+
+    const [user, setUser] = useState<User>();
 
     const MenuSelector = useSelector((state: Reducers) => {
         return state.MenuReducer;
@@ -24,48 +26,48 @@ const Aside = ({ UserImg }: props) => {
         return state.PageActiveReducer;
     });
 
+    useEffect(() => {
+        const user = getUser();
+        if (user) setUser(user);
+    }, []);
+
     return (
         <aside className={MenuSelector.aside}>
             <div className="user_info">
                 <div className="user_image">
-                    <img src={UserImg} alt="user Imagem" />
+                    <img src={user ? user.FotoPath : userImg} alt="user Imagem" />
                 </div>
-                <h2>Anonimo</h2>
+                <h2>{user ? user.Name : ""}</h2>
                 <Link to="#" onClick={() => logout()}>Sair</Link>
             </div>
             <div className="menu_lateral">
                 <ul>
                     <li className={PageSelector.Dashboard}>
                         <Link to="/dashboard">
-                            {/* <FontAwesomeIcon icon={faTachometerAlt} /> */}
                             <Dashboard fontSize="large" />
                             <span>Dashboard</span>
                         </Link>
                     </li>
                     <li className={PageSelector.Produtores}>
                         <Link to="/produtor">
-                            {/* <FontAwesomeIcon icon={faUsers} /> */}
                             <People fontSize="large" />
                             <span>Produtores</span>
                         </Link>
                     </li>
                     <li className={PageSelector.Propriedades}>
                         <Link to="/propriedade">
-                            {/* <FontAwesomeIcon icon={faHome} /> */}
                             <House fontSize="large" />
                             <span>Propriedades</span>
                         </Link>
                     </li>
                     <li className={PageSelector.Tanques}>
                         <Link to="/tanque">
-                            {/* <FontAwesomeIcon icon={faGlassWhiskey} /> */}
                             <LocalDrink fontSize="large" />
                             <span>Tanques</span>
                         </Link>
                     </li>
                     <li className={PageSelector.Relatorios}>
                         <Link to="/relatorios">
-                            {/* <FontAwesomeIcon icon={faFileAlt} /> */}
                             <FileCopy fontSize="large" />
                             <span>Relatórios</span>
                         </Link>

@@ -10,14 +10,20 @@ import PainelNav from '../../Components/PainelNav';
 import { useHistory, useParams } from 'react-router-dom';
 import { FormEvent, useState, useEffect } from 'react';
 import Api from '../../Services/Api';
-import { Props } from '../../Types';
 import { Produtor } from '../../Interfaces';
+import Logo from '../../Assets/images/logo.png';
+import { useDispatch } from 'react-redux';
+import { TanquesActive } from '../../Actions/PageActiveActions';
 
 interface Param {
     id: string;
 }
 
-const AddProdutorTanque = ({ Logo, UserImg }: Props) => {
+const AddProdutorTanque = () => {
+    const dispatch = useDispatch();
+
+    dispatch(TanquesActive());
+
     const { id } = useParams<Param>();
     const history = useHistory();
 
@@ -54,7 +60,7 @@ const AddProdutorTanque = ({ Logo, UserImg }: Props) => {
     return (
         <>
             <Header logo={Logo} titulo="CDTR" />
-            <Aside UserImg={UserImg} />
+            <Aside />
             <Main>
                 <PainelNav to={`/tanque/produtores/${id}`} titulo="Adicionar Propriedade" />
                 <Container>

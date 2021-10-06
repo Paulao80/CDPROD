@@ -13,9 +13,15 @@ import Api from '../../Services/Api';
 import { useState, useEffect, FormEvent } from 'react';
 import { Uf, Produtor } from '../../Interfaces';
 import { useHistory } from 'react-router-dom';
-import { Props } from '../../Types';
+import Logo from '../../Assets/images/logo.png';
+import { useDispatch } from 'react-redux';
+import { PropriedadesActive } from '../../Actions/PageActiveActions';
 
-const CreatePropriedade = ({ Logo, UserImg }: Props) => {
+const CreatePropriedade = () => {
+    const dispatch = useDispatch();
+
+    dispatch(PropriedadesActive());
+
     const history = useHistory();
 
     const [ufs, setUfs] = useState<Uf[]>([]);
@@ -72,7 +78,7 @@ const CreatePropriedade = ({ Logo, UserImg }: Props) => {
     return (
         <>
             <Header logo={Logo} titulo="CDTR" />
-            <Aside UserImg={UserImg} />
+            <Aside />
             <Main>
 
                 <PainelNav to="/propriedade" titulo="Adicionar Propriedade" />

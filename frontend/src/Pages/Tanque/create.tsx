@@ -13,9 +13,15 @@ import { FormEvent, ChangeEvent, useState } from 'react';
 import { iconLocation } from '../../Util/Icons';
 import Api from '../../Services/Api';
 import { useHistory } from 'react-router-dom';
-import { Props } from '../../Types';
+import Logo from '../../Assets/images/logo.png';
+import { useDispatch } from 'react-redux';
+import { TanquesActive } from '../../Actions/PageActiveActions';
 
-const CreateTanque = ({ Logo, UserImg }: Props) => {
+const CreateTanque = () => {
+    const dispatch = useDispatch();
+
+    dispatch(TanquesActive());
+
     const history = useHistory();
 
     const [position, setPosition] = useState({ Latitude: 0, Longitude: 0 })
@@ -99,7 +105,7 @@ const CreateTanque = ({ Logo, UserImg }: Props) => {
     return (
         <>
             <Header logo={Logo} titulo="CDTR" />
-            <Aside UserImg={UserImg} />
+            <Aside />
             <Main>
                 <PainelNav to="/tanque" titulo="Adicionar Tanque" />
                 <Container>

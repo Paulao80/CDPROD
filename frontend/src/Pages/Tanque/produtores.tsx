@@ -7,16 +7,22 @@ import MUIDataTable from "mui-datatables";
 import ButtonAdd from '../../Components/ButtonAdd';
 import { useLocation, useParams } from 'react-router-dom';
 import PainelNav from '../../Components/PainelNav';
-import { Props } from '../../Types';
 import { useState, useEffect } from 'react';
 import Api from '../../Services/Api';
 import { Tanque, Produtor, RowsDeleted } from '../../Interfaces';
+import Logo from '../../Assets/images/logo.png';
+import { useDispatch } from 'react-redux';
+import { TanquesActive } from '../../Actions/PageActiveActions';
 
 interface Param {
     id: string;
 }
 
-const ProdutoresTanques = ({ Logo, UserImg }: Props) => {
+const ProdutoresTanques = () => {
+    const dispatch = useDispatch();
+
+    dispatch(TanquesActive());
+
     const { id } = useParams<Param>();
     const location = useLocation();
 
@@ -111,7 +117,7 @@ const ProdutoresTanques = ({ Logo, UserImg }: Props) => {
     return (
         <>
             <Header logo={Logo} titulo="CDTR" />
-            <Aside UserImg={UserImg} />
+            <Aside />
             <Main>
                 <PainelNav to={`/tanque`} titulo="Produtores" />
                 <MUIDataTable

@@ -12,13 +12,19 @@ import ShowData from '../../Components/ShowData';
 import Api from '../../Services/Api';
 import { useState, useEffect } from 'react';
 import { Produtor } from '../../Interfaces';
-import { Props } from '../../Types';
+import Logo from '../../Assets/images/logo.png';
+import { useDispatch } from 'react-redux';
+import { ProdutoresActive } from '../../Actions/PageActiveActions';
 
 interface Param {
     id: string;
 }
 
-const DetailsProdutor = ({ Logo, UserImg }: Props) => {
+const DetailsProdutor = () => {
+    const dispatch = useDispatch();
+
+    dispatch(ProdutoresActive());
+
     const { id } = useParams<Param>();
 
     const [produtor, setProdutor] = useState<Produtor>();
@@ -38,7 +44,7 @@ const DetailsProdutor = ({ Logo, UserImg }: Props) => {
     return (
         <>
             <Header logo={Logo} titulo="CDTR" />
-            <Aside UserImg={UserImg} />
+            <Aside />
             <Main>
                 <PainelNav to="/produtor" titulo="Detalhes do Produtor" />
                 <Container>

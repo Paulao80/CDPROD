@@ -13,9 +13,15 @@ import Api from '../../Services/Api';
 import PainelNav from '../../Components/PainelNav';
 import { Uf } from '../../Interfaces';
 import { useHistory } from 'react-router-dom';
-import { Props } from '../../Types';
+import Logo from '../../Assets/images/logo.png';
+import { useDispatch } from 'react-redux';
+import { ProdutoresActive } from '../../Actions/PageActiveActions';
 
-const CreateProdutor = ({ Logo, UserImg }: Props) => {
+const CreateProdutor = () => {
+    const dispatch = useDispatch();
+
+    dispatch(ProdutoresActive());
+
     const history = useHistory();
 
     const [ufs, setUfs] = useState<Uf[]>([]);
@@ -82,7 +88,7 @@ const CreateProdutor = ({ Logo, UserImg }: Props) => {
     return (
         <>
             <Header logo={Logo} titulo="CDTR" />
-            <Aside UserImg={UserImg} />
+            <Aside />
             <Main>
                 <PainelNav to="/produtor" titulo="Adicionar Produtor" />
 

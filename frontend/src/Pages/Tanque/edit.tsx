@@ -13,8 +13,10 @@ import { FormEvent, ChangeEvent, useState, useEffect } from 'react';
 import { iconLocation } from '../../Util/Icons';
 import Api from '../../Services/Api';
 import { useHistory, useParams } from 'react-router-dom';
-import { Props } from '../../Types';
 import { Tanque } from '../../Interfaces';
+import Logo from '../../Assets/images/logo.png';
+import { useDispatch } from 'react-redux';
+import { TanquesActive } from '../../Actions/PageActiveActions';
 
 interface Param {
     id: string;
@@ -25,7 +27,11 @@ interface Position {
     Longitude: number;
 }
 
-const EditTanque = ({ Logo, UserImg }: Props) => {
+const EditTanque = () => {
+    const dispatch = useDispatch();
+
+    dispatch(TanquesActive());
+
     const { id } = useParams<Param>();
 
     const history = useHistory();
@@ -144,7 +150,7 @@ const EditTanque = ({ Logo, UserImg }: Props) => {
     return (
         <>
             <Header logo={Logo} titulo="CDTR" />
-            <Aside UserImg={UserImg} />
+            <Aside />
             <Main>
                 <PainelNav to={`/tanque`} titulo="Editar Tanque" />
                 <Container>

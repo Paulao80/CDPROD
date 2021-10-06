@@ -11,15 +11,21 @@ import { NirfMaskCustom } from '../../Util/Mask';
 import ApiUf from '../../Services/ApiUf';
 import { useState, useEffect, FormEvent } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
-import { Props } from '../../Types';
 import { Produtor, Propriedade, Uf } from '../../Interfaces';
 import Api from '../../Services/Api';
+import Logo from '../../Assets/images/logo.png';
+import { useDispatch } from 'react-redux';
+import { PropriedadesActive } from '../../Actions/PageActiveActions';
 
 interface Param {
     id: string;
 }
 
-const EditPropriedade = ({ Logo, UserImg }: Props) => {
+const EditPropriedade = () => {
+    const dispatch = useDispatch();
+
+    dispatch(PropriedadesActive());
+
     const { id } = useParams<Param>();
 
     const history = useHistory();
@@ -94,9 +100,9 @@ const EditPropriedade = ({ Logo, UserImg }: Props) => {
     return (
         <>
             <Header logo={Logo} titulo="CDTR" />
-            <Aside UserImg={UserImg} />
+            <Aside />
             <Main>
-                <PainelNav to={`/propriedade/details/${id}`} titulo="Editar Propriedade" />
+                <PainelNav to={`/propriedade`} titulo="Editar Propriedade" />
                 <Container>
 
                     <form onSubmit={OnSubmit}>

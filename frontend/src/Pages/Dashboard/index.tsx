@@ -2,15 +2,15 @@ import './style.css';
 import Header from '../../Components/Header';
 import Aside from '../../Components/Aside';
 import Footer from '../../Components/Footer';
-import { Props } from '../../Types';
 import Main from '../../Components/Main';
 import Container2 from '../../Components/Container2';
 import { ChartMedia, ChartPropByMunicipio, ChartTipoTanque } from '../../Components/Charts';
 import Static from '../../Components/Static';
 import { useDispatch } from 'react-redux';
 import { DashboardActive } from '../../Actions/PageActiveActions';
+import Logo from '../../Assets/images/logo.png';
 
-const Dashboard = ({ Logo, UserImg }: Props) => {
+const Dashboard = () => {
 
     const dispatch = useDispatch();
 
@@ -19,7 +19,7 @@ const Dashboard = ({ Logo, UserImg }: Props) => {
     return (
         <>
             <Header logo={Logo} titulo="CDTR" />
-            <Aside UserImg={UserImg} />
+            <Aside />
             <Main>
                 <Container2>
                     <Static />

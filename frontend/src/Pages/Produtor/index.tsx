@@ -8,13 +8,13 @@ import ButtonAdd from '../../Components/ButtonAdd';
 import { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import Api from '../../Services/Api';
-import { Props } from '../../Types';
 import { Produtor as IProdutor, RowsDeleted } from '../../Interfaces';
 import ButtonAct from '../../Components/ButtonAct';
 import { useDispatch } from 'react-redux';
 import { ProdutoresActive } from '../../Actions/PageActiveActions';
+import Logo from '../../Assets/images/logo.png';
 
-const Produtor = ({ Logo, UserImg }: Props) => {
+const Produtor = () => {
     const dispatch = useDispatch();
 
     dispatch(ProdutoresActive());
@@ -115,7 +115,7 @@ const Produtor = ({ Logo, UserImg }: Props) => {
     return (
         <>
             <Header logo={Logo} titulo="CDTR" />
-            <Aside UserImg={UserImg} />
+            <Aside />
             <Main>
                 <MUIDataTable
                     title={"Produtores"}

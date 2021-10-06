@@ -1,20 +1,26 @@
 import axios, { AxiosRequestConfig } from 'axios';
-import {getUser} from './Auth';
+import {getUser, logout} from './Auth';
 
 const Api = axios.create({
     baseURL: `${process.env.REACT_APP_API}`
 });
 
-const onFulfilled = async (config:AxiosRequestConfig) => {
+Api.interceptors.request.use(async (config:AxiosRequestConfig) => {
     const user = getUser();
 
     if(user) {
         config.headers['authorization-token'] = user.AccessToken;
-    }
+    };
 
     return config;
-}
+});
 
-Api.interceptors.request.use(onFulfilled);
+Api.interceptors.response.use(response => response, error => {
+    if(error.response.status === 401){
+        logout();
+    };
+
+    return error;
+});
 
 export default Api;

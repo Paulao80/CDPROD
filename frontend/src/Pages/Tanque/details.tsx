@@ -12,16 +12,22 @@ import { iconLocation } from '../../Util/Icons';
 import { useParams } from 'react-router-dom';
 import ShowData from '../../Components/ShowData';
 import { GetTipoTanque } from '../../Util/Functions';
-import { Props } from '../../Types';
 import { Tanque } from '../../Interfaces';
 import { useState, useEffect } from 'react';
 import Api from '../../Services/Api';
+import Logo from '../../Assets/images/logo.png';
+import { useDispatch } from 'react-redux';
+import { TanquesActive } from '../../Actions/PageActiveActions';
 
 interface Param {
     id: string;
 }
 
-const DetailsTanque = ({ Logo, UserImg }: Props) => {
+const DetailsTanque = () => {
+    const dispatch = useDispatch();
+
+    dispatch(TanquesActive());
+
     const { id } = useParams<Param>();
 
     const [tanque, setTanque] = useState<Tanque>();
@@ -41,7 +47,7 @@ const DetailsTanque = ({ Logo, UserImg }: Props) => {
     return (
         <>
             <Header logo={Logo} titulo="CDTR" />
-            <Aside UserImg={UserImg} />
+            <Aside />
             <Main>
                 <PainelNav to="/tanque" titulo="Detalhes do Tanque" />
                 <Container>

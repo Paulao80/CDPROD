@@ -14,13 +14,19 @@ import PainelNav from '../../Components/PainelNav';
 import { useHistory, useParams } from 'react-router-dom';
 import { Produtor } from '../../Interfaces';
 import { Uf } from '../../Interfaces';
-import { Props } from '../../Types';
+import Logo from '../../Assets/images/logo.png';
+import { useDispatch } from 'react-redux';
+import { ProdutoresActive } from '../../Actions/PageActiveActions';
 
 interface Param {
     id: string;
 }
 
-const EditProdutor = ({ Logo, UserImg }: Props) => {
+const EditProdutor = () => {
+
+    const dispatch = useDispatch();
+
+    dispatch(ProdutoresActive());
 
     const { id } = useParams<Param>();
 
@@ -108,9 +114,9 @@ const EditProdutor = ({ Logo, UserImg }: Props) => {
     return (
         <>
             <Header logo={Logo} titulo="CDTR" />
-            <Aside UserImg={UserImg} />
+            <Aside />
             <Main>
-                <PainelNav to={`/produtor/details/${id}`} titulo="Editar Produtor" />
+                <PainelNav to={`/produtor`} titulo="Editar Produtor" />
 
                 <Container>
 

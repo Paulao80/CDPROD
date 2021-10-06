@@ -5,13 +5,13 @@ import Footer from '../../Components/Footer';
 import Main from '../../Components/Main';
 import Container from '../../Components/Container';
 import Painel from '../../Components/Painel';
-import { Props } from '../../Types';
 import { People, House, LocalDrink } from '@material-ui/icons';
 import Api from '../../Services/Api';
 import { useDispatch } from 'react-redux';
 import { RelatoriosActive } from '../../Actions/PageActiveActions';
+import Logo from '../../Assets/images/logo.png';
 
-const Relatorios = ({ Logo, UserImg }: Props) => {
+const Relatorios = () => {
     const dispatch = useDispatch();
 
     dispatch(RelatoriosActive());
@@ -35,7 +35,7 @@ const Relatorios = ({ Logo, UserImg }: Props) => {
     return (
         <>
             <Header logo={Logo} titulo="CDTR" />
-            <Aside UserImg={UserImg} />
+            <Aside />
             <Main>
                 <Painel titulo="Relatórios" />
                 <Container>

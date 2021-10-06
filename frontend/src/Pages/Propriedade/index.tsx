@@ -5,15 +5,15 @@ import Main from '../../Components/Main';
 import MUIDataTable from "mui-datatables";
 import ButtonAdd from '../../Components/ButtonAdd';
 import { useLocation } from 'react-router-dom';
-import { Props } from '../../Types';
 import { Propriedade as IPropriedade, RowsDeleted } from '../../Interfaces';
 import { useState, useEffect } from 'react';
 import Api from '../../Services/Api';
 import ButtonAct from '../../Components/ButtonAct';
 import { useDispatch } from 'react-redux';
 import { PropriedadesActive } from '../../Actions/PageActiveActions';
+import Logo from '../../Assets/images/logo.png';
 
-const Propriedade = ({ Logo, UserImg }: Props) => {
+const Propriedade = () => {
     const dispatch = useDispatch();
 
     dispatch(PropriedadesActive());
@@ -119,7 +119,7 @@ const Propriedade = ({ Logo, UserImg }: Props) => {
     return (
         <>
             <Header logo={Logo} titulo="CDTR" />
-            <Aside UserImg={UserImg} />
+            <Aside />
             <Main>
                 <MUIDataTable
                     title="Propriedades"

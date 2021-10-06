@@ -42,3 +42,28 @@
   color: white;
   background-color: #ff9900;
 }
+
+.input-account {
+  width: 100%;
+  height: 56px;
+  border-radius: 5px;
+  border: none;
+  padding: 18px 14px;
+  box-sizing: border-box;
+  margin-top: 20px;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.img-details {
+  border-radius: 10px;
+  border: 2px solid black;
+  width: 300px;
+  height: 300px;
+  object-fit: cover;
+  object-position: center;
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-top: 7.5px;
+}

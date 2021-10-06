@@ -5,19 +5,25 @@ import Header from '../../Components/Header';
 import Main from '../../Components/Main';
 import PainelNav from '../../Components/PainelNav';
 import BtnSave from '../../Components/ButtonSave';
-import { Props } from '../../Types';
 import './style.css';
 import { TextField } from '@material-ui/core';
 import { useHistory, useParams } from 'react-router-dom';
 import { FormEvent, useEffect, useState } from 'react';
 import Api from '../../Services/Api';
 import { Produtor } from '../../Interfaces';
+import Logo from '../../Assets/images/logo.png';
+import { useDispatch } from 'react-redux';
+import { ProdutoresActive } from '../../Actions/PageActiveActions';
 
 interface Param {
     id: string;
 }
 
-const AddContas = ({ Logo, UserImg }: Props) => {
+const AddContas = () => {
+    const dispatch = useDispatch();
+
+    dispatch(ProdutoresActive());
+
     const { id } = useParams<Param>();
     const history = useHistory();
 
@@ -57,7 +63,7 @@ const AddContas = ({ Logo, UserImg }: Props) => {
     return (
         <>
             <Header logo={Logo} titulo="CDTR" />
-            <Aside UserImg={UserImg} />
+            <Aside />
             <Main>
                 <PainelNav to={`/produtor/contas/${id}`} titulo="Adicionar Conta Bancária" />
                 <Container>

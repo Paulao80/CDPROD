@@ -9,14 +9,20 @@ import Main from '../../Components/Main';
 import PainelNav from '../../Components/PainelNav';
 import { Produtor, RowsDeleted } from '../../Interfaces';
 import Api from '../../Services/Api';
-import { Props } from '../../Types';
 import './style.css';
+import Logo from '../../Assets/images/logo.png';
+import { useDispatch } from 'react-redux';
+import { ProdutoresActive } from '../../Actions/PageActiveActions';
 
 interface Param {
     id: string;
 }
 
-const Contas = ({ Logo, UserImg }: Props) => {
+const Contas = () => {
+    const dispatch = useDispatch();
+
+    dispatch(ProdutoresActive());
+
     const { id } = useParams<Param>();
     const location = useLocation();
 
@@ -102,7 +108,7 @@ const Contas = ({ Logo, UserImg }: Props) => {
     return (
         <>
             <Header logo={Logo} titulo="CDTR" />
-            <Aside UserImg={UserImg} />
+            <Aside />
             <Main>
                 <PainelNav to={`/produtor`} titulo="Contas" />
                 <MUIDataTable

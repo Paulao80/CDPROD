@@ -8,16 +8,22 @@ import BtnEdt from '../../Components/ButtonEdt';
 import PainelNav from '../../Components/PainelNav';
 import { useParams } from 'react-router-dom';
 import ShowData from '../../Components/ShowData';
-import { Props } from '../../Types';
 import { Propriedade } from '../../Interfaces';
 import { useEffect, useState } from 'react';
 import Api from '../../Services/Api';
+import Logo from '../../Assets/images/logo.png';
+import { useDispatch } from 'react-redux';
+import { PropriedadesActive } from '../../Actions/PageActiveActions';
 
 interface Param {
     id: string;
 }
 
-const DetailsPropriedade = ({ Logo, UserImg }: Props) => {
+const DetailsPropriedade = () => {
+    const dispatch = useDispatch();
+
+    dispatch(PropriedadesActive());
+
     const { id } = useParams<Param>();
 
     const [propriedade, setPropriedade] = useState<Propriedade>();
@@ -37,7 +43,7 @@ const DetailsPropriedade = ({ Logo, UserImg }: Props) => {
     return (
         <>
             <Header logo={Logo} titulo="CDTR" />
-            <Aside UserImg={UserImg} />
+            <Aside />
             <Main>
                 <PainelNav to="/propriedade" titulo="Detalhes da Propriedade" />
                 <Container>
