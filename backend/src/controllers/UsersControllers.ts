@@ -11,15 +11,31 @@ import UserView from '../views/UserView';
 export default {
     async register(request: Request, response: Response){
 
+        const validation = request.body;
+
+        var FotoPath = request.file?.filename;
+        var CreatedAt = new Date(Date.now()).toString();
+
+
+        const schema = Yup.object().shape({
+            Name: Yup.string().required('Nome é Obrigatório'),
+            User: Yup.string().required('Usuário é Obrigatório'),
+            Email: Yup.string().email().required('E-mail é Obrigatório'),
+            Password: Yup.string().min(8,"Senha deve possuir no Minimo 8 caracteres"),
+            FotoPath: Yup.string().notRequired(),
+            CreatedAt: Yup.date().required('CreatedAt é Obrigatório')
+        });
+
+        await schema.validate(validation, {
+            abortEarly: false
+        });
+
         const {
             Name,
             User,
             Email,
             Password            
-        } = request.body;
-
-        var FotoPath = request.file?.filename;
-        var CreatedAt = new Date(Date.now()).toString();
+        } = validation;
 
         const data = {
             Name,
@@ -30,19 +46,6 @@ export default {
             CreatedAt
         };
 
-        const schema = Yup.object().shape({
-            Name: Yup.string().required('Name é Obrigatório'),
-            User: Yup.string().required('User é Obrigatório'),
-            Email: Yup.string().required('Email é Obrigatório'),
-            Password: Yup.string().required('Password é Obrigatório'),
-            FotoPath: Yup.string().notRequired(),
-            CreatedAt: Yup.date().required('CreatedAt é Obrigatório')
-        });
-
-        await schema.validate(data, {
-            abortEarly: false
-        });
-
         const UsersRepository = getRepository(UserClass);
 
         const user = UsersRepository.create(data);
@@ -50,6 +53,38 @@ export default {
         await UsersRepository.save(user);
 
         return response.status(201).json(user);
+    },
+    async update(request: Request, response: Response){
+        const validation = request.body;
+
+        var FotoPath = request.file?.filename;
+
+        const schema = Yup.object().shape({
+            UserId: Yup.number().required('Id é Obrigatório'),
+            Name: Yup.string().required('Nome é Obrigatório'),
+            User: Yup.string().required('Usuário é Obrigatório'),
+            Email: Yup.string().required('E-mail é Obrigatório'),
+            PasswordOld: Yup.string().notRequired().min(8,"Senha deve possuir no Minimo 8 caracteres"),
+            PasswordNew: Yup.string().notRequired().min(8,"Senha deve possuir no Minimo 8 caracteres"),
+            PasswordNewConfimation: Yup.string().notRequired().test('passwords-match', 'Passwords must match', function(value){
+                return this.parent.PasswordNew === value
+            })
+        });
+
+        await schema.validate(validation, {
+            abortEarly: false
+        });
+
+        const {
+            UserId,
+            Name,
+            User,
+            Email,
+            PasswordOld,
+            PasswordNew,
+            PasswordNewConfimation
+        } = validation;
+
     },
     async login(request: Request, response: Response){
         const {
@@ -80,27 +115,37 @@ export default {
         })
         .getOne();
 
-        if(!user) return response.status(400).json({Message: "Email or Password Incorrect"});
+        if(!user) {
+            return response.status(400).json({Message: "E-mail ou Senha incorreta!"});
+        }
+        else{
 
-        const passwordMatch = await bcrypt.compare(Password, user.Password);
+            const passwordMatch = await bcrypt.compare(Password, user.Password);
 
-        if(!passwordMatch) return response.status(400).json({Message: "Email or Password Incorrect"});
-
-        if(process.env.TOKEN_SECRET_KEY){
-            const dataToken: DataToken = {
-                _id: user.UserId,
-                _name: user.Name
+            if(!passwordMatch) {
+                return response.status(400).json({Message: "E-mail ou Senha incorreta!"});
+            }
+            else{
+                if(process.env.TOKEN_SECRET_KEY){
+                    const dataToken: DataToken = {
+                        _id: user.UserId,
+                        _name: user.Name
+                    }
+    
+                    const token = jwt.sign(dataToken, process.env.TOKEN_SECRET_KEY,{
+                        expiresIn: 43200
+                    });
+    
+                    response.header('authorization-token', token);
+                    return response.json(UserView.renderLogin(user));
+                }
+                else{
+                    return response.status(400).json({ message: "Falha, entrar em contato com Suporte!"});
+                }   
+                
             }
 
-            const token = jwt.sign(dataToken, process.env.TOKEN_SECRET_KEY,{
-                expiresIn: 43200
-            });
-
-            response.header('authorization-token', token);
-            return response.json(UserView.renderLogin(user));
-        }
-
-        return response.status(400).json({ message: "Failed generated token!"});
+        }        
     },
     async show(request: RequestWithUser, response: Response){
         const user = request.user;

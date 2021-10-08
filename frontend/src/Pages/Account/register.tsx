@@ -9,8 +9,18 @@ import { TextField } from '@material-ui/core';
 import { ChangeEvent, FormEvent, useState } from 'react';
 import './style.css';
 import Logo from '../../Assets/images/vaca.png';
-import Api from '../../Services/Api';
 import { useHistory } from 'react-router-dom';
+import { register } from './../../Services/Auth';
+
+interface Error {
+    message: string;
+    errors: {
+        Email: string[];
+        Name: string[];
+        User: string[];
+        Password: string[];
+    };
+}
 
 const Register = () => {
 
@@ -22,6 +32,7 @@ const Register = () => {
     const [Password, setPassword] = useState("");
     const [image, setImage] = useState<File[]>([]);
     const [preview, setPreview] = useState<string[]>([]);
+    const [ErrorForm, SetErrorForm] = useState<Error>();
 
     const SelectedImages = (event: ChangeEvent<HTMLInputElement>) => {
 
@@ -43,20 +54,13 @@ const Register = () => {
     const onSubmit = async (event: FormEvent) => {
         event.preventDefault();
 
-        const data = new FormData();
-
-        data.append('Name', Name);
-        data.append('User', User);
-        data.append('Email', Email);
-        data.append('Password', Password);
-
-        image.forEach(image => {
-            data.append('image', image);
-        });
-
-        await Api.post('/user/register', data);
-
-        history.push('/dashboard');
+        await register(Name, User, Email, Password, image)
+            .then((response) => {
+                if (response.status === 201) history.push('/dashboard');
+                else {
+                    SetErrorForm(response.data);
+                }
+            });
     }
 
     return (
@@ -74,11 +78,21 @@ const Register = () => {
                             label="Nome"
                             variant="outlined"
                             fullWidth
-                            required
+                            // required
                             margin="normal"
                             value={Name}
                             onChange={event => setName(event.target.value)}
                         />
+
+                        {
+                            ErrorForm?.errors.Name !== undefined
+                                ? (
+                                    <div className="Message-error">
+                                        <p>{ErrorForm.errors.Name[0]}</p>
+                                    </div>
+                                )
+                                : ""
+                        }
 
                         <TextField
                             name="User"
@@ -86,11 +100,21 @@ const Register = () => {
                             label="Usuário"
                             variant="outlined"
                             fullWidth
-                            required
+                            // required
                             margin="normal"
                             value={User}
                             onChange={event => setUser(event.target.value)}
                         />
+
+                        {
+                            ErrorForm?.errors.User !== undefined
+                                ? (
+                                    <div className="Message-error">
+                                        <p>{ErrorForm.errors.User[0]}</p>
+                                    </div>
+                                )
+                                : ""
+                        }
 
                         <TextField
                             name="Email"
@@ -98,12 +122,21 @@ const Register = () => {
                             label="Email"
                             variant="outlined"
                             fullWidth
-                            required
+                            // required
                             margin="normal"
                             value={Email}
                             onChange={event => setEmail(event.target.value)}
                         />
 
+                        {
+                            ErrorForm?.errors.Email !== undefined
+                                ? (
+                                    <div className="Message-error">
+                                        <p>{ErrorForm.errors.Email[0]}</p>
+                                    </div>
+                                )
+                                : ""
+                        }
 
                         <TextField
                             type="password"
@@ -112,11 +145,21 @@ const Register = () => {
                             label="Senha"
                             variant="outlined"
                             fullWidth
-                            required
+                            // required
                             margin="normal"
                             value={Password}
                             onChange={event => setPassword(event.target.value)}
                         />
+
+                        {
+                            ErrorForm?.errors.Password !== undefined
+                                ? (
+                                    <div className="Message-error">
+                                        <p>{ErrorForm.errors.Password[0]}</p>
+                                    </div>
+                                )
+                                : ""
+                        }
 
                         <TextField
                             name="Foto"
@@ -125,7 +168,7 @@ const Register = () => {
                             variant="outlined"
                             type="file"
                             fullWidth
-                            required
+                            // required
                             margin="normal"
                             InputLabelProps={{
                                 shrink: true,

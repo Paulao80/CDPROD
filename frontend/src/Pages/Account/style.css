@@ -6,7 +6,7 @@
 
 .painel-login {
   width: 600px;
-  height: 500px;
+  height: 520px;
   background-color: rgba(0, 0, 0, 0.75);
   padding: 20px;
   box-sizing: border-box;
@@ -35,12 +35,30 @@
 
 .painel-login button {
   margin-top: 10px;
-  padding: 15px;
   display: inline-block;
   border: none;
   border-radius: 10px;
   color: white;
   background-color: #ff9900;
+  font-size: 18px;
+  font-weight: bold;
+  width: 100%;
+  height: 50px;
+  cursor: pointer;
+  position: relative;
+}
+
+.painel-login button:hover {
+  background-color: #ffac2e;
+}
+
+.painel-login button img {
+  width: 40px;
+  height: 40px;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .input-account {
@@ -66,4 +84,13 @@
   left: 50%;
   transform: translateX(-50%);
   margin-top: 7.5px;
+}
+
+.Message-error {
+  color: rgb(255, 71, 71);
+  margin-top: 10px;
+}
+
+.Message-error p {
+  height: 20px;
 }
