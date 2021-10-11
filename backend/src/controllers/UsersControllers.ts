@@ -7,6 +7,8 @@ import jwt from 'jsonwebtoken';
 import {DataToken} from '../interfaces';
 import {RequestWithUser} from '../interfaces';
 import UserView from '../views/UserView';
+import fs from 'fs';
+import path from "path";
 
 export default {
     async register(request: Request, response: Response){
@@ -59,14 +61,20 @@ export default {
 
         var FotoPath = request.file?.filename;
 
+        const UsersRepository = getRepository(UserClass);
+
         const schema = Yup.object().shape({
             UserId: Yup.number().required('Id é Obrigatório'),
             Name: Yup.string().required('Nome é Obrigatório'),
             User: Yup.string().required('Usuário é Obrigatório'),
             Email: Yup.string().required('E-mail é Obrigatório'),
-            PasswordOld: Yup.string().notRequired().min(8,"Senha deve possuir no Minimo 8 caracteres"),
+            PasswordOld: Yup.string().notRequired().min(8,"Senha deve possuir no Minimo 8 caracteres").test('password-check','A senha não confere!', async function(value){
+                const userFind = await UsersRepository.findOne(this.parent.UserId);
+                const passwordMatch = value !== undefined && userFind !== undefined ? await bcrypt.compare(value, userFind.Password) : false;
+                return value !== undefined ?  passwordMatch : true;
+            }),
             PasswordNew: Yup.string().notRequired().min(8,"Senha deve possuir no Minimo 8 caracteres"),
-            PasswordNewConfimation: Yup.string().notRequired().test('passwords-match', 'Passwords must match', function(value){
+            PasswordNewConfimation: Yup.string().notRequired().test('passwords-match', 'As senhas não conferem!', function(value){
                 return this.parent.PasswordNew === value
             })
         });
@@ -81,10 +89,41 @@ export default {
             User,
             Email,
             PasswordOld,
-            PasswordNew,
-            PasswordNewConfimation
-        } = validation;
+            PasswordNew            
+        } = validation;        
 
+        const userFind = await UsersRepository.findOne(UserId);
+
+        if(userFind){
+
+            if(FotoPath !== undefined && FotoPath !== null) {                     
+
+                if(userFind.FotoPath !== undefined && userFind.FotoPath !== "" && userFind.FotoPath !== null){    
+                    let pathFoto = path.join(__dirname, '..', '..', 'uploads', userFind.FotoPath);
+                    if(fs.existsSync(pathFoto)) fs.unlinkSync(pathFoto);
+                }
+                    
+            }
+
+            const data = {
+                UserId: parseInt(UserId),
+                Name,
+                User,
+                Email,
+                Password: PasswordOld !== undefined ? await bcrypt.hash(PasswordNew,10) : userFind.Password,
+                FotoPath: FotoPath !== undefined && FotoPath !== null ? FotoPath : userFind.FotoPath,
+                CreatedAt: userFind.CreatedAt
+            };  
+    
+            const user = UsersRepository.create(data);
+    
+            await UsersRepository.save(user);
+
+            return response.json(UserView.renderLogin(user));
+        }
+        else{
+            return response.status(404).json({ message: 'Usuário não encontrado!'});
+        }     
     },
     async login(request: Request, response: Response){
         const {

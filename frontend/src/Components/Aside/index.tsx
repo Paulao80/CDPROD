@@ -38,6 +38,7 @@ const Aside = () => {
                     <img src={user ? user.FotoPath : userImg} alt="user Imagem" />
                 </div>
                 <h2>{user ? user.Name : ""}</h2>
+                <Link to="/account/manage">Gerenciar</Link>
                 <Link to="#" onClick={() => logout()}>Sair</Link>
             </div>
             <div className="menu_lateral">

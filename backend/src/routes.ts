@@ -16,6 +16,7 @@ const routes = Router();
 const upload = multer(uploadConfig);
 
 routes.post('/user/register', upload.single('image'), UsersControllers.register);
+routes.put('/user', Auth.verify, upload.single('image'), UsersControllers.update);
 routes.post('/user/login', UsersControllers.login);
 routes.get('/user', Auth.verify, UsersControllers.show);
 

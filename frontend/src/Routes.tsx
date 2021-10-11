@@ -3,6 +3,7 @@ import PrivateRoute from './Components/PrivateRoute';
 import Landing from './Pages/Landing';
 import Login from './Pages/Account/login';
 import Register from './Pages/Account/register';
+import Manage from './Pages/Account/manage';
 import Dashboard from './Pages/Dashboard';
 import Produtor from './Pages/Produtor';
 import Propriedade from './Pages/Propriedade';
@@ -33,6 +34,7 @@ const Routes = () => {
 
                 <Route path="/account/login" component={Login} exact />
                 <PrivateRoute path="/account/register" component={Register} exact />
+                <PrivateRoute path="/account/manage" component={Manage} exact />
 
                 {/* -------------------------------------------------------- */}
 

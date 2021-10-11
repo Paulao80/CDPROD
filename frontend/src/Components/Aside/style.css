@@ -15,7 +15,7 @@ aside {
 }
 
 .user_info {
-  height: 250px;
+  height: 260px;
   width: 100%;
   background-color: var(--cor-terceraria);
   text-align: center;
@@ -45,6 +45,7 @@ aside {
 .user_info a {
   text-decoration: none;
   color: blue;
+  display: block;
 }
 
 .menu_lateral ul {
