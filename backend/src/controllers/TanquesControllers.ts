@@ -81,9 +81,9 @@ export default {
         const schema = Yup.object().shape({
             Rota: Yup.string().nullable(),
             Capacidade: Yup.number().required('Capacidade é Obrigatória'),
-            MediaDiaria: Yup.number().required('MediaDiaria é Obrigatória'),
-            TipoTanque: Yup.number().required('TipoTanque é Obrigatório'),
-            NumeroSerie: Yup.string().required('NumeroSerie é Obrigatório'),
+            MediaDiaria: Yup.number().required('Média Diária é Obrigatória'),
+            TipoTanque: Yup.number().required('Tipo de Tanque é Obrigatório'),
+            NumeroSerie: Yup.string().required('Número de Série é Obrigatório'),
             Marca: Yup.string().required('Marca é Obrigatória'),
             Latitude: Yup.number().required('Latitude é Obrigatória'),
             Longitude: Yup.number().required('Longitude é Obrigatória'),
@@ -92,7 +92,7 @@ export default {
                 Yup.object().shape({
                     Responsavel: Yup.boolean().required('Responsavel é Obrigatório'),
                     Produtor: Yup.object().shape({
-                        ProdutorId: Yup.number().required('ProdutorId é Obrigatório'),
+                        ProdutorId: Yup.number().required('Produtor é Obrigatório'),
                         Nome: Yup.string().notRequired(),
                         DataNasc: Yup.date().notRequired(),
                         TipoPessoa: Yup.number().notRequired(),
@@ -147,32 +147,10 @@ export default {
         return response.status(201).json(tanque);
     },
     async update(request: Request, response: Response){
-        const {
-            TanqueId,
-            Rota,
-            Capacidade,
-            MediaDiaria,
-            TipoTanque,            
-            NumeroSerie,
-            Marca,
-            Latitude,
-            Longitude
-        } = request.body;
+
+        const validation = request.body;
 
         var FotoPath = request.file?.filename;
-
-        const data = {
-            TanqueId: parseInt(TanqueId),
-            Rota,
-            Capacidade: parseFloat(Capacidade),
-            MediaDiaria: parseFloat(MediaDiaria),
-            TipoTanque: parseInt(TipoTanque),            
-            NumeroSerie,
-            Marca,
-            Latitude: parseFloat(Latitude),
-            Longitude: parseFloat(Longitude),
-            FotoPath
-        }
 
         const schema = Yup.object().shape({
             TanqueId: Yup.number().required('TanqueId é Obrigatório'),
@@ -207,13 +185,40 @@ export default {
             ).notRequired()
         });
 
-        await schema.validate(data, {
+        await schema.validate(validation, {
             abortEarly: false
         });
+
+        const {
+            TanqueId,
+            Rota,
+            Capacidade,
+            MediaDiaria,
+            TipoTanque,            
+            NumeroSerie,
+            Marca,
+            Latitude,
+            Longitude
+        } = validation;
+
+        const data = {
+            TanqueId: parseInt(TanqueId),
+            Rota,
+            Capacidade: parseFloat(Capacidade),
+            MediaDiaria: parseFloat(MediaDiaria),
+            TipoTanque: parseInt(TipoTanque),            
+            NumeroSerie,
+            Marca,
+            Latitude: parseFloat(Latitude),
+            Longitude: parseFloat(Longitude),
+            FotoPath
+        }
 
         const TanquesRepository = getRepository(Tanque);
 
         let tanque = await TanquesRepository.findOne(data.TanqueId);
+
+        if(!tanque) return response.status(404).json({message: "Tanque não encontrado"});
 
         if(tanque !== null && tanque !== undefined){
         
@@ -229,7 +234,6 @@ export default {
                 data.FotoPath = tanque.FotoPath;
             }
         }
-
 
         tanque = TanquesRepository.create(data);
 

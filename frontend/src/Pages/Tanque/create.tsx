@@ -17,6 +17,25 @@ import Logo from '../../Assets/images/logo.png';
 import { useDispatch } from 'react-redux';
 import { TanquesActive } from '../../Actions/PageActiveActions';
 
+interface Position {
+    Latitude: number;
+    Longitude: number;
+}
+
+interface Error {
+    message: string;
+    errors: {
+        Capacidade: string[];
+        Latitude: string[];
+        Longitude: string[];
+        Marca: string[];
+        MediaDiaria: string[];
+        NumeroSerie: string[];
+        TipoTanque: string[];
+        Rota: string[];
+    };
+}
+
 const CreateTanque = () => {
     const dispatch = useDispatch();
 
@@ -24,7 +43,7 @@ const CreateTanque = () => {
 
     const history = useHistory();
 
-    const [position, setPosition] = useState({ Latitude: 0, Longitude: 0 })
+    const [position, setPosition] = useState<Position>()
 
     const LocationMarker = () => {
 
@@ -40,7 +59,7 @@ const CreateTanque = () => {
         })
 
         return (
-            position.Latitude !== 0 ?
+            position !== undefined ?
                 <Marker
                     position={[position.Latitude, position.Longitude]}
                     interactive={false}
@@ -52,37 +71,42 @@ const CreateTanque = () => {
 
     }
 
-    const [Rota, setRota] = useState("");
-    const [Capacidade, setCapacidade] = useState(0);
-    const [MediaDiaria, setMediaDiaria] = useState(0);
-    const [TipoTanque, setTipoTanque] = useState(1);
-    const [NumeroSerie, setNumeroSerie] = useState("");
-    const [Marca, setMarca] = useState("");
+    const [Rota, setRota] = useState<string>();
+    const [Capacidade, setCapacidade] = useState<number>();
+    const [MediaDiaria, setMediaDiaria] = useState<number>();
+    const [TipoTanque, setTipoTanque] = useState<number>();
+    const [NumeroSerie, setNumeroSerie] = useState<string>();
+    const [Marca, setMarca] = useState<string>();
     const [image, setImage] = useState<File[]>([]);
     const [preview, setPreview] = useState<string[]>([]);
+    const [ErrorForm, setErrorForm] = useState<Error>();
 
     const OnSubmit = async (event: FormEvent) => {
         event.preventDefault();
 
-        const { Latitude, Longitude } = position;
-
         const data = new FormData();
 
-        data.append('Rota', Rota);
-        data.append('Capacidade', String(Capacidade));
-        data.append('MediaDiaria', String(MediaDiaria));
-        data.append('TipoTanque', String(TipoTanque));
-        data.append('NumeroSerie', NumeroSerie);
-        data.append('Marca', Marca);
-        data.append('Latitude', String(Latitude));
-        data.append('Longitude', String(Longitude));
+        if (Rota) data.append('Rota', Rota);
+        if (Capacidade) data.append('Capacidade', String(Capacidade));
+        if (MediaDiaria) data.append('MediaDiaria', String(MediaDiaria));
+        if (TipoTanque) data.append('TipoTanque', String(TipoTanque));
+        if (NumeroSerie) data.append('NumeroSerie', NumeroSerie);
+        if (Marca) data.append('Marca', Marca);
+        if (position) {
+            data.append('Latitude', String(position.Latitude));
+            data.append('Longitude', String(position.Longitude));
+        }
         image.forEach(image => {
             data.append('image', image);
         })
 
-        await Api.post('/tanques', data);
-
-        history.push('/tanque');
+        await Api.post('/tanques', data).then(response => {
+            response.status === 201
+                ? history.push('/tanque')
+                : alert("Não foi possivel adicionar o Tanque");
+        }).catch(error => {
+            setErrorForm(error.response.data);
+        });
     }
 
     const SelectedImages = (event: ChangeEvent<HTMLInputElement>) => {
@@ -111,6 +135,17 @@ const CreateTanque = () => {
                 <Container>
 
                     <form onSubmit={OnSubmit}>
+
+                        {
+                            ErrorForm?.message !== undefined
+                                ? (
+                                    <div className="Message-error">
+                                        <p>{ErrorForm.message}</p>
+                                    </div>
+                                )
+                                : ""
+                        }
+
                         <MapContainer
                             center={[-10.930750223902585, -61.927419334264975]}
                             zoom={14}
@@ -127,17 +162,37 @@ const CreateTanque = () => {
                             <LocationMarker />
                         </MapContainer>
 
+                        {
+                            ErrorForm?.errors.Latitude !== undefined && ErrorForm?.errors.Longitude !== undefined
+                                ? (
+                                    <div className="Message-error">
+                                        <p>{ErrorForm.errors.Latitude}</p>
+                                        <p>{ErrorForm.errors.Longitude}</p>
+                                    </div>
+                                )
+                                : ""
+                        }
+
                         <TextField
                             name="Rota"
                             id="Rota"
                             label="Rota"
                             variant="outlined"
                             fullWidth
-                            required
                             margin="normal"
                             value={Rota}
                             onChange={event => setRota(event.target.value)}
                         />
+
+                        {
+                            ErrorForm?.errors.Rota !== undefined
+                                ? (
+                                    <div className="Message-error">
+                                        <p>{ErrorForm.errors.Rota}</p>
+                                    </div>
+                                )
+                                : ""
+                        }
 
                         <TextField
                             name="Capacidade"
@@ -146,11 +201,20 @@ const CreateTanque = () => {
                             variant="outlined"
                             type="number"
                             fullWidth
-                            required
                             margin="normal"
                             value={Capacidade}
                             onChange={event => setCapacidade(Number(event.target.value))}
                         />
+
+                        {
+                            ErrorForm?.errors.Capacidade !== undefined
+                                ? (
+                                    <div className="Message-error">
+                                        <p>{ErrorForm.errors.Capacidade}</p>
+                                    </div>
+                                )
+                                : ""
+                        }
 
                         <TextField
                             name="MediaDiaria"
@@ -159,11 +223,20 @@ const CreateTanque = () => {
                             variant="outlined"
                             type="number"
                             fullWidth
-                            required
                             margin="normal"
                             value={MediaDiaria}
                             onChange={event => setMediaDiaria(Number(event.target.value))}
                         />
+
+                        {
+                            ErrorForm?.errors.MediaDiaria !== undefined
+                                ? (
+                                    <div className="Message-error">
+                                        <p>{ErrorForm.errors.MediaDiaria}</p>
+                                    </div>
+                                )
+                                : ""
+                        }
 
                         <TextField
                             name="TipoTanque"
@@ -172,9 +245,8 @@ const CreateTanque = () => {
                             variant="outlined"
                             select
                             fullWidth
-                            required
                             margin="normal"
-                            value={TipoTanque ? TipoTanque : 1}
+                            value={TipoTanque}
                             onChange={event => setTipoTanque(Number(event.target.value))}
                         >
 
@@ -187,6 +259,16 @@ const CreateTanque = () => {
 
                         </TextField>
 
+                        {
+                            ErrorForm?.errors.TipoTanque !== undefined
+                                ? (
+                                    <div className="Message-error">
+                                        <p>{ErrorForm.errors.TipoTanque}</p>
+                                    </div>
+                                )
+                                : ""
+                        }
+
                         <TextField
                             name="Foto"
                             id="Foto"
@@ -194,7 +276,6 @@ const CreateTanque = () => {
                             variant="outlined"
                             type="file"
                             fullWidth
-                            required
                             margin="normal"
                             InputLabelProps={{
                                 shrink: true,
@@ -214,11 +295,20 @@ const CreateTanque = () => {
                             label="Nº de Série do Tanque"
                             variant="outlined"
                             fullWidth
-                            required
                             margin="normal"
                             value={NumeroSerie}
                             onChange={event => setNumeroSerie(event.target.value)}
                         />
+
+                        {
+                            ErrorForm?.errors.NumeroSerie !== undefined
+                                ? (
+                                    <div className="Message-error">
+                                        <p>{ErrorForm.errors.NumeroSerie}</p>
+                                    </div>
+                                )
+                                : ""
+                        }
 
                         <TextField
                             name="Marca"
@@ -226,11 +316,20 @@ const CreateTanque = () => {
                             label="Marca do Tanque"
                             variant="outlined"
                             fullWidth
-                            required
                             margin="normal"
                             value={Marca}
                             onChange={event => setMarca(event.target.value)}
                         />
+
+                        {
+                            ErrorForm?.errors.Marca !== undefined
+                                ? (
+                                    <div className="Message-error">
+                                        <p>{ErrorForm.errors.Marca}</p>
+                                    </div>
+                                )
+                                : ""
+                        }
 
                         <BtnSave />
                     </form>

@@ -27,6 +27,21 @@ interface Position {
     Longitude: number;
 }
 
+interface Error {
+    message: string;
+    errors: {
+        ProdutorId: string[];
+        Capacidade: string[];
+        Latitude: string[];
+        Longitude: string[];
+        Marca: string[];
+        MediaDiaria: string[];
+        NumeroSerie: string[];
+        TipoTanque: string[];
+        Rota: string[];
+    };
+}
+
 const EditTanque = () => {
     const dispatch = useDispatch();
 
@@ -42,19 +57,26 @@ const EditTanque = () => {
     useEffect(() => {
         Api.get(`/tanques/${id}`).then(response => {
             setTanque(response.data);
+        }).catch(error => {
+            if (error.response.status === 500) {
+                history.push('/tanque');
+            }
         });
-    }, [id]);
+    }, [id, history]);
 
-    const [Rota, setRota] = useState("");
-    const [Capacidade, setCapacidade] = useState(0);
-    const [MediaDiaria, setMediaDiaria] = useState(0);
-    const [TipoTanque, setTipoTanque] = useState(1);
-    const [NumeroSerie, setNumeroSerie] = useState("");
-    const [Marca, setMarca] = useState("");
+    const [TanqueId, setTanqueId] = useState<number>();
+    const [Rota, setRota] = useState<string>();
+    const [Capacidade, setCapacidade] = useState<number>(0);
+    const [MediaDiaria, setMediaDiaria] = useState<number>(0);
+    const [TipoTanque, setTipoTanque] = useState<number>(0);
+    const [NumeroSerie, setNumeroSerie] = useState<string>();
+    const [Marca, setMarca] = useState<string>();
     const [image, setImage] = useState<File[]>([]);
     const [preview, setPreview] = useState<string[]>([]);
+    const [ErrorForm, setErrorForm] = useState<Error>();
 
     useEffect(() => {
+        setTanqueId(tanque.TanqueId);
         setRota(tanque.Rota);
         setCapacidade(tanque.Capacidade);
         setMediaDiaria(tanque.MediaDiaria);
@@ -125,26 +147,32 @@ const EditTanque = () => {
     const OnSubmit = async (event: FormEvent) => {
         event.preventDefault();
 
-        const { Latitude, Longitude } = position;
-
         const data = new FormData();
 
-        data.append('TanqueId', String(tanque.TanqueId));
-        data.append('Rota', Rota);
-        data.append('Capacidade', String(Capacidade));
-        data.append('MediaDiaria', String(MediaDiaria));
-        data.append('TipoTanque', String(TipoTanque));
-        data.append('NumeroSerie', NumeroSerie);
-        data.append('Marca', Marca);
-        data.append('Latitude', String(Latitude));
-        data.append('Longitude', String(Longitude));
+        if (TanqueId) data.append('TanqueId', String(TanqueId));
+        if (Rota) data.append('Rota', Rota);
+        if (Capacidade > 0) data.append('Capacidade', String(Capacidade));
+        if (MediaDiaria > 0) data.append('MediaDiaria', String(MediaDiaria));
+        if (TipoTanque) data.append('TipoTanque', String(TipoTanque));
+        if (NumeroSerie) data.append('NumeroSerie', NumeroSerie);
+        if (Marca) data.append('Marca', Marca);
+        if (position) {
+            data.append('Latitude', String(position.Latitude));
+            data.append('Longitude', String(position.Longitude));
+        }
         image.forEach(image => {
             data.append('image', image);
         })
 
-        await Api.put('/tanques', data);
+        console.log(data.get('Capacidade'));
 
-        history.push('/tanque');
+        await Api.put('/tanques', data).then(response => {
+            response.status === 200
+                ? history.push('/tanque')
+                : alert("Não foi possivel adicionar o Tanque");
+        }).catch(error => {
+            setErrorForm(error.response.data);
+        });
     }
 
     return (
@@ -156,6 +184,16 @@ const EditTanque = () => {
                 <Container>
 
                     <form onSubmit={OnSubmit}>
+
+                        {
+                            ErrorForm?.message !== undefined
+                                ? (
+                                    <div className="Message-error">
+                                        <p>{ErrorForm.message}</p>
+                                    </div>
+                                )
+                                : ""
+                        }
 
                         <MapContainer
                             center={[position.Latitude, position.Longitude]}
@@ -173,13 +211,23 @@ const EditTanque = () => {
                             <LocationMarker />
                         </MapContainer>
 
+                        {
+                            ErrorForm?.errors.Latitude !== undefined && ErrorForm?.errors.Longitude !== undefined
+                                ? (
+                                    <div className="Message-error">
+                                        <p>{ErrorForm.errors.Latitude}</p>
+                                        <p>{ErrorForm.errors.Longitude}</p>
+                                    </div>
+                                )
+                                : ""
+                        }
+
                         <TextField
                             name="Rota"
                             id="Rota"
                             label="Rota"
                             variant="outlined"
                             fullWidth
-                            required
                             margin="normal"
                             InputLabelProps={{
                                 shrink: true,
@@ -188,6 +236,16 @@ const EditTanque = () => {
                             onChange={event => setRota(event.target.value)}
                         />
 
+                        {
+                            ErrorForm?.errors.Rota !== undefined
+                                ? (
+                                    <div className="Message-error">
+                                        <p>{ErrorForm.errors.Rota}</p>
+                                    </div>
+                                )
+                                : ""
+                        }
+
                         <TextField
                             name="Capacidade"
                             id="Capacidade"
@@ -195,7 +253,6 @@ const EditTanque = () => {
                             variant="outlined"
                             type="number"
                             fullWidth
-                            required
                             margin="normal"
                             InputLabelProps={{
                                 shrink: true,
@@ -204,6 +261,16 @@ const EditTanque = () => {
                             onChange={event => setCapacidade(Number(event.target.value))}
                         />
 
+                        {
+                            ErrorForm?.errors.Capacidade !== undefined
+                                ? (
+                                    <div className="Message-error">
+                                        <p>{ErrorForm.errors.Capacidade}</p>
+                                    </div>
+                                )
+                                : ""
+                        }
+
                         <TextField
                             name="MediaDiaria"
                             id="MediaDiaria"
@@ -211,7 +278,6 @@ const EditTanque = () => {
                             variant="outlined"
                             type="number"
                             fullWidth
-                            required
                             margin="normal"
                             InputLabelProps={{
                                 shrink: true,
@@ -220,6 +286,16 @@ const EditTanque = () => {
                             onChange={event => setMediaDiaria(Number(event.target.value))}
                         />
 
+                        {
+                            ErrorForm?.errors.MediaDiaria !== undefined
+                                ? (
+                                    <div className="Message-error">
+                                        <p>{ErrorForm.errors.MediaDiaria}</p>
+                                    </div>
+                                )
+                                : ""
+                        }
+
                         <TextField
                             name="TipoTanque"
                             id="TipoTanque"
@@ -227,9 +303,8 @@ const EditTanque = () => {
                             variant="outlined"
                             select
                             fullWidth
-                            required
                             margin="normal"
-                            value={TipoTanque ? TipoTanque : 1}
+                            value={TipoTanque}
                             onChange={event => setTipoTanque(Number(event.target.value))}
                         >
 
@@ -241,6 +316,16 @@ const EditTanque = () => {
                             </MenuItem>
 
                         </TextField>
+
+                        {
+                            ErrorForm?.errors.TipoTanque !== undefined
+                                ? (
+                                    <div className="Message-error">
+                                        <p>{ErrorForm.errors.TipoTanque}</p>
+                                    </div>
+                                )
+                                : ""
+                        }
 
                         <TextField
                             name="Foto"
@@ -268,7 +353,6 @@ const EditTanque = () => {
                             label="Nº de Série do Tanque"
                             variant="outlined"
                             fullWidth
-                            required
                             margin="normal"
                             InputLabelProps={{
                                 shrink: true,
@@ -277,13 +361,22 @@ const EditTanque = () => {
                             onChange={event => setNumeroSerie(event.target.value)}
                         />
 
+                        {
+                            ErrorForm?.errors.NumeroSerie !== undefined
+                                ? (
+                                    <div className="Message-error">
+                                        <p>{ErrorForm.errors.NumeroSerie}</p>
+                                    </div>
+                                )
+                                : ""
+                        }
+
                         <TextField
                             name="Marca"
                             id="Marca"
                             label="Marca do Tanque"
                             variant="outlined"
                             fullWidth
-                            required
                             margin="normal"
                             InputLabelProps={{
                                 shrink: true,
@@ -291,6 +384,16 @@ const EditTanque = () => {
                             value={Marca}
                             onChange={event => setMarca(event.target.value)}
                         />
+
+                        {
+                            ErrorForm?.errors.Marca !== undefined
+                                ? (
+                                    <div className="Message-error">
+                                        <p>{ErrorForm.errors.Marca}</p>
+                                    </div>
+                                )
+                                : ""
+                        }
 
                         <BtnSave />
 

@@ -66,14 +66,14 @@ export default {
         };
 
         const schema = Yup.object().shape({
-            Nirf: Yup.string().required('Nirf é Obrigatório'),
+            Nirf: Yup.string().required('NIRF é Obrigatório'),
             Nome: Yup.string().required('Nome é Obrigatório'),
-            InscEstadual: Yup.string().required('InscEstadual é Obrigatório'),
-            Endereco: Yup.string().required('Endereco é Obrigatório'),
-            Municipio: Yup.string().required('Municipio é Obrigatório'),
+            InscEstadual: Yup.string().required('Inscrição Estadual é Obrigatória'),
+            Endereco: Yup.string().required('Endereço é Obrigatório'),
+            Municipio: Yup.string().required('Município é Obrigatório'),
             Estado: Yup.string().required('Estado é Obrigatório'),
             Produtor: Yup.object().shape({
-                ProdutorId: Yup.number().required('ProdutorId é Obrigatório'),
+                ProdutorId: Yup.number().required('Produtor é Obrigatório'),
                 Nome: Yup.string().notRequired(),
                 DataNasc: Yup.date().notRequired(),
                 TipoPessoa: Yup.number().notRequired(),
@@ -142,6 +142,10 @@ export default {
         });
 
         const PropriedadesRepository = getRepository(Propriedade);
+
+        const find = await PropriedadesRepository.findOne(PropriedadeId);
+
+        if(!find) return response.status(404).json({message: "Propriedade não encontrada"});
 
         const propriedade = PropriedadesRepository.create(data);
 

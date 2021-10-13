@@ -21,6 +21,20 @@ interface Param {
     id: string;
 }
 
+interface Error {
+    message: string;
+    errors: {
+        PropriedadeId: string[];
+        Endereco: string[];
+        Estado: string[];
+        InscEstadual: string[];
+        Municipio: string[];
+        Nirf: string[];
+        Nome: string[];
+        "Produtor.ProdutorId": string[];
+    };
+}
+
 const EditPropriedade = () => {
     const dispatch = useDispatch();
 
@@ -44,23 +58,31 @@ const EditPropriedade = () => {
             setUfs(response.data);
         });
 
-        Api.get('/produtores')
-            .then(response => {
-                setProdutores(response.data);
-            });
+        Api.get('/produtores').then(response => {
+            setProdutores(response.data);
+        }).catch(error => {
+            if (error.response.status === 500) {
+                history.push('/propriedade');
+            }
+        });
 
         Api.get(`/propriedades/${id}`).then(response => {
             setPropriedade(response.data);
+        }).catch(error => {
+            if (error.response.status === 500) {
+                history.push('/propriedade');
+            }
         });
-    }, [id]);
+    }, [id, history]);
 
-    const [Nirf, setNirf] = useState("");
-    const [Nome, setNome] = useState("");
-    const [InscEstadual, setInscEstadual] = useState("");
-    const [Endereco, setEndereco] = useState("");
-    const [Municipio, setMunicipio] = useState("");
-    const [Estado, setEstado] = useState("");
-    const [ProdutorId, setProdutorId] = useState(1);
+    const [Nirf, setNirf] = useState<string>();
+    const [Nome, setNome] = useState<string>();
+    const [InscEstadual, setInscEstadual] = useState<string>();
+    const [Endereco, setEndereco] = useState<string>();
+    const [Municipio, setMunicipio] = useState<string>();
+    const [Estado, setEstado] = useState<string>("");
+    const [ProdutorId, setProdutorId] = useState<number>(0);
+    const [ErrorForm, SetErrorForm] = useState<Error>();
 
     useEffect(() => {
         setNirf(propriedade.Nirf);
@@ -93,7 +115,7 @@ const EditPropriedade = () => {
                     : alert("Não foi possivel atualizar a Propriedade");
             })
             .catch(error => {
-                alert("Não foi possivel atualizar a Propriedade");
+                SetErrorForm(error.response.data);
             });
     }
 
@@ -106,6 +128,17 @@ const EditPropriedade = () => {
                 <Container>
 
                     <form onSubmit={OnSubmit}>
+
+                        {
+                            ErrorForm?.message !== undefined
+                                ? (
+                                    <div className="Message-error">
+                                        <p>{ErrorForm.message}</p>
+                                    </div>
+                                )
+                                : ""
+                        }
+
                         <TextField
                             name="Nirf"
                             id="Nirf"
@@ -114,26 +147,48 @@ const EditPropriedade = () => {
                             InputProps={{
                                 inputComponent: NirfMaskCustom as any,
                             }}
+                            InputLabelProps={{
+                                shrink: true,
+                            }}
                             fullWidth
-                            required
                             margin="normal"
                             value={Nirf}
                             onChange={event => setNirf(event.target.value)}
                         />
+
+                        {
+                            ErrorForm?.errors.Nirf !== undefined
+                                ? (
+                                    <div className="Message-error">
+                                        <p>{ErrorForm.errors.Nirf}</p>
+                                    </div>
+                                )
+                                : ""
+                        }
 
                         <TextField
                             name="Nome"
                             id="Nome"
                             label="Nome"
                             variant="outlined"
-                            fullWidth required
+                            fullWidth
                             margin="normal"
                             InputLabelProps={{
                                 shrink: true,
                             }}
-                            value={Nome ? Nome : ""}
+                            value={Nome}
                             onChange={event => setNome(event.target.value)}
                         />
+
+                        {
+                            ErrorForm?.errors.Nome !== undefined
+                                ? (
+                                    <div className="Message-error">
+                                        <p>{ErrorForm.errors.Nome}</p>
+                                    </div>
+                                )
+                                : ""
+                        }
 
                         <TextField
                             name="InscEstadual"
@@ -141,14 +196,23 @@ const EditPropriedade = () => {
                             label="Inscrição Estadual"
                             variant="outlined"
                             fullWidth
-                            required
                             margin="normal"
                             InputLabelProps={{
                                 shrink: true,
                             }}
-                            value={InscEstadual ? InscEstadual : ""}
+                            value={InscEstadual}
                             onChange={event => setInscEstadual(event.target.value)}
                         />
+
+                        {
+                            ErrorForm?.errors.InscEstadual !== undefined
+                                ? (
+                                    <div className="Message-error">
+                                        <p>{ErrorForm.errors.InscEstadual}</p>
+                                    </div>
+                                )
+                                : ""
+                        }
 
                         <TextField
                             name="Endereco"
@@ -156,14 +220,23 @@ const EditPropriedade = () => {
                             label="Endereço"
                             variant="outlined"
                             fullWidth
-                            required
                             margin="normal"
                             InputLabelProps={{
                                 shrink: true,
                             }}
-                            value={Endereco ? Endereco : ""}
+                            value={Endereco}
                             onChange={event => setEndereco(event.target.value)}
                         />
+
+                        {
+                            ErrorForm?.errors.Endereco !== undefined
+                                ? (
+                                    <div className="Message-error">
+                                        <p>{ErrorForm.errors.Endereco}</p>
+                                    </div>
+                                )
+                                : ""
+                        }
 
                         <TextField
                             name="Municipio"
@@ -171,24 +244,33 @@ const EditPropriedade = () => {
                             label="Municipio"
                             variant="outlined"
                             fullWidth
-                            required
                             margin="normal"
                             InputLabelProps={{
                                 shrink: true,
                             }}
-                            value={Municipio ? Municipio : ""}
+                            value={Municipio}
                             onChange={event => setMunicipio(event.target.value)}
                         />
+
+                        {
+                            ErrorForm?.errors.Municipio !== undefined
+                                ? (
+                                    <div className="Message-error">
+                                        <p>{ErrorForm.errors.Municipio}</p>
+                                    </div>
+                                )
+                                : ""
+                        }
 
                         <TextField
                             name="Estado"
                             id="Estado"
                             label="Estado"
                             variant="outlined"
-                            select fullWidth
-                            required
+                            select
+                            fullWidth
                             margin="normal"
-                            value={Estado ? Estado : ""}
+                            value={Estado}
                             onChange={event => setEstado(event.target.value)}
                         >
 
@@ -204,6 +286,16 @@ const EditPropriedade = () => {
 
                         </TextField>
 
+                        {
+                            ErrorForm?.errors.Estado !== undefined
+                                ? (
+                                    <div className="Message-error">
+                                        <p>{ErrorForm.errors.Estado}</p>
+                                    </div>
+                                )
+                                : ""
+                        }
+
                         <TextField
                             name="ProdutorId"
                             id="ProdutorId"
@@ -211,9 +303,8 @@ const EditPropriedade = () => {
                             variant="outlined"
                             select
                             fullWidth
-                            required
                             margin="normal"
-                            value={ProdutorId ? ProdutorId : 1}
+                            value={ProdutorId}
                             onChange={event => setProdutorId(Number(event.target.value))}
                         >
 
@@ -227,6 +318,16 @@ const EditPropriedade = () => {
                                 })
                             }
                         </TextField>
+
+                        {
+                            ErrorForm?.errors['Produtor.ProdutorId'] !== undefined
+                                ? (
+                                    <div className="Message-error">
+                                        <p>{ErrorForm.errors['Produtor.ProdutorId'][0]}</p>
+                                    </div>
+                                )
+                                : ""
+                        }
 
                         <BtnSave />
                     </form>

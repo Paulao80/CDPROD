@@ -1,4 +1,4 @@
-import {Request, Response} from 'express';
+import { Response} from 'express';
 import {RequestWithUser} from '../interfaces';
 import {getRepository} from 'typeorm';
 import Produtor from '../models/Produtor';
@@ -76,15 +76,15 @@ export default {
         
         const schema = Yup.object().shape({
             Nome: Yup.string().required('Nome é Obrigatório'),
-            DataNasc: Yup.date().required('DataNasc é Obrigatório'),
-            TipoPessoa: Yup.number().required('TipoPessoa é Obrigatório'),
-            Nacionalidade: Yup.string().required('Nacionalidade é Obrigatório'),
-            CpfCnpj: Yup.string().required('CpfCnpj é Obrigatório'),
+            DataNasc: Yup.date().required('Data de Nascimento é Obrigatório'),
+            TipoPessoa: Yup.number().required('Tipo de Pessoa é Obrigatório'),
+            Nacionalidade: Yup.string().required('Nacionalidade é Obrigatória'),
+            CpfCnpj: Yup.string().required('CPF/CNPJ é Obrigatório'),
             RG: Yup.string().required('RG é Obrigatório'),
-            OrgaoExp: Yup.string().required('OrgaoExp é Obrigatório'),
-            EstadoExp: Yup.string().required('EstadoExp é Obrigatório'),
-            DataExp: Yup.date().required('DataExp é Obrigatório'),
-            EstadoCivil: Yup.number().required('EstadoCivil  é Obrigatório'),
+            OrgaoExp: Yup.string().required('Orgão de Expedição é Obrigatório'),
+            EstadoExp: Yup.string().required('Estado de Expedição é Obrigatório'),
+            DataExp: Yup.date().required('Data de Expedição é Obrigatório'),
+            EstadoCivil: Yup.number().required('Estado Civil  é Obrigatório'),
             Telefone: Yup.string().nullable(),
             UltLaticinio: Yup.string().nullable(),
             ContasBancarias: Yup.array(
@@ -154,17 +154,17 @@ export default {
         }
         
         const schema = Yup.object().shape({
-            ProdutorId: Yup.number().required('ProdutorId é Obrigatório'),
+            ProdutorId: Yup.number().required('Id do Produtor é Obrigatório'),
             Nome: Yup.string().required('Nome é Obrigatório'),
-            DataNasc: Yup.date().required('DataNasc é Obrigatório'),
-            TipoPessoa: Yup.number().required('TipoPessoa é Obrigatório'),
-            Nacionalidade: Yup.string().required('Nacionalidade é Obrigatório'),
-            CpfCnpj: Yup.string().required('CpfCnpj é Obrigatório'),
+            DataNasc: Yup.date().required('Data de Nascimento é Obrigatório'),
+            TipoPessoa: Yup.number().required('Tipo de Pessoa é Obrigatório'),
+            Nacionalidade: Yup.string().required('Nacionalidade é Obrigatória'),
+            CpfCnpj: Yup.string().required('CPF/CNPJ é Obrigatório'),
             RG: Yup.string().required('RG é Obrigatório'),
-            OrgaoExp: Yup.string().required('OrgaoExp é Obrigatório'),
-            EstadoExp: Yup.string().required('EstadoExp é Obrigatório'),
-            DataExp: Yup.date().required('DataExp é Obrigatório'),
-            EstadoCivil: Yup.number().required('EstadoCivil  é Obrigatório'),
+            OrgaoExp: Yup.string().required('Orgão de Expedição é Obrigatório'),
+            EstadoExp: Yup.string().required('Estado de Expedição é Obrigatório'),
+            DataExp: Yup.date().required('Data de Expedição é Obrigatório'),
+            EstadoCivil: Yup.number().required('Estado Civil  é Obrigatório'),
             Telefone: Yup.string().nullable(),
             UltLaticinio: Yup.string().nullable()
         });
@@ -172,6 +172,10 @@ export default {
         await schema.validate(data, {
             abortEarly: false
         });
+
+        const find = await ProdutoresRepository.findOne(ProdutorId);
+
+        if(!find) return response.status(404).json({message: "Produtor não encontrado"});
 
         const produtor = ProdutoresRepository.create(data);
     

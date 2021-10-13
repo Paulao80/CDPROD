@@ -90,18 +90,6 @@ const Manage = () => {
                     SetErrorForm(response.data);
                 }
             });
-
-        // console.log({
-        //     UserId,
-        //     Name,
-        //     User,
-        //     Email,
-        //     PasswordOld,
-        //     PasswordNew,
-        //     PasswordNewConfimation,
-        //     image
-        // });
-
     }
 
     return (

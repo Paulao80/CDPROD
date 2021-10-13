@@ -17,6 +17,24 @@ import Logo from '../../Assets/images/logo.png';
 import { useDispatch } from 'react-redux';
 import { ProdutoresActive } from '../../Actions/PageActiveActions';
 
+interface Error {
+    message: string;
+    errors: {
+        CpfCnpj: string[];
+        DataExp: string[];
+        DataNasc: string[];
+        EstadoExp: string[];
+        Nacionalidade: string[];
+        Nome: string[];
+        OrgaoExp: string[];
+        RG: string[];
+        TipoPessoa: string[];
+        EstadoCivil: string[];
+        Telefone: string[];
+        UltLaticinio: string[];
+    };
+}
+
 const CreateProdutor = () => {
     const dispatch = useDispatch();
 
@@ -40,18 +58,19 @@ const CreateProdutor = () => {
         inputComponent: CpfMaskCustom as any,
     });
 
-    const [Nome, setNome] = useState("");
-    const [DataNasc, setDataNasc] = useState("");
-    const [TipoPessoa, setTipoPessoa] = useState(1);
-    const [Nacionalidade, setNacionalidade] = useState("");
-    const [CpfCnpj, setCpfCnpj] = useState("");
-    const [RG, setRG] = useState("");
-    const [OrgaoExp, setOrgaoExp] = useState("");
-    const [EstadoExp, setEstadoExp] = useState("");
-    const [DataExp, setDataExp] = useState("");
-    const [EstadoCivil, setEstadoCivil] = useState(1);
-    const [Telefone, setTelefone] = useState("");
-    const [UltLaticinio, setUltLaticinio] = useState("");
+    const [Nome, setNome] = useState<string>();
+    const [DataNasc, setDataNasc] = useState<string>();
+    const [TipoPessoa, setTipoPessoa] = useState<number>();
+    const [Nacionalidade, setNacionalidade] = useState<string>();
+    const [CpfCnpj, setCpfCnpj] = useState<string>();
+    const [RG, setRG] = useState<string>();
+    const [OrgaoExp, setOrgaoExp] = useState<string>();
+    const [EstadoExp, setEstadoExp] = useState<string>();
+    const [DataExp, setDataExp] = useState<string>();
+    const [EstadoCivil, setEstadoCivil] = useState<number>();
+    const [Telefone, setTelefone] = useState<string>();
+    const [UltLaticinio, setUltLaticinio] = useState<string>();
+    const [ErrorForm, SetErrorForm] = useState<Error>();
 
     const OnSubmit = (event: FormEvent) => {
         event.preventDefault();
@@ -76,7 +95,7 @@ const CreateProdutor = () => {
                     : alert("Não foi possivel adicionar o Produtor");
             })
             .catch((error) => {
-                console.log(error);
+                SetErrorForm(error.response.data);
             });
 
     }
@@ -95,17 +114,38 @@ const CreateProdutor = () => {
                 <Container>
 
                     <form onSubmit={OnSubmit}>
+
+
+                        {
+                            ErrorForm?.message !== undefined
+                                ? (
+                                    <div className="Message-error">
+                                        <p>{ErrorForm.message}</p>
+                                    </div>
+                                )
+                                : ""
+                        }
+
                         <TextField
                             name="Nome"
                             id="Nome"
                             label="Nome"
                             variant="outlined"
                             fullWidth
-                            required
                             margin="normal"
                             value={Nome}
                             onChange={event => setNome(event.target.value)}
                         />
+
+                        {
+                            ErrorForm?.errors.Nome !== undefined
+                                ? (
+                                    <div className="Message-error">
+                                        <p>{ErrorForm.errors.Nome[0]}</p>
+                                    </div>
+                                )
+                                : ""
+                        }
 
                         <TextField
                             name="DataNasc"
@@ -118,10 +158,19 @@ const CreateProdutor = () => {
                                 shrink: true,
                             }}
                             margin="normal"
-                            required
                             value={DataNasc}
                             onChange={event => setDataNasc(event.target.value)}
                         />
+
+                        {
+                            ErrorForm?.errors.DataNasc !== undefined
+                                ? (
+                                    <div className="Message-error">
+                                        <p>{ErrorForm.errors.DataNasc[0]}</p>
+                                    </div>
+                                )
+                                : ""
+                        }
 
                         <TextField
                             name="TipoPessoa"
@@ -130,9 +179,8 @@ const CreateProdutor = () => {
                             variant="outlined"
                             select
                             fullWidth
-                            required
                             margin="normal"
-                            value={TipoPessoa ? TipoPessoa : 1}
+                            value={TipoPessoa}
                             onChange={event => {
                                 let value = Number(event.target.value);
                                 setTipoPessoa(value);
@@ -155,17 +203,36 @@ const CreateProdutor = () => {
 
                         </TextField>
 
+                        {
+                            ErrorForm?.errors.TipoPessoa !== undefined
+                                ? (
+                                    <div className="Message-error">
+                                        <p>{ErrorForm.errors.TipoPessoa[0]}</p>
+                                    </div>
+                                )
+                                : ""
+                        }
+
                         <TextField
                             name="Nacionalidade"
                             id="Nacionalidade"
                             label="Nacionalidade"
                             variant="outlined"
                             fullWidth
-                            required
                             margin="normal"
                             value={Nacionalidade}
                             onChange={event => setNacionalidade(event.target.value)}
                         />
+
+                        {
+                            ErrorForm?.errors.Nacionalidade !== undefined
+                                ? (
+                                    <div className="Message-error">
+                                        <p>{ErrorForm.errors.Nacionalidade[0]}</p>
+                                    </div>
+                                )
+                                : ""
+                        }
 
                         <TextField
                             name="CpfCnpj"
@@ -174,11 +241,20 @@ const CreateProdutor = () => {
                             variant="outlined"
                             InputProps={inputComponent}
                             fullWidth
-                            required
                             margin="normal"
                             value={CpfCnpj}
                             onChange={event => setCpfCnpj(event.target.value)}
                         />
+
+                        {
+                            ErrorForm?.errors.CpfCnpj !== undefined
+                                ? (
+                                    <div className="Message-error">
+                                        <p>{ErrorForm.errors.CpfCnpj[0]}</p>
+                                    </div>
+                                )
+                                : ""
+                        }
 
                         <TextField
                             name="RG"
@@ -189,11 +265,20 @@ const CreateProdutor = () => {
                                 inputComponent: RgMaskCustom as any,
                             }}
                             fullWidth
-                            required
                             margin="normal"
                             value={RG}
                             onChange={event => setRG(event.target.value)}
                         />
+
+                        {
+                            ErrorForm?.errors.RG !== undefined
+                                ? (
+                                    <div className="Message-error">
+                                        <p>{ErrorForm.errors.RG[0]}</p>
+                                    </div>
+                                )
+                                : ""
+                        }
 
                         <TextField
                             name="OrgaoExp"
@@ -201,22 +286,30 @@ const CreateProdutor = () => {
                             label="Orgão de Expedição"
                             variant="outlined"
                             fullWidth
-                            required
                             margin="normal"
                             value={OrgaoExp}
                             onChange={event => setOrgaoExp(event.target.value)}
                         />
 
+                        {
+                            ErrorForm?.errors.OrgaoExp !== undefined
+                                ? (
+                                    <div className="Message-error">
+                                        <p>{ErrorForm.errors.OrgaoExp[0]}</p>
+                                    </div>
+                                )
+                                : ""
+                        }
+
                         <TextField
                             name="EstadoExp"
                             id="EstadoExp"
-                            label="Estado de Expediçaõ"
+                            label="Estado de Expedição"
                             variant="outlined"
                             select
                             fullWidth
-                            required
                             margin="normal"
-                            value={EstadoExp ? EstadoExp : ""}
+                            value={EstadoExp}
                             onChange={event => setEstadoExp(event.target.value)}
                         >
 
@@ -232,6 +325,16 @@ const CreateProdutor = () => {
 
                         </TextField>
 
+                        {
+                            ErrorForm?.errors.EstadoExp !== undefined
+                                ? (
+                                    <div className="Message-error">
+                                        <p>{ErrorForm.errors.EstadoExp[0]}</p>
+                                    </div>
+                                )
+                                : ""
+                        }
+
                         <TextField
                             name="DataExp"
                             id="DataExp"
@@ -243,10 +346,19 @@ const CreateProdutor = () => {
                                 shrink: true,
                             }}
                             margin="normal"
-                            required
                             value={DataExp}
                             onChange={event => setDataExp(event.target.value)}
                         />
+
+                        {
+                            ErrorForm?.errors.DataExp !== undefined
+                                ? (
+                                    <div className="Message-error">
+                                        <p>{ErrorForm.errors.DataExp[0]}</p>
+                                    </div>
+                                )
+                                : ""
+                        }
 
                         <TextField
                             name="EstadoCivil"
@@ -255,9 +367,8 @@ const CreateProdutor = () => {
                             variant="outlined"
                             select
                             fullWidth
-                            required
                             margin="normal"
-                            value={EstadoCivil ? EstadoCivil : 1}
+                            value={EstadoCivil}
                             onChange={event => setEstadoCivil(Number(event.target.value))}
                         >
 
@@ -279,6 +390,16 @@ const CreateProdutor = () => {
 
                         </TextField>
 
+                        {
+                            ErrorForm?.errors.EstadoCivil !== undefined
+                                ? (
+                                    <div className="Message-error">
+                                        <p>{ErrorForm.errors.EstadoCivil[0]}</p>
+                                    </div>
+                                )
+                                : ""
+                        }
+
                         <TextField
                             name="Telefone"
                             id="Telefone"
@@ -288,11 +409,20 @@ const CreateProdutor = () => {
                                 inputComponent: TelefoneMaskCustom as any,
                             }}
                             fullWidth
-                            required
                             margin="normal"
                             value={Telefone}
                             onChange={event => setTelefone(event.target.value)}
                         />
+
+                        {
+                            ErrorForm?.errors.Telefone !== undefined
+                                ? (
+                                    <div className="Message-error">
+                                        <p>{ErrorForm.errors.Telefone[0]}</p>
+                                    </div>
+                                )
+                                : ""
+                        }
 
                         <TextField
                             name="UltLaticinio"
@@ -304,6 +434,16 @@ const CreateProdutor = () => {
                             value={UltLaticinio}
                             onChange={event => setUltLaticinio(event.target.value)}
                         />
+
+                        {
+                            ErrorForm?.errors.UltLaticinio !== undefined
+                                ? (
+                                    <div className="Message-error">
+                                        <p>{ErrorForm.errors.UltLaticinio[0]}</p>
+                                    </div>
+                                )
+                                : ""
+                        }
 
                         <BtnSave />
                     </form>

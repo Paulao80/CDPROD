@@ -17,6 +17,19 @@ import Logo from '../../Assets/images/logo.png';
 import { useDispatch } from 'react-redux';
 import { PropriedadesActive } from '../../Actions/PageActiveActions';
 
+interface Error {
+    message: string;
+    errors: {
+        Endereco: string[];
+        Estado: string[];
+        InscEstadual: string[];
+        Municipio: string[];
+        Nirf: string[];
+        Nome: string[];
+        "Produtor.ProdutorId": string[];
+    };
+}
+
 const CreatePropriedade = () => {
     const dispatch = useDispatch();
 
@@ -33,7 +46,6 @@ const CreatePropriedade = () => {
                 orderBy: "nome"
             }
         }).then(response => {
-            console.log(response.data);
             setUfs(response.data);
         });
 
@@ -43,13 +55,14 @@ const CreatePropriedade = () => {
             });
     }, []);
 
-    const [Nirf, setNirf] = useState("");
-    const [Nome, setNome] = useState("");
-    const [InscEstadual, setInscEstadual] = useState("");
-    const [Endereco, setEndereco] = useState("");
-    const [Municipio, setMunicipio] = useState("");
-    const [Estado, setEstado] = useState("");
-    const [ProdutorId, setProdutorId] = useState(1);
+    const [Nirf, setNirf] = useState<string>();
+    const [Nome, setNome] = useState<string>();
+    const [InscEstadual, setInscEstadual] = useState<string>();
+    const [Endereco, setEndereco] = useState<string>();
+    const [Municipio, setMunicipio] = useState<string>();
+    const [Estado, setEstado] = useState<string>();
+    const [ProdutorId, setProdutorId] = useState<number>();
+    const [ErrorForm, SetErrorForm] = useState<Error>();
 
     const OnSubmit = (event: FormEvent) => {
         event.preventDefault();
@@ -71,7 +84,7 @@ const CreatePropriedade = () => {
                     : alert("Não foi possivel adicionar a Propriedade");
             })
             .catch(error => {
-                console.log(error);
+                SetErrorForm(error.response.data);
             });
     }
 
@@ -86,6 +99,17 @@ const CreatePropriedade = () => {
                 <Container>
 
                     <form onSubmit={OnSubmit}>
+
+                        {
+                            ErrorForm?.message !== undefined
+                                ? (
+                                    <div className="Message-error">
+                                        <p>{ErrorForm.message}</p>
+                                    </div>
+                                )
+                                : ""
+                        }
+
                         <TextField
                             name="Nirf"
                             id="Nirf"
@@ -95,11 +119,20 @@ const CreatePropriedade = () => {
                                 inputComponent: NirfMaskCustom as any,
                             }}
                             fullWidth
-                            required
                             margin="normal"
                             value={Nirf}
                             onChange={event => setNirf(event.target.value)}
                         />
+
+                        {
+                            ErrorForm?.errors.Nirf !== undefined
+                                ? (
+                                    <div className="Message-error">
+                                        <p>{ErrorForm.errors.Nirf}</p>
+                                    </div>
+                                )
+                                : ""
+                        }
 
                         <TextField
                             name="Nome"
@@ -107,11 +140,20 @@ const CreatePropriedade = () => {
                             label="Nome"
                             variant="outlined"
                             fullWidth
-                            required
                             margin="normal"
                             value={Nome}
                             onChange={event => setNome(event.target.value)}
                         />
+
+                        {
+                            ErrorForm?.errors.Nome !== undefined
+                                ? (
+                                    <div className="Message-error">
+                                        <p>{ErrorForm.errors.Nome}</p>
+                                    </div>
+                                )
+                                : ""
+                        }
 
                         <TextField
                             name="InscEstadual"
@@ -119,11 +161,20 @@ const CreatePropriedade = () => {
                             label="Inscrição Estadual"
                             variant="outlined"
                             fullWidth
-                            required
                             margin="normal"
                             value={InscEstadual}
                             onChange={event => setInscEstadual(event.target.value)}
                         />
+
+                        {
+                            ErrorForm?.errors.InscEstadual !== undefined
+                                ? (
+                                    <div className="Message-error">
+                                        <p>{ErrorForm.errors.InscEstadual}</p>
+                                    </div>
+                                )
+                                : ""
+                        }
 
                         <TextField
                             name="Endereco"
@@ -131,11 +182,20 @@ const CreatePropriedade = () => {
                             label="Endereço"
                             variant="outlined"
                             fullWidth
-                            required
                             margin="normal"
                             value={Endereco}
                             onChange={event => setEndereco(event.target.value)}
                         />
+
+                        {
+                            ErrorForm?.errors.Endereco !== undefined
+                                ? (
+                                    <div className="Message-error">
+                                        <p>{ErrorForm.errors.Endereco}</p>
+                                    </div>
+                                )
+                                : ""
+                        }
 
                         <TextField
                             name="Municipio"
@@ -143,11 +203,20 @@ const CreatePropriedade = () => {
                             label="Municipio"
                             variant="outlined"
                             fullWidth
-                            required
                             margin="normal"
                             value={Municipio}
                             onChange={event => setMunicipio(event.target.value)}
                         />
+
+                        {
+                            ErrorForm?.errors.Municipio !== undefined
+                                ? (
+                                    <div className="Message-error">
+                                        <p>{ErrorForm.errors.Municipio}</p>
+                                    </div>
+                                )
+                                : ""
+                        }
 
                         <TextField
                             name="Estado"
@@ -156,7 +225,6 @@ const CreatePropriedade = () => {
                             variant="outlined"
                             select
                             fullWidth
-                            required
                             margin="normal"
                             value={Estado}
                             onChange={event => setEstado(event.target.value)}
@@ -174,6 +242,16 @@ const CreatePropriedade = () => {
 
                         </TextField>
 
+                        {
+                            ErrorForm?.errors.Estado !== undefined
+                                ? (
+                                    <div className="Message-error">
+                                        <p>{ErrorForm.errors.Estado}</p>
+                                    </div>
+                                )
+                                : ""
+                        }
+
                         <TextField
                             name="ProdutorId"
                             id="ProdutorId"
@@ -181,9 +259,8 @@ const CreatePropriedade = () => {
                             variant="outlined"
                             select
                             fullWidth
-                            required
                             margin="normal"
-                            value={ProdutorId ? ProdutorId : 1}
+                            value={ProdutorId}
                             onChange={event => setProdutorId(Number(event.target.value))}
                         >
 
@@ -198,6 +275,16 @@ const CreatePropriedade = () => {
                             }
 
                         </TextField>
+
+                        {
+                            ErrorForm?.errors['Produtor.ProdutorId'] !== undefined
+                                ? (
+                                    <div className="Message-error">
+                                        <p>{ErrorForm.errors['Produtor.ProdutorId'][0]}</p>
+                                    </div>
+                                )
+                                : ""
+                        }
 
                         <BtnSave />
                     </form>
