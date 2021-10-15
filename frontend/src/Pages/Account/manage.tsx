@@ -13,6 +13,8 @@ import { TextField } from "@material-ui/core";
 import { User as IUser } from '../../Interfaces'
 import Api from "../../Services/Api";
 import { update } from '../../Services/Auth';
+import { useDispatch } from 'react-redux';
+import { NoneActive } from '../../Actions/PageActiveActions';
 
 interface Error {
     message: string;
@@ -30,6 +32,10 @@ interface Error {
 const Manage = () => {
 
     const history = useHistory();
+
+    const dispatch = useDispatch();
+
+    dispatch(NoneActive());
 
     const [usuario, setUsuario] = useState<IUser>();
 

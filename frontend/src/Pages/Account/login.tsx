@@ -26,7 +26,7 @@ const Login = () => {
         await login(EmailOrUser, Password)
             .then((response) => {
                 if (response.status === 200) {
-                    const { from } = location.state || { from: { pathname: "/" } };
+                    const { from } = location.state || { from: { pathname: "/dashboard" } };
                     history.replace(from);
                 }
                 else {

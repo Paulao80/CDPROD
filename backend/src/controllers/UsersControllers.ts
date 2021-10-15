@@ -9,6 +9,7 @@ import {RequestWithUser} from '../interfaces';
 import UserView from '../views/UserView';
 import fs from 'fs';
 import path from "path";
+import Mail from '../services/Mail';
 
 export default {
     async register(request: Request, response: Response){
@@ -24,8 +25,10 @@ export default {
             User: Yup.string().required('Usuário é Obrigatório'),
             Email: Yup.string().email().required('E-mail é Obrigatório'),
             Password: Yup.string().min(8,"Senha deve possuir no Minimo 8 caracteres"),
-            FotoPath: Yup.string().notRequired(),
-            CreatedAt: Yup.date().required('CreatedAt é Obrigatório')
+            PasswordConfimation: Yup.string().test('passwords-match', 'As senhas não conferem!', function(value){
+                return this.parent.Password === value
+            }),
+            FotoPath: Yup.string().notRequired()
         });
 
         await schema.validate(validation, {
@@ -191,5 +194,122 @@ export default {
         if(user) return response.json(UserView.render(user));
 
         return response.json({});
+    },
+    async forgotSendEmail(request: Request, response: Response){
+        const validation = request.body;
+
+        const schema = Yup.object().shape({
+            Email: Yup.string().email('O E-mail está incorreto').required('O E-mail é obrigatório'),
+            Link: Yup.string().required('O Link é obrigatório')
+        });
+
+        await schema.validate(validation, {
+            abortEarly: false
+        });
+
+        const {Email, Link} = validation;
+
+        const UsersRepository = getRepository(UserClass);
+
+        const user = await UsersRepository.createQueryBuilder("U")
+        .where("U.Email = :email", {
+            email: Email
+        })
+        .getOne();
+
+        if(!user) return response.status(404).json({message: 'Usuário não encontrado'});
+
+        const secretKey = process.env.TOKEN_SECRET_KEY;
+
+        if(!secretKey) return response.status(400).json({message: 'Falha na chave secreta'});
+
+        const dataToken: DataToken = {
+            _id: user.UserId,
+            _name: user.Name
+        }
+
+        const Token = jwt.sign(dataToken, secretKey,{
+            expiresIn: 43200
+        });
+
+        const mailList = [
+            {
+                name: user.Name,
+                address: user.Email
+            }
+        ];
+
+        Mail.to = mailList;
+        Mail.subject = 'Esqueceu a Senha';
+        Mail.message = `<p>Olá <strong>${user.Name}</strong></p>`
+            + `<p>Você está recebendo este e-mail porque você pediu uma nova senha para sua conta na Aplicação CDTR.</p>`
+            + `<p>Se não foi você quem solicitou, por favor, ignore este e-mail, e sua senha continuará a mesma.</p>`
+            + `Para mudar a senha de sua conta, clique no link a seguir:<br/><br/>`
+            + `<a href="${Link}?Code=${Token}">Clique Aqui</a>`;
+
+        const result = Mail.sendMail();
+
+        result.then((res) => {
+            return response.status(200).json({message: 'E-mail enviado'});
+        }).catch((err) => {
+            return response.status(400).json({message: 'E-mail não enviado'});
+        });
+    },
+    async resetPassword(request: Request, response: Response){
+        const validation = request.body;
+
+        const schema = Yup.object().shape({
+            Token: Yup.string().required('O Token é obrigatório'),
+            Password: Yup.string().min(8,"Senha deve possuir no Minimo 8 caracteres").required('Senha é Obrigatória'),
+            PasswordConfirmation: Yup.string().test('passwords-match', 'As senhas não conferem!', function(value){
+                return this.parent.Password === value
+            })
+        });
+
+        await schema.validate(validation, {
+            abortEarly: false
+        });
+
+         const secretKey = process.env.TOKEN_SECRET_KEY;
+
+         if(!secretKey) return response.status(400).json({message: 'Falha na chave secreta!'});
+
+         const {
+             Token,
+             Password
+            } = validation;
+
+         if(!Token) return response.status(400).json({message: 'Token invalido!'});
+
+         try{
+            const userVerified = jwt.verify(Token as string, secretKey) as DataToken;
+            const UsersRepository = getRepository(UserClass);
+            let user = await UsersRepository.findOne(userVerified._id);
+   
+            if(!user) return response.status(404).json({message: 'Usuário não encontrado'});
+           
+            user.Password = await bcrypt.hash(Password as string, 10);
+   
+            await UsersRepository.save(user);
+
+            const mailList = [
+                {
+                    name: user.Name,
+                    address: user.Email
+                }
+            ];
+    
+            Mail.to = mailList;
+            Mail.subject = 'Senha Alterada';
+            Mail.message = `<p>Olá <strong>${user.Name}</strong></p>`
+                + `<p>Sua senha foi alterada na aplicação CDTR. Caso não estiver feito essa solicitação, entre em contato com desenvolvimento.</p>`;
+
+            Mail.sendMail();
+   
+            return response.status(200).json({message: 'Senha Alterada'});
+         }catch(error){
+            return response.status(400).json({message: 'Token invalido'});
+         }
+
     }
 };

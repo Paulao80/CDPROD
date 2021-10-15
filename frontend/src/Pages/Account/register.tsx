@@ -11,6 +11,8 @@ import './style.css';
 import Logo from '../../Assets/images/vaca.png';
 import { useHistory } from 'react-router-dom';
 import { register } from './../../Services/Auth';
+import { useDispatch } from 'react-redux';
+import { NoneActive } from '../../Actions/PageActiveActions';
 
 interface Error {
     message: string;
@@ -19,6 +21,7 @@ interface Error {
         Name: string[];
         User: string[];
         Password: string[];
+        PasswordConfimation: string[];
     };
 }
 
@@ -26,10 +29,15 @@ const Register = () => {
 
     const history = useHistory();
 
+    const dispatch = useDispatch();
+
+    dispatch(NoneActive());
+
     const [Name, setName] = useState("");
     const [User, setUser] = useState("");
     const [Email, setEmail] = useState("");
     const [Password, setPassword] = useState("");
+    const [PasswordConfimation, setPasswordConfimation] = useState("");
     const [image, setImage] = useState<File[]>([]);
     const [preview, setPreview] = useState<string[]>([]);
     const [ErrorForm, SetErrorForm] = useState<Error>();
@@ -54,7 +62,7 @@ const Register = () => {
     const onSubmit = async (event: FormEvent) => {
         event.preventDefault();
 
-        await register(Name, User, Email, Password, image)
+        await register(Name, User, Email, Password, PasswordConfimation, image)
             .then((response) => {
                 if (response.status === 201) history.push('/dashboard');
                 else {
@@ -156,6 +164,28 @@ const Register = () => {
                                 ? (
                                     <div className="Message-error">
                                         <p>{ErrorForm.errors.Password[0]}</p>
+                                    </div>
+                                )
+                                : ""
+                        }
+
+                        <TextField
+                            type="password"
+                            name="PasswordConfimation"
+                            id="PasswordConfimation"
+                            label="Confirmar Senha"
+                            variant="outlined"
+                            fullWidth
+                            margin="normal"
+                            value={PasswordConfimation}
+                            onChange={event => setPasswordConfimation(event.target.value)}
+                        />
+
+                        {
+                            ErrorForm?.errors.PasswordConfimation !== undefined
+                                ? (
+                                    <div className="Message-error">
+                                        <p>{ErrorForm.errors.PasswordConfimation[0]}</p>
                                     </div>
                                 )
                                 : ""

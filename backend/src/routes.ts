@@ -15,10 +15,12 @@ import Auth from './controllers/AuthController';
 const routes = Router();
 const upload = multer(uploadConfig);
 
-routes.post('/user/register', upload.single('image'), UsersControllers.register);
+routes.post('/user/register', Auth.verify, upload.single('image'), UsersControllers.register);
 routes.put('/user', Auth.verify, upload.single('image'), UsersControllers.update);
 routes.post('/user/login', UsersControllers.login);
 routes.get('/user', Auth.verify, UsersControllers.show);
+routes.post('/user/forgot-password', UsersControllers.forgotSendEmail);
+routes.post('/user/reset-password', UsersControllers.resetPassword);
 
 routes.get('/produtores', Auth.verify, ProdutoresControllers.index);
 routes.get('/produtores/:id', Auth.verify, ProdutoresControllers.show);

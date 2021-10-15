@@ -8,6 +8,7 @@ main {
   left: 300px;
   box-sizing: border-box;
   overflow-y: auto;
+  overflow-x: hidden;
 }
 
 @media screen and (max-width: 700px) {

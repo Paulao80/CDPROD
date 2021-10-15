@@ -10,15 +10,35 @@ import Api from '../../Services/Api';
 import { useDispatch } from 'react-redux';
 import { RelatoriosActive } from '../../Actions/PageActiveActions';
 import Logo from '../../Assets/images/logo.png';
+import Loading from '../../Assets/images/loading.gif';
+import { useState } from 'react';
 
 const Relatorios = () => {
     const dispatch = useDispatch();
 
+    const [prodLoading, setProdLoading] = useState(false);
+    const [propLoading, setPropLoading] = useState(false);
+    const [tanqLoading, settanqLoading] = useState(false);
+
     dispatch(RelatoriosActive());
 
-    const BtnClick = (tipo: string) => {
+    const BtnClick = async (tipo: string) => {
 
-        Api.get('/relatorio', {
+        switch (tipo) {
+            case "produtor":
+                setProdLoading(true);
+                break;
+            case "propriedade":
+                setPropLoading(true);
+                break;
+            case "tanque":
+                settanqLoading(true);
+                break;
+            default:
+                break;
+        }
+
+        await Api.get('/relatorio', {
             responseType: 'blob',
             params: {
                 tipo
@@ -29,6 +49,20 @@ const Relatorios = () => {
                 var url = URL.createObjectURL(blob);
 
                 window.open(url);
+
+                switch (tipo) {
+                    case "produtor":
+                        setProdLoading(false);
+                        break;
+                    case "propriedade":
+                        setPropLoading(false);
+                        break;
+                    case "tanque":
+                        settanqLoading(false);
+                        break;
+                    default:
+                        break;
+                }
             });
     };
 
@@ -41,16 +75,40 @@ const Relatorios = () => {
                 <Container>
                     <div className="btns-cards">
                         <div className="btn-card" onClick={() => BtnClick("produtor")}>
-                            <People className="btn-icon" />
-                            <span>Produtores</span>
+                            {
+                                prodLoading
+                                    ? (<img src={Loading} alt="Loading" width="100" height="100" />)
+                                    : (
+                                        <>
+                                            <People className="btn-icon" />
+                                            <span>Produtores</span>
+                                        </>
+                                    )
+                            }
                         </div>
                         <div className="btn-card" onClick={() => BtnClick("propriedade")}>
-                            <House className="btn-icon" />
-                            <span>Propriedades</span>
+                            {
+                                propLoading
+                                    ? (<img src={Loading} alt="Loading" width="100" height="100" />)
+                                    : (
+                                        <>
+                                            <House className="btn-icon" />
+                                            <span>Propriedades</span>
+                                        </>
+                                    )
+                            }
                         </div>
                         <div className="btn-card" onClick={() => BtnClick("tanque")}>
-                            <LocalDrink className="btn-icon" />
-                            <span>Tanques</span>
+                            {
+                                tanqLoading
+                                    ? (<img src={Loading} alt="Loading" width="100" height="100" />)
+                                    : (
+                                        <>
+                                            <LocalDrink className="btn-icon" />
+                                            <span>Tanques</span>
+                                        </>
+                                    )
+                            }
                         </div>
                     </div>
                 </Container>

@@ -2,7 +2,8 @@ import './style.css';
 import { Notifications, Menu } from '@material-ui/icons';
 import { useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from "react-redux";
-import { changeMenu } from '../../Actions/MenuActions';
+import { changeMenu, hideMenu } from '../../Actions/MenuActions';
+import { changeNotification, hideNotification } from '../../Actions/NotificationActions';
 import { StateMenu } from '../../Interfaces';
 
 type Props = {
@@ -37,8 +38,26 @@ const Header = ({ logo, titulo }: Props) => {
                     <img src={logo} alt="Logo" />
                     <h1>{titulo}</h1>
                 </div>
-                <button id="btnHamb" className={btnClass} onClick={() => dispatch(changeMenu())}><Menu fontSize="large" /></button>
-                <button className="btn-header btn-notification"><Notifications fontSize="large" /></button>
+                <button
+                    id="btnHamb"
+                    className={btnClass}
+                    onClick={() => {
+                        dispatch(changeMenu());
+                        dispatch(hideNotification());
+                    }}
+                >
+                    <Menu fontSize="large" />
+                </button>
+
+                <button
+                    onClick={() => {
+                        dispatch(changeNotification());
+                        dispatch(hideMenu());
+                    }}
+                    className="btn-header btn-notification"
+                >
+                    <Notifications fontSize="large" />
+                </button>
             </nav>
         </header>
     );

@@ -1,0 +1,18 @@
+.painel-Notification {
+  display: inline-block;
+  width: 300px;
+  height: 60vh;
+  background-color: var(--cor-terceraria);
+  position: absolute;
+  top: 5px;
+  transition: ease 0.5s;
+  z-index: 100;
+}
+
+.painel-Notification.none {
+  right: -320px;
+}
+
+.painel-Notification.show {
+  right: 20px;
+}

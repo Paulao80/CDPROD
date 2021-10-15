@@ -13,17 +13,6 @@ const PrivateRoute: React.FC<RouteProps> = ({ children, component, location, ...
         </Redirect>);
     }
 
-    // return (
-    //     <Route {...rest}
-    //         render={
-    //             ({ location }) =>
-    //                 isAuthenticated() ?
-    //                     (children)
-    //                     : redirect(location || "/")
-    //         }
-    //     ></Route>
-    // );
-
     return isAuthenticated() ? <Route component={component} {...rest}>{children}</Route> : redirect(location || "/dashboard");
 }
 

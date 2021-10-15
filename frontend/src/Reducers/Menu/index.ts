@@ -1,7 +1,8 @@
 import {StateMenu} from '../../Interfaces';
 
-interface Action {
+export interface Action {
     type: string;
+    payload: StateMenu;
 }
 
 const Menu = (state: StateMenu = {
@@ -11,7 +12,10 @@ const Menu = (state: StateMenu = {
 
     switch (action.type) {
         case 'CHANGE_MENU':
-            if(state.aside === 'responsive-none' && state.button === 'btn-off')
+            if(action.payload !== undefined) {
+                return action.payload;
+            }
+            else if(state.aside === 'responsive-none' && state.button === 'btn-off')
                  return {
                      aside: 'responsive-show',
                      button: 'btn-on'

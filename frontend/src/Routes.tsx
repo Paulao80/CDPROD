@@ -4,6 +4,9 @@ import Landing from './Pages/Landing';
 import Login from './Pages/Account/login';
 import Register from './Pages/Account/register';
 import Manage from './Pages/Account/manage';
+import ForgotPassword from './Pages/Account/forgotPassword';
+import ForgotPasswordConfirmation from './Pages/Account/forgotPasswordConfirmation';
+import ResetPassword from './Pages/Account/resetPassword';
 import Dashboard from './Pages/Dashboard';
 import Produtor from './Pages/Produtor';
 import Propriedade from './Pages/Propriedade';
@@ -35,6 +38,9 @@ const Routes = () => {
                 <Route path="/account/login" component={Login} exact />
                 <PrivateRoute path="/account/register" component={Register} exact />
                 <PrivateRoute path="/account/manage" component={Manage} exact />
+                <Route path="/account/forgot-password" component={ForgotPassword} exact />
+                <Route path="/account/forgot-password-confirmation" component={ForgotPasswordConfirmation} exact />
+                <Route path="/account/reset-password" component={ResetPassword} exact />
 
                 {/* -------------------------------------------------------- */}
 

@@ -32,13 +32,14 @@ export const login = async (EmailOrUser: string, Password: string) => {
     });
 };
 
-export const register = async (Name: string, User: string, Email: string, Password: string, image: File[]) => {
+export const register = async (Name: string, User: string, Email: string, Password: string, PasswordConfimation: string, image: File[]) => {
     const data = new FormData();
 
     data.append('Name', Name);
     data.append('User', User);
     data.append('Email', Email);
     data.append('Password', Password);
+    data.append('PasswordConfimation', PasswordConfimation);
 
     image.forEach(image => {
         data.append('image', image);

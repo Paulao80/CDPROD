@@ -21,3 +21,7 @@ export const TanquesActive = () => {
 export const RelatoriosActive = () => {
     return {type: 'RELATORIOS_ACTIVE'} as Action;
 }
+
+export const NoneActive = () => {
+    return {type: 'NONE_ACTIVE'} as Action;
+}

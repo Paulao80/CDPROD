@@ -4,11 +4,13 @@ import { createStore, combineReducers } from 'redux';
 import { Provider } from 'react-redux';
 import MenuReducer from './Reducers/Menu';
 import PageActiveReducer from './Reducers/PageActive';
+import NotificationReducer from './Reducers/Notification';
 
 function App() {
   const allReducers = combineReducers({
     MenuReducer,
-    PageActiveReducer
+    PageActiveReducer,
+    NotificationReducer
   });
 
   const store = createStore(allReducers);

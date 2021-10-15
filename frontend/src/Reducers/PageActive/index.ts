@@ -48,6 +48,13 @@ const PageActive = (state: StatePageActive = {
             state.Tanques = '';
             state.Relatorios = 'active';
             return state;
+        case 'NONE_ACTIVE':
+            state.Dashboard = '';
+            state.Produtores = '';
+            state.Propriedades = '';
+            state.Tanques = '';
+            state.Relatorios = '';
+            return state;
         default: return state;
     }
 }
