@@ -7,11 +7,34 @@ footer {
   height: 50px;
   display: flex;
   flex-direction: row;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
   font-family: "Roboto", sans-serif;
 }
 
 footer h3 {
   font-size: 15px;
+  justify-self: center;
+  margin-right: auto;
+}
+
+footer a {
+  text-decoration: none;
+  justify-self: left;
+  margin-right: auto;
+  margin-left: 10px;
+  padding: 5px;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+}
+
+footer a:hover {
+  background-color: var(--cor-secundaria);
+}
+
+footer a span {
+  margin-left: 2.5px;
 }

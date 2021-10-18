@@ -44,8 +44,12 @@ aside {
 
 .user_info a {
   text-decoration: none;
-  color: blue;
+  color: rgb(56, 56, 228);
   display: block;
+}
+
+.user_info a:hover {
+  color: rgb(35, 35, 224);
 }
 
 .menu_lateral ul {

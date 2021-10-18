@@ -1,4 +1,6 @@
 import './style.css';
+import { Link } from 'react-router-dom';
+import { PersonAdd } from '@material-ui/icons';
 
 const Footer = () => {
 
@@ -6,7 +8,9 @@ const Footer = () => {
 
     return (
         <footer>
+            <Link to="/account/register"><PersonAdd /> <span>Registro</span></Link>
             <h3>©{DateNow.getFullYear()} - Paulo Vinicius Costa Nogueira</h3>
+
         </footer>
     );
 }
