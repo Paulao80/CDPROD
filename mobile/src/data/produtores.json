@@ -1,0 +1,47 @@
+[
+    {
+        "ProdutorId": 1,
+        "Nome": "Anakin Skywalker",
+        "CPF": "000.000.000-00"
+    },
+    {
+        "ProdutorId": 2,
+        "Nome": "Luke Skywalker",
+        "CPF": "111.111.111-11"
+    },
+    {
+        "ProdutorId": 3,
+        "Nome": "Tony Stark",
+        "CPF": "222.222.222-22"
+    },
+    {
+        "ProdutorId": 4,
+        "Nome": "Peter Parker",
+        "CPF": "333.333.333-33"
+    },
+    {
+        "ProdutorId": 5,
+        "Nome": "Bruce Wayne",
+        "CPF": "444.444.444-44"
+    },
+    {
+        "ProdutorId": 6,
+        "Nome": "Clark Kent",
+        "CPF": "555.555.555-55"
+    },
+    {
+        "ProdutorId": 7,
+        "Nome": "Steve Rogers",
+        "CPF": "666.666.666-66"
+    },
+    {
+        "ProdutorId": 8,
+        "Nome": "Lois Lane",
+        "CPF": "777.777.777-77"
+    },
+    {
+        "ProdutorId": 9,
+        "Nome": "Lana Lang",
+        "CPF": "888.888.888-88"
+    }
+]

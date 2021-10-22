@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, Image } from 'react-native';
+import { View, Text, StyleSheet, Image, Pressable } from 'react-native';
 
 type Item = {
     title: any;
@@ -9,13 +9,18 @@ type Item = {
 
 const List = ({ title, desc, foto }: Item) => {
     return (
-        <View style={styles.item}>
+        <Pressable style={({ pressed }) => [
+            styles.item,
+            {
+                backgroundColor: pressed ? '#e0e0e0' : 'white'
+            }
+        ]}>
             {foto !== undefined ? (<Image style={styles.image} source={foto} />) : null}
             <View>
                 <Text style={styles.title}>{title}</Text>
                 <Text style={styles.desc}>{desc}</Text>
             </View>
-        </View>
+        </Pressable>
     );
 }
 
@@ -23,7 +28,6 @@ const styles = StyleSheet.create({
     item: {
         height: 75,
         width: '97%',
-        backgroundColor: 'white',
         elevation: 10,
         marginBottom: 7.5,
         alignItems: 'center',

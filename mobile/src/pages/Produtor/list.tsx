@@ -8,6 +8,7 @@ import ButtonAdd from '../../components/buttonAdd';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from './index';
+import data from '../../data/produtores.json';
 
 type ProdutorListProp = NativeStackNavigationProp<RootStackParamList, 'ProdutorList'>
 
@@ -17,49 +18,10 @@ const ProdutorList = () => {
 
     const OnNavigateToAdd = (event: GestureResponderEvent) => navigation.navigate('ProdutorAdd');
 
-    const data = [
-        {
-            Nome: 'Anakin Skywalker',
-            CPF: '000.000.000-00',
-        },
-        {
-            Nome: 'Luke Skywalker',
-            CPF: '111.111.111-11',
-        },
-        {
-            Nome: 'Tony Stark',
-            CPF: '222.222.222-22',
-        },
-        {
-            Nome: 'Peter Parker',
-            CPF: '333.333.333-33',
-        },
-        {
-            Nome: 'Bruce Wayne',
-            CPF: '444.444.444-44',
-        },
-        {
-            Nome: 'Clark Kent',
-            CPF: '555.555.555-55',
-        },
-        {
-            Nome: 'Steve Rogers',
-            CPF: '666.666.666-66',
-        },
-        {
-            Nome: 'Lois Lane',
-            CPF: '777.777.777-77',
-        },
-        {
-            Nome: 'Lana Lang',
-            CPF: '888.888.888-88',
-        },
-    ]
-
     return (
         <Container>
             <Header title="PRODUTORES" />
-            <Panel>
+            <Panel background={false}>
                 {data.map(item => (
                     <List title={item.Nome} desc={item.CPF} key={item.CPF} />
                 ))}

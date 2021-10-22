@@ -53,7 +53,7 @@ const TanqueList = () => {
     return (
         <Container>
             <Header title="TANQUES" />
-            <Panel>
+            <Panel background={false}>
                 {data.map(item => (
                     <List title={item.TanqueId} desc={item.Tipo} key={item.TanqueId} foto={item.Foto} />
                 ))}

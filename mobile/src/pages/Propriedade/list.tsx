@@ -39,7 +39,7 @@ const PropriedadeList = () => {
     return (
         <Container>
             <Header title="PROPRIEDADES" />
-            <Panel>
+            <Panel background={false}>
                 {data.map(item => (
                     <List title={item.Nome} desc={item.NIRF} key={item.NIRF} />
                 ))}

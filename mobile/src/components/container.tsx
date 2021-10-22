@@ -1,10 +1,11 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
 
-const Container: React.FC = (props) => {
+
+const Container: React.FC = ({ children }) => {
     return (
         <View style={styles.container}>
-            {props.children}
+            {children}
         </View>
     )
 }
