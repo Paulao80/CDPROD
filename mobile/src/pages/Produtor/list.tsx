@@ -1,11 +1,21 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import Header from '../components/header';
-import Panel from '../components/panel';
-import Container from '../components/container';
-import List from '../components/list';
+import { View, Text, StyleSheet, GestureResponderEvent } from 'react-native';
+import Header from '../../components/header';
+import Panel from '../../components/panel';
+import Container from '../../components/container';
+import List from '../../components/list';
+import ButtonAdd from '../../components/buttonAdd';
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { RootStackParamList } from './index';
 
-const ProdutorScreen = () => {
+type ProdutorListProp = NativeStackNavigationProp<RootStackParamList, 'ProdutorList'>
+
+const ProdutorList = () => {
+
+    const navigation = useNavigation<ProdutorListProp>();
+
+    const OnNavigateToAdd = (event: GestureResponderEvent) => navigation.navigate('ProdutorAdd');
 
     const data = [
         {
@@ -54,6 +64,7 @@ const ProdutorScreen = () => {
                     <List title={item.Nome} desc={item.CPF} key={item.CPF} />
                 ))}
             </Panel>
+            <ButtonAdd OnPress={OnNavigateToAdd} />
         </Container>
     );
 }
@@ -75,8 +86,8 @@ const styles = StyleSheet.create({
     desc: {
         fontSize: 16,
         fontWeight: '500'
-    }
+    },
 });
 
 
-export default ProdutorScreen;
+export default ProdutorList;

@@ -1,11 +1,11 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { createDrawerNavigator } from '@react-navigation/drawer';
 import Home from './pages/Home';
 
 const Routes = () => {
 
-    const { Screen, Navigator } = createNativeStackNavigator();
+    const { Screen, Navigator } = createDrawerNavigator();
 
     return (
         <NavigationContainer>
