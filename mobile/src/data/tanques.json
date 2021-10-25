@@ -1,0 +1,27 @@
+[
+    {
+        "TanqueId": 1,
+        "Tipo": "Individual",
+        "Foto": "https://i.imgsrc.com/cJjOh.jpg"
+    },
+    {
+        "TanqueId": 2,
+        "Tipo": "Individual",
+        "Foto": "https://i.imgsrc.com/cJxIq.jpg"
+    },
+    {
+        "TanqueId": 3,
+        "Tipo": "Individual",
+        "Foto": "https://i.imgsrc.com/cJpQW.png"
+    },
+    {
+        "TanqueId": 4,
+        "Tipo": "Individual",
+        "Foto": "https://i.imgsrc.com/cJ34R.jpg"
+    },
+    {
+        "TanqueId": 5,
+        "Tipo": "Individual",
+        "Foto": "https://i.imgsrc.com/cJ4om.jpg"
+    }
+]

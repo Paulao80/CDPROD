@@ -8,27 +8,9 @@ import ButtonAdd from '../../components/buttonAdd';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from './index';
+import data from '../../data/propriedades.json';
 
 type ProdutorListProp = NativeStackNavigationProp<RootStackParamList, 'PropriedadeList'>
-
-const data = [
-    {
-        Nome: 'Fazenda Darth Vader',
-        NIRF: '000000'
-    },
-    {
-        Nome: 'Fazenda 3 Patinhos',
-        NIRF: '000001'
-    },
-    {
-        Nome: 'Fazenda Onça Negra',
-        NIRF: '000002'
-    },
-    {
-        Nome: 'Fazenda Onça Pintada',
-        NIRF: '000003'
-    },
-]
 
 const PropriedadeList = () => {
 

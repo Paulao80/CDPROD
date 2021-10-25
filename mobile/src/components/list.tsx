@@ -15,7 +15,9 @@ const List = ({ title, desc, foto }: Item) => {
                 backgroundColor: pressed ? '#e0e0e0' : 'white'
             }
         ]}>
-            {foto !== undefined ? (<Image style={styles.image} source={foto} />) : null}
+            {foto !== undefined ? (<Image style={styles.image} source={{
+                uri: foto
+            }} />) : null}
             <View>
                 <Text style={styles.title}>{title}</Text>
                 <Text style={styles.desc}>{desc}</Text>
