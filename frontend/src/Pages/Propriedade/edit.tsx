@@ -81,7 +81,7 @@ const EditPropriedade = () => {
     const [Endereco, setEndereco] = useState<string>();
     const [Municipio, setMunicipio] = useState<string>();
     const [Estado, setEstado] = useState<string>("");
-    const [ProdutorId, setProdutorId] = useState<number>(0);
+    const [ProdutorId, setProdutorId] = useState<number>();
     const [ErrorForm, SetErrorForm] = useState<Error>();
 
     useEffect(() => {

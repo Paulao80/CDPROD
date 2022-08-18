@@ -29,7 +29,7 @@ const AddContas = () => {
 
     const [produtor, setProdutor] = useState<Produtor>({} as Produtor);
 
-    const [NomePertence, setNomePertence] = useState("");
+    const [NomePertence, setNomePertence] = useState<string>();
     const [Banco, setBanco] = useState("");
     const [Agencia, setAgencia] = useState("");
     const [Conta, setConta] = useState("");

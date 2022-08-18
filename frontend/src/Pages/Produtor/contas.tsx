@@ -87,15 +87,17 @@ const Contas = () => {
 
         rowsDeleted.data.map(async (row) => {
 
-            let conta = produtor.ContasBancarias[row.dataIndex];
+            let conta = produtor.ContasBancarias ? produtor.ContasBancarias[row.dataIndex] : null;
 
-            await Api.delete(`/contas/${conta.ContaId}`)
-                .then((response) => {
-                    alert(response.data.Message);
-                })
-                .catch(() => {
-                    alert("Error");
-                });
+            if (conta) {
+                await Api.delete(`/contas/${conta.ContaId}`)
+                    .then((response) => {
+                        alert(response.data.Message);
+                    })
+                    .catch(() => {
+                        alert("Error");
+                    });
+            }
         });
 
     }
@@ -113,7 +115,7 @@ const Contas = () => {
                 <PainelNav to={`/produtor`} titulo="Contas" />
                 <MUIDataTable
                     title={""}
-                    data={produtor.ContasBancarias}
+                    data={produtor.ContasBancarias ? produtor.ContasBancarias : []}
                     columns={columns}
                     options={options}
                 />

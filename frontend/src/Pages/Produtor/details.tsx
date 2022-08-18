@@ -9,31 +9,21 @@ import PainelNav from '../../Components/PainelNav';
 import { useParams } from 'react-router-dom';
 import { GetTipoPessoa, GetEstadoCivil } from '../../Util/Functions';
 import ShowData from '../../Components/ShowData';
-import Api from '../../Services/Api';
-import { useState, useEffect } from 'react';
-import { Produtor } from '../../Interfaces';
 import Logo from '../../Assets/images/logo.png';
 import { useDispatch } from 'react-redux';
 import { ProdutoresActive } from '../../Actions/PageActiveActions';
+import useProdutor from '../../Hooks/useProdutor';
 
 interface Param {
-    id: string;
+    id?: string;
 }
 
 const DetailsProdutor = () => {
+    const { id } = useParams<Param>();
     const dispatch = useDispatch();
+    const { form: produtor } = useProdutor(id ? Number(id) : undefined);
 
     dispatch(ProdutoresActive());
-
-    const { id } = useParams<Param>();
-
-    const [produtor, setProdutor] = useState<Produtor>();
-
-    useEffect(() => {
-        Api.get(`/produtores/${id}`).then(response => {
-            setProdutor(response.data);
-        });
-    }, [id]);
 
     if (produtor === undefined) {
         return (
