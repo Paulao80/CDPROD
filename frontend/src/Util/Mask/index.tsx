@@ -1,10 +1,5 @@
-import MaskedInput from "react-text-mask";
 import { IMaskInput } from "react-imask";
 import React from "react";
-
-interface TextMaskCustomProps {
-  inputRef: (ref: HTMLInputElement | null) => void;
-}
 
 interface CustomProps {
   onChange: (event: { target: { name: string; value: string } }) => void;
