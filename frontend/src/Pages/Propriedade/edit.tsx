@@ -80,7 +80,7 @@ const EditPropriedade = () => {
     const [InscEstadual, setInscEstadual] = useState<string>();
     const [Endereco, setEndereco] = useState<string>();
     const [Municipio, setMunicipio] = useState<string>();
-    const [Estado, setEstado] = useState<string>("");
+    const [Estado, setEstado] = useState<string>();
     const [ProdutorId, setProdutorId] = useState<number>();
     const [ErrorForm, SetErrorForm] = useState<Error>();
 
@@ -91,7 +91,7 @@ const EditPropriedade = () => {
         setEndereco(propriedade.Endereco);
         setMunicipio(propriedade.Municipio);
         setEstado(propriedade.Estado);
-        setProdutorId(propriedade.Produtor.ProdutorId)
+        setProdutorId(propriedade?.Produtor?.ProdutorId)
     }, [propriedade]);
 
     const OnSubmit = (event: FormEvent) => {

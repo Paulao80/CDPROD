@@ -54,7 +54,7 @@ const DetailsPropriedade = () => {
                     <ShowData Label="Endereço" Data={propriedade.Endereco} />
                     <ShowData Label="Municipio" Data={propriedade.Municipio} />
                     <ShowData Label="Estado" Data={propriedade.Estado} />
-                    <ShowData Label="Produtor" Data={propriedade.Produtor.Nome} />
+                    <ShowData Label="Produtor" Data={propriedade?.Produtor?.Nome} />
                 </Container>
             </Main>
             <BtnEdt to={`/propriedade/edit/${propriedade.PropriedadeId}`} />

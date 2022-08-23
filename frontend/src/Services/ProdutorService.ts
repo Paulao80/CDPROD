@@ -2,7 +2,7 @@ import Api from "./Api";
 import { Produtor, Delete, ApiResponse } from "../Interfaces";
 
 export async function list(): Promise<Produtor[]> {
-  const { data } = await Api.get<Produtor[]>("/produtores");
+  const { data } = await Api.get<Produtor[]>(`/produtores`);
 
   return data;
 }

@@ -24,14 +24,14 @@ export interface ContasBancarias {
 }
 
 export interface Propriedade {
-  PropriedadeId: number;
-  Nirf: string;
-  Nome: string;
-  InscEstadual: string;
-  Endereco: string;
-  Municipio: string;
-  Estado: string;
-  Produtor: Produtor;
+  PropriedadeId?: number;
+  Nirf?: string;
+  Nome?: string;
+  InscEstadual?: string;
+  Endereco?: string;
+  Municipio?: string;
+  Estado?: string;
+  Produtor?: Produtor;
 }
 
 export interface Tanque {

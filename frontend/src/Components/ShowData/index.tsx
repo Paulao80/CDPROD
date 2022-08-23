@@ -2,7 +2,7 @@ import './style.css';
 
 type props = {
     Label: string;
-    Data: any;
+    Data?: any;
 };
 
 const ShowData = ({ Label, Data }: props) => {
