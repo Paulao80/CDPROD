@@ -1,38 +1,35 @@
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
-import { Error, ProdutorError, Produtor } from "../Interfaces/index";
-import * as service from "../Services/ProdutorService";
+import { Error, PropriedadeError, Propriedade } from "../Interfaces/index";
+import * as service from "../Services/PropriedadeService";
 
-interface UseProdutor {
-  form: Produtor;
-  setForm: Dispatch<SetStateAction<Produtor>>;
-  produtores: Produtor[];
-  errorForm?: Error<ProdutorError>;
+interface UsePropriedade {
+  form: Propriedade;
+  setForm: Dispatch<SetStateAction<Propriedade>>;
+  propriedades: Propriedade[];
+  errorForm?: Error<PropriedadeError>;
   onFinish(): Promise<void>;
   onEdit(): Promise<void>;
   onDelete(id?: number): Promise<boolean>;
-  getById(id: number): Promise<Produtor | null>;
-  list(): Promise<Produtor[]>;
+  getById(id: number): Promise<Propriedade | null>;
+  list(): Promise<Propriedade[]>;
 }
 
-const useProdutor = (id?: number, load?: boolean): UseProdutor => {
+const usePropriedade = (id?: number, load?: boolean): UsePropriedade => {
   const history = useHistory();
-  const [form, setForm] = useState<Produtor>({
+  const [form, setForm] = useState<Propriedade>({
     Nome: "",
-    DataNasc: "",
-    TipoPessoa: 0,
-    Nacionalidade: "",
-    CpfCnpj: "",
-    RG: "",
-    OrgaoExp: "",
-    EstadoExp: "",
-    DataExp: "",
-    EstadoCivil: 0,
-    Telefone: "",
-    UltLaticinio: "",
+    Nirf: "",
+    InscEstadual: "",
+    Endereco: "",
+    Municipio: "",
+    Estado: "",
+    Produtor: {
+      ProdutorId: 0,
+    },
   });
-  const [errorForm, setErrorForm] = useState<Error<ProdutorError>>();
-  const [produtores, setProdutores] = useState<Produtor[]>([]);
+  const [errorForm, setErrorForm] = useState<Error<PropriedadeError>>();
+  const [propriedades, setPropriedades] = useState<Propriedade[]>([]);
 
   useEffect(() => {
     if (id) {
@@ -49,7 +46,7 @@ const useProdutor = (id?: number, load?: boolean): UseProdutor => {
   useEffect(() => {
     if (load) {
       list().then((res) => {
-        setProdutores(res);
+        setPropriedades(res);
       });
     }
   }, [load]);
@@ -59,7 +56,7 @@ const useProdutor = (id?: number, load?: boolean): UseProdutor => {
       const { status } = await service.create(form);
       status === 201
         ? redirect()
-        : alert("Não foi possivel adicionar o Produtor");
+        : alert("Não foi possivel adicionar a Propriedade");
     } catch (error: any) {
       setErrorForm(error.response.data);
     }
@@ -70,7 +67,7 @@ const useProdutor = (id?: number, load?: boolean): UseProdutor => {
       const { status } = await service.edit(form);
       status === 200
         ? redirect()
-        : alert("Não foi possivel atualizar o Produtor");
+        : alert("Não foi possivel atualizar a Propriedade");
     } catch (error: any) {
       setErrorForm(error.response.data);
     }
@@ -93,7 +90,7 @@ const useProdutor = (id?: number, load?: boolean): UseProdutor => {
     }
   }
 
-  async function getById(id: number): Promise<Produtor | null> {
+  async function getById(id: number): Promise<Propriedade | null> {
     try {
       const { data } = await service.getById(id);
       return data !== undefined ? data : null;
@@ -102,7 +99,7 @@ const useProdutor = (id?: number, load?: boolean): UseProdutor => {
     }
   }
 
-  async function list(): Promise<Produtor[]> {
+  async function list(): Promise<Propriedade[]> {
     try {
       const { data } = await service.list();
       return data !== undefined ? data : [];
@@ -112,20 +109,20 @@ const useProdutor = (id?: number, load?: boolean): UseProdutor => {
   }
 
   function redirect() {
-    history.push("/produtor");
+    history.push("/propriedade");
   }
 
   return {
     form,
     setForm,
-    produtores,
+    propriedades,
+    errorForm,
     onFinish,
     onEdit,
     onDelete,
-    errorForm,
     getById,
     list,
   };
 };
 
-export default useProdutor;
+export default usePropriedade;
