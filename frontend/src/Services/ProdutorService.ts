@@ -1,28 +1,42 @@
 import Api from "./Api";
 import { Produtor, Delete, ApiResponse } from "../Interfaces";
 
-export async function list(): Promise<Produtor[]> {
-  const { data } = await Api.get<Produtor[]>(`/produtores`);
+export async function list(): Promise<ApiResponse<Produtor[]>> {
+  const { data, status } = await Api.get<Produtor[]>(`/produtores`);
 
-  return data;
+  return {
+    data,
+    status,
+  };
 }
 
-export async function getById(id: number): Promise<Produtor> {
-  const { data } = await Api.get<Produtor>(`/produtores/${id}`);
+export async function getById(id: number): Promise<ApiResponse<Produtor>> {
+  const { data, status } = await Api.get<Produtor>(`/produtores/${id}`);
 
-  return data;
+  return {
+    data,
+    status,
+  };
 }
 
-export async function create(produtor: Produtor): Promise<number> {
-  const { status } = await Api.post(`/produtores`, produtor);
+export async function create(
+  produtor: Produtor
+): Promise<ApiResponse<Produtor>> {
+  const { data, status } = await Api.post<Produtor>(`/produtores`, produtor);
 
-  return status;
+  return {
+    data,
+    status,
+  };
 }
 
-export async function edit(produtor: Produtor): Promise<number> {
-  const { status } = await Api.put(`/produtores`, produtor);
+export async function edit(produtor: Produtor): Promise<ApiResponse<Produtor>> {
+  const { data, status } = await Api.put(`/produtores`, produtor);
 
-  return status;
+  return {
+    data,
+    status,
+  };
 }
 
 export async function del(id: number): Promise<ApiResponse<Delete>> {

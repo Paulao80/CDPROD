@@ -55,7 +55,7 @@ const useProdutor = (id?: number, load?: boolean): UseProdutor => {
 
   async function onFinish(): Promise<void> {
     try {
-      const status = await service.create(form);
+      const { status } = await service.create(form);
       status === 201
         ? redirect()
         : alert("Não foi possivel adicionar o Produtor");
@@ -66,7 +66,7 @@ const useProdutor = (id?: number, load?: boolean): UseProdutor => {
 
   async function onEdit(): Promise<void> {
     try {
-      const status = await service.edit(form);
+      const { status } = await service.edit(form);
       status === 200
         ? redirect()
         : alert("Não foi possivel atualizar o Produtor");
@@ -94,8 +94,8 @@ const useProdutor = (id?: number, load?: boolean): UseProdutor => {
 
   async function getById(id: number): Promise<Produtor | null> {
     try {
-      const data = await service.getById(id);
-      return data;
+      const { data } = await service.getById(id);
+      return data !== undefined ? data : null;
     } catch (error: any) {
       return null;
     }
@@ -103,8 +103,8 @@ const useProdutor = (id?: number, load?: boolean): UseProdutor => {
 
   async function list(): Promise<Produtor[]> {
     try {
-      const data = await service.list();
-      return data;
+      const { data } = await service.list();
+      return data !== undefined ? data : [];
     } catch (error) {
       return [];
     }
