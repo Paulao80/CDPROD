@@ -1,3 +1,5 @@
+import { ChangeEvent, SetStateAction } from "react";
+
 export const GetTipoPessoa = (tipo?: number) => {
   switch (tipo) {
     case 1:
@@ -48,3 +50,21 @@ export const IsBlank = (value: any) => {
 
   return false;
 };
+
+export const SetFormData = (
+  event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  setForm: (value: SetStateAction<any>) => void,
+  Convert?: (value?: any) => any
+) => {
+  setForm((prev: any) => {
+    return {
+      ...prev,
+      [event.target.name]:
+        Convert !== undefined
+          ? Convert(event.target.value)
+          : event.target.value,
+    };
+  });
+};
+
+

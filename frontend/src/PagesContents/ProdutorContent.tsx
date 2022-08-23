@@ -78,7 +78,7 @@ const ProdutorContent = (id?: number) => {
               }}
             />
 
-            {errorForm?.errors.Nome !== undefined ? (
+            {errorForm?.errors?.Nome !== undefined ? (
               <div className="Message-error">
                 <p>{errorForm.errors.Nome[0]}</p>
               </div>
@@ -105,7 +105,7 @@ const ProdutorContent = (id?: number) => {
               }
             />
 
-            {errorForm?.errors.DataNasc !== undefined ? (
+            {errorForm?.errors?.DataNasc !== undefined ? (
               <div className="Message-error">
                 <p>{errorForm.errors.DataNasc[0]}</p>
               </div>
@@ -145,7 +145,7 @@ const ProdutorContent = (id?: number) => {
               </MenuItem>
             </TextField>
 
-            {errorForm?.errors.TipoPessoa !== undefined ? (
+            {errorForm?.errors?.TipoPessoa !== undefined ? (
               <div className="Message-error">
                 <p>{errorForm.errors.TipoPessoa[0]}</p>
               </div>
@@ -171,7 +171,7 @@ const ProdutorContent = (id?: number) => {
               }}
             />
 
-            {errorForm?.errors.Nacionalidade !== undefined ? (
+            {errorForm?.errors?.Nacionalidade !== undefined ? (
               <div className="Message-error">
                 <p>{errorForm.errors.Nacionalidade[0]}</p>
               </div>
@@ -198,7 +198,7 @@ const ProdutorContent = (id?: number) => {
               }}
             />
 
-            {errorForm?.errors.CpfCnpj !== undefined ? (
+            {errorForm?.errors?.CpfCnpj !== undefined ? (
               <div className="Message-error">
                 <p>{errorForm.errors.CpfCnpj[0]}</p>
               </div>
@@ -227,7 +227,7 @@ const ProdutorContent = (id?: number) => {
               }}
             />
 
-            {errorForm?.errors.RG !== undefined ? (
+            {errorForm?.errors?.RG !== undefined ? (
               <div className="Message-error">
                 <p>{errorForm.errors.RG[0]}</p>
               </div>
@@ -253,7 +253,7 @@ const ProdutorContent = (id?: number) => {
               }}
             />
 
-            {errorForm?.errors.OrgaoExp !== undefined ? (
+            {errorForm?.errors?.OrgaoExp !== undefined ? (
               <div className="Message-error">
                 <p>{errorForm.errors.OrgaoExp[0]}</p>
               </div>
@@ -285,7 +285,7 @@ const ProdutorContent = (id?: number) => {
               })}
             </TextField>
 
-            {errorForm?.errors.EstadoExp !== undefined ? (
+            {errorForm?.errors?.EstadoExp !== undefined ? (
               <div className="Message-error">
                 <p>{errorForm.errors.EstadoExp[0]}</p>
               </div>
@@ -312,7 +312,7 @@ const ProdutorContent = (id?: number) => {
               }
             />
 
-            {errorForm?.errors.DataExp !== undefined ? (
+            {errorForm?.errors?.DataExp !== undefined ? (
               <div className="Message-error">
                 <p>{errorForm.errors.DataExp[0]}</p>
               </div>
@@ -352,7 +352,7 @@ const ProdutorContent = (id?: number) => {
               </MenuItem>
             </TextField>
 
-            {errorForm?.errors.EstadoCivil !== undefined ? (
+            {errorForm?.errors?.EstadoCivil !== undefined ? (
               <div className="Message-error">
                 <p>{errorForm.errors.EstadoCivil[0]}</p>
               </div>
@@ -381,7 +381,7 @@ const ProdutorContent = (id?: number) => {
               }}
             />
 
-            {errorForm?.errors.Telefone !== undefined ? (
+            {errorForm?.errors?.Telefone !== undefined ? (
               <div className="Message-error">
                 <p>{errorForm.errors.Telefone[0]}</p>
               </div>
@@ -407,7 +407,7 @@ const ProdutorContent = (id?: number) => {
               }}
             />
 
-            {errorForm?.errors.UltLaticinio !== undefined ? (
+            {errorForm?.errors?.UltLaticinio !== undefined ? (
               <div className="Message-error">
                 <p>{errorForm.errors.UltLaticinio[0]}</p>
               </div>

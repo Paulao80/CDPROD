@@ -40,11 +40,11 @@ const useProdutor = (id?: number, load?: boolean): UseProdutor => {
         if (res) {
           setForm(res);
         } else {
-          redirect();
+          history.push("/produtor");
         }
       });
     }
-  }, [id, redirect]);
+  }, [id, history]);
 
   useEffect(() => {
     if (load) {

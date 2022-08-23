@@ -4,7 +4,6 @@ import Aside from "../../Components/Aside";
 import Footer from "../../Components/Footer";
 import Main from "../../Components/Main";
 import ButtonAdd from "../../Components/ButtonAdd";
-import { RowsDeleted } from "../../Interfaces";
 import ButtonAct from "../../Components/ButtonAct";
 import { useDispatch } from "react-redux";
 import { ProdutoresActive } from "../../Actions/PageActiveActions";

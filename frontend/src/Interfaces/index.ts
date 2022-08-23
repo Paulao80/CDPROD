@@ -114,7 +114,7 @@ export interface Delete {
 
 export interface Error<T> {
   message: string;
-  errors: T;
+  errors?: T;
 }
 
 export interface ApiResponse<T> {

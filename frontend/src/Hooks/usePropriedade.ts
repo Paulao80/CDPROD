@@ -25,7 +25,7 @@ const usePropriedade = (id?: number, load?: boolean): UsePropriedade => {
     Municipio: "",
     Estado: "",
     Produtor: {
-      ProdutorId: 0,
+      ProdutorId: undefined,
     },
   });
   const [errorForm, setErrorForm] = useState<Error<PropriedadeError>>();
@@ -37,11 +37,11 @@ const usePropriedade = (id?: number, load?: boolean): UsePropriedade => {
         if (res) {
           setForm(res);
         } else {
-          redirect();
+          history.push("/propriedade");
         }
       });
     }
-  }, [id, redirect]);
+  }, [id, history]);
 
   useEffect(() => {
     if (load) {
@@ -53,6 +53,10 @@ const usePropriedade = (id?: number, load?: boolean): UsePropriedade => {
 
   async function onFinish(): Promise<void> {
     try {
+      console.log(
+        "🚀 ~ file: usePropriedade.ts ~ line 57 ~ onFinish ~ form",
+        form
+      );
       const { status } = await service.create(form);
       status === 201
         ? redirect()
