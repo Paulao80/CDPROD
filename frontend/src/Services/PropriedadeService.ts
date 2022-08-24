@@ -22,7 +22,7 @@ export async function getById(id: number): Promise<ApiResponse<Propriedade>> {
 export async function create(
   propriedade: Propriedade
 ): Promise<ApiResponse<Propriedade>> {
-  const { data, status } = await Api.post(`/propriedades`, propriedade);
+  const { data, status } = await Api.post<Propriedade>(`/propriedades`, propriedade);
 
   return {
     data,
@@ -31,7 +31,7 @@ export async function create(
 }
 
 export async function edit(propriedade: Propriedade) {
-  const { data, status } = await Api.put(`/propriedades`, propriedade);
+  const { data, status } = await Api.put<Propriedade>(`/propriedades`, propriedade);
 
   return {
     data,

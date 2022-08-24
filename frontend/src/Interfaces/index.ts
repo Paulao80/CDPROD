@@ -35,17 +35,17 @@ export interface Propriedade {
 }
 
 export interface Tanque {
-  TanqueId: number;
-  Rota: string;
-  Capacidade: number;
-  MediaDiaria: number;
-  TipoTanque: number;
-  FotoPath: string;
-  NumeroSerie: string;
-  Marca: string;
-  Latitude: number;
-  Longitude: number;
-  ProdutoresTanques: ProdutoresTanques[];
+  TanqueId?: number;
+  Rota?: string;
+  Capacidade?: number;
+  MediaDiaria?: number;
+  TipoTanque?: number;
+  FotoPath?: string;
+  NumeroSerie?: string;
+  Marca?: string;
+  Latitude?: number;
+  Longitude?: number;
+  ProdutoresTanques?: ProdutoresTanques[];
 }
 
 export interface ProdutorTanque {

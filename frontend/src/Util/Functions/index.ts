@@ -28,7 +28,7 @@ export const GetEstadoCivil = (estado?: number) => {
   }
 };
 
-export const GetTipoTanque = (tipo: number) => {
+export const GetTipoTanque = (tipo?: number) => {
   switch (tipo) {
     case 1:
       return "Individual";
