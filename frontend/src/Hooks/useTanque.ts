@@ -1,4 +1,10 @@
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import {
+  ChangeEvent,
+  Dispatch,
+  SetStateAction,
+  useEffect,
+  useState,
+} from "react";
 import { useHistory } from "react-router-dom";
 import { Error, TanqueError, Tanque } from "../Interfaces/index";
 import * as service from "../Services/TanqueService";
@@ -13,6 +19,8 @@ interface UseTanque {
   onDelete(id?: number): Promise<boolean>;
   getById(id: number): Promise<Tanque | null>;
   list(): Promise<Tanque[]>;
+  preview: string[];
+  SelectedImages(event: ChangeEvent<HTMLInputElement>): void;
 }
 
 const useTanque = (id?: number, load?: boolean): UseTanque => {
@@ -31,12 +39,14 @@ const useTanque = (id?: number, load?: boolean): UseTanque => {
   });
   const [errorForm, setErrorForm] = useState<Error<TanqueError>>();
   const [tanques, setTanques] = useState<Tanque[]>([]);
+  const [preview, setPreview] = useState<string[]>([]);
 
   useEffect(() => {
     if (id) {
       getById(id).then((res) => {
         if (res) {
           setForm(res);
+          if (res?.FotoPath) setPreview([res?.FotoPath]);
         } else {
           history.push("/tanque");
         }
@@ -109,6 +119,24 @@ const useTanque = (id?: number, load?: boolean): UseTanque => {
     }
   }
 
+  function SelectedImages(event: ChangeEvent<HTMLInputElement>): void {
+    if (!event.target.files) {
+      return;
+    }
+
+    const imagens = Array.from(event.target.files);
+
+    setForm((prev) => {
+      return { ...prev, image: imagens };
+    });
+
+    const imagensPreview = imagens.map((image) => {
+      return URL.createObjectURL(image);
+    });
+
+    setPreview(imagensPreview);
+  }
+
   function getFormData(): FormData {
     const data = new FormData();
 
@@ -144,6 +172,8 @@ const useTanque = (id?: number, load?: boolean): UseTanque => {
     onDelete,
     getById,
     list,
+    preview,
+    SelectedImages,
   };
 };
 
