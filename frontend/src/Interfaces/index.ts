@@ -46,6 +46,7 @@ export interface Tanque {
   Latitude?: number;
   Longitude?: number;
   ProdutoresTanques?: ProdutoresTanques[];
+  image?: File[];
 }
 
 export interface ProdutorTanque {

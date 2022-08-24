@@ -53,10 +53,6 @@ const usePropriedade = (id?: number, load?: boolean): UsePropriedade => {
 
   async function onFinish(): Promise<void> {
     try {
-      console.log(
-        "🚀 ~ file: usePropriedade.ts ~ line 57 ~ onFinish ~ form",
-        form
-      );
       const { status } = await service.create(form);
       status === 201
         ? redirect()

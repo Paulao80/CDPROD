@@ -19,7 +19,7 @@ export async function getById(id: number): Promise<ApiResponse<Tanque>> {
   };
 }
 
-export async function create(tanque: Tanque): Promise<ApiResponse<Tanque>> {
+export async function create(tanque: FormData): Promise<ApiResponse<Tanque>> {
   const { data, status } = await Api.post<Tanque>(`/tanques`, tanque);
 
   return {
@@ -28,7 +28,7 @@ export async function create(tanque: Tanque): Promise<ApiResponse<Tanque>> {
   };
 }
 
-export async function edit(tanque: Tanque): Promise<ApiResponse<Tanque>> {
+export async function edit(tanque: FormData): Promise<ApiResponse<Tanque>> {
   const { data, status } = await Api.put<Tanque>(`/tanques`, tanque);
 
   return {
