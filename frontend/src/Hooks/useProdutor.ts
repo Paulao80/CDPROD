@@ -1,11 +1,11 @@
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import Form, { FormInstance } from "rc-field-form";
 import { useHistory } from "react-router-dom";
 import { Error, ProdutorError, Produtor } from "../Interfaces/index";
 import * as service from "../Services/ProdutorService";
 
 interface UseProdutor {
-  form: Produtor;
-  setForm: Dispatch<SetStateAction<Produtor>>;
+  form: FormInstance;
   produtores: Produtor[];
   errorForm?: Error<ProdutorError>;
   onFinish(): Promise<void>;
@@ -17,20 +17,8 @@ interface UseProdutor {
 
 const useProdutor = (id?: number, load?: boolean): UseProdutor => {
   const history = useHistory();
-  const [form, setForm] = useState<Produtor>({
-    Nome: "",
-    DataNasc: "",
-    TipoPessoa: 0,
-    Nacionalidade: "",
-    CpfCnpj: "",
-    RG: "",
-    OrgaoExp: "",
-    EstadoExp: "",
-    DataExp: "",
-    EstadoCivil: 0,
-    Telefone: "",
-    UltLaticinio: "",
-  });
+  const [form] = Form.useForm<Produtor>();
+
   const [errorForm, setErrorForm] = useState<Error<ProdutorError>>();
   const [produtores, setProdutores] = useState<Produtor[]>([]);
 
@@ -38,13 +26,13 @@ const useProdutor = (id?: number, load?: boolean): UseProdutor => {
     if (id) {
       getById(id).then((res) => {
         if (res) {
-          setForm(res);
+          form.setFieldsValue(res);
         } else {
           history.push("/produtor");
         }
       });
     }
-  }, [id, history]);
+  }, [id, history, form]);
 
   useEffect(() => {
     if (load) {
@@ -56,7 +44,9 @@ const useProdutor = (id?: number, load?: boolean): UseProdutor => {
 
   async function onFinish(): Promise<void> {
     try {
-      const { status } = await service.create(form);
+      const formDados = form.getFieldsValue();
+      console.log("🚀 ~ file: useProdutor.ts ~ line 48 ~ onFinish ~ formDados", formDados)
+      const { status } = await service.create(formDados);
       status === 201
         ? redirect()
         : alert("Não foi possivel adicionar o Produtor");
@@ -67,7 +57,8 @@ const useProdutor = (id?: number, load?: boolean): UseProdutor => {
 
   async function onEdit(): Promise<void> {
     try {
-      const { status } = await service.edit(form);
+      const formDados = form.getFieldsValue();
+      const { status } = await service.edit(formDados);
       status === 200
         ? redirect()
         : alert("Não foi possivel atualizar o Produtor");
@@ -117,7 +108,6 @@ const useProdutor = (id?: number, load?: boolean): UseProdutor => {
 
   return {
     form,
-    setForm,
     produtores,
     onFinish,
     onEdit,

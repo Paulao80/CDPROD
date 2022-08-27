@@ -1,140 +1,95 @@
-import './style.css';
-import Header from '../../Components/Header';
-import Aside from '../../Components/Aside';
-import Footer from '../../Components/Footer';
-import Main from '../../Components/Main';
-import MUIDataTable from "mui-datatables";
-import ButtonAdd from '../../Components/ButtonAdd';
-import ButtonAct from '../../Components/ButtonAct';
-import { RowsDeleted, Tanque as ITanque } from '../../Interfaces';
-import { useState, useEffect } from 'react';
-import Api from '../../Services/Api';
-import { useLocation } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import { TanquesActive } from '../../Actions/PageActiveActions';
-import Logo from '../../Assets/images/logo.png';
+import "./style.css";
+import Header from "../../Components/Header";
+import Aside from "../../Components/Aside";
+import Footer from "../../Components/Footer";
+import Main from "../../Components/Main";
+import ButtonAdd from "../../Components/ButtonAdd";
+import ButtonAct from "../../Components/ButtonAct";
+import { useDispatch } from "react-redux";
+import { TanquesActive } from "../../Actions/PageActiveActions";
+import Logo from "../../Assets/images/logo.png";
+import useTanque from "../../Hooks/useTanque";
+import { DataGrid, GridColDef } from "@mui/x-data-grid";
+import Container from "../../Components/Container";
 
 const Tanque = () => {
-    const dispatch = useDispatch();
+  const dispatch = useDispatch();
+  const { tanques } = useTanque(undefined, true);
 
-    dispatch(TanquesActive());
+  dispatch(TanquesActive());
 
-    const location = useLocation();
+  const customFotoRender = (value: string) => {
+    return <img className="img-tanque" src={value} alt="Foto" />;
+  };
 
-    const [Tanques, setTanques] = useState<ITanque[]>([]);
-
-    useEffect(() => {
-        Api.get('/tanques')
-            .then((response) => {
-                setTanques(response.data);
-            })
-    }, [location]);
-
-    const customFotoRender = (value: string) => {
-        return (
-            <img className="img-tanque" src={value} alt="Foto" />
-        );
-    }
-
-    const customAcoesRender = (value: string) => {
-        return (
-            <div className="div-act">
-                <ButtonAct to={`/tanque/produtores/${value}`} type="produtores" />
-                <ButtonAct to={`/tanque/edit/${value}`} type="editar" />
-                <ButtonAct to={`/tanque/details/${value}`} type="detalhes" />
-            </div>
-        );
-    }
-
-    const columns = [
-        {
-            name: "FotoPath",
-            label: "Foto",
-            options: {
-                filter: false,
-                sort: false,
-                customBodyRender: customFotoRender
-            }
-        },
-        {
-            name: "TanqueId",
-            label: "ID",
-            options: {
-                filter: true,
-                sort: false,
-            }
-        },
-        {
-            name: "Capacidade",
-            label: "Capacidade (L)",
-            options: {
-                filter: true,
-                sort: false,
-            }
-        },
-        {
-            name: "Marca",
-            label: "Marca",
-            options: {
-                filter: true,
-                sort: false,
-            }
-        },
-        {
-            name: "TanqueId",
-            label: "Ações",
-            options: {
-                filter: true,
-                sort: false,
-                customBodyRender: customAcoesRender
-            }
-        }
-    ];
-
-    const setRowProps = () => {
-        return {
-            style: { cursor: 'pointer' }
-        }
-    }
-
-    const onRowsDelete = (rowsDeleted: RowsDeleted, newTableData: any) => {
-
-        rowsDeleted.data.map(async (row) => {
-
-            let tanque = Tanques[row.dataIndex];
-
-            await Api.delete(`/tanques/${tanque.TanqueId}`)
-                .then((response) => {
-                    alert(response.data.Message);
-                })
-                .catch(() => {
-                    alert("Error");
-                });
-        });
-
-    }
-
-    const options = {
-        setRowProps,
-        onRowsDelete
-    };
-
+  const customAcoesRender = (value: string) => {
     return (
-        <>
-            <Header logo={Logo} titulo="CDTR" />
-            <Aside />
-            <Main>
-                <MUIDataTable
-                    title="Tanques"
-                    data={Tanques}
-                    columns={columns}
-                    options={options}
-                />
-            </Main>
-            <ButtonAdd to="/tanque/create" />
-            <Footer />
-        </>
-    )
-}
+      <div className="div-act">
+        <ButtonAct to={`/tanque/produtores/${value}`} type="produtores" />
+        <ButtonAct to={`/tanque/edit/${value}`} type="editar" />
+        <ButtonAct to={`/tanque/details/${value}`} type="detalhes" />
+      </div>
+    );
+  };
+
+  const columns: GridColDef[] = [
+    {
+      field: "FotoPath",
+      headerName: "Foto",
+      filterable: false,
+      sortable: false,
+      renderCell: (params) => {
+        return customFotoRender(params.row.FotoPath);
+      },
+    },
+    {
+      field: "TanqueId",
+      headerName: "ID",
+      filterable: true,
+      sortable: true,
+    },
+    {
+      field: "Capacidade",
+      headerName: "Capacidade (L)",
+      filterable: true,
+      sortable: true,
+    },
+    {
+      field: "Marca",
+      headerName: "Marca",
+      filterable: true,
+      sortable: true,
+    },
+    {
+      field: "acoes",
+      headerName: "Ações",
+      filterable: false,
+      sortable: false,
+      renderCell: (params) => {
+        return customAcoesRender(params.row.TanqueId);
+      },
+    },
+  ];
+
+  return (
+    <>
+      <Header logo={Logo} titulo="CDTR" />
+      <Aside />
+      <Main>
+        <Container>
+          <DataGrid
+            rows={tanques}
+            columns={columns}
+            pageSize={5}
+            checkboxSelection
+            getRowId={(row) => row.TanqueId}
+          />
+        </Container>
+      </Main>
+      <ButtonAdd to="/tanque/create" />
+      <Footer />
+    </>
+  );
+};
 
 export default Tanque;

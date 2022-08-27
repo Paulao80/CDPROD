@@ -1,3 +1,4 @@
+import { FormInstance } from "rc-field-form";
 import { ChangeEvent, SetStateAction } from "react";
 
 export const GetTipoPessoa = (tipo?: number) => {
@@ -67,4 +68,17 @@ export const SetFormData = (
   });
 };
 
+export const formContainsError = async (form: FormInstance<any>) => {
+  if (form) {
+    return await form
+      .validateFields()
+      .then(() => {
+        return false;
+      })
+      .catch(() => {
+        return true;
+      });
+  }
 
+  return false;
+};
