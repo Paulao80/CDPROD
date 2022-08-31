@@ -45,10 +45,6 @@ const usePropriedade = (id?: number, load?: boolean): UsePropriedade => {
   async function onFinish(): Promise<void> {
     try {
       const formDados = form.getFieldsValue();
-      console.log(
-        "🚀 ~ file: usePropriedade.ts ~ line 48 ~ onFinish ~ formDados",
-        formDados
-      );
       const { status } = await service.create(formDados);
       status === 201
         ? redirect()

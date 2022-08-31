@@ -1,17 +1,11 @@
-import {
-  ChangeEvent,
-  Dispatch,
-  SetStateAction,
-  useEffect,
-  useState,
-} from "react";
+import { ChangeEvent, useEffect, useState } from "react";
+import Form, { FormInstance } from "rc-field-form";
 import { useHistory } from "react-router-dom";
 import { Error, TanqueError, Tanque } from "../Interfaces/index";
 import * as service from "../Services/TanqueService";
 
 interface UseTanque {
-  form: Tanque;
-  setForm: Dispatch<SetStateAction<Tanque>>;
+  form: FormInstance;
   tanques: Tanque[];
   errorForm?: Error<TanqueError>;
   onFinish(): Promise<void>;
@@ -21,38 +15,42 @@ interface UseTanque {
   list(): Promise<Tanque[]>;
   preview: string[];
   SelectedImages(event: ChangeEvent<HTMLInputElement>): void;
+  Latitude: number;
+  Longitude: number;
+  setPosition(lat: number, lng: number): void;
 }
 
 const useTanque = (id?: number, load?: boolean): UseTanque => {
   const history = useHistory();
-  const [form, setForm] = useState<Tanque>({
-    Capacidade: 0,
-    FotoPath: undefined,
-    image: [],
-    Latitude: 0,
-    Longitude: 0,
-    Marca: "",
-    MediaDiaria: 0,
-    NumeroSerie: "",
-    Rota: "",
-    TipoTanque: 0,
-  });
+  const [form] = Form.useForm<Tanque>();
+
   const [errorForm, setErrorForm] = useState<Error<TanqueError>>();
   const [tanques, setTanques] = useState<Tanque[]>([]);
   const [preview, setPreview] = useState<string[]>([]);
+  const [Latitude, setLatitude] = useState<number>(0);
+  const [Longitude, setLongitude] = useState<number>(0);
+
+  useEffect(() => {
+    form.setFieldsValue({
+      Latitude,
+      Longitude,
+    });
+  }, [Latitude, Longitude, form]);
 
   useEffect(() => {
     if (id) {
       getById(id).then((res) => {
         if (res) {
-          setForm(res);
+          form.setFieldsValue(res);
+          if (res?.Latitude) setLatitude(res?.Latitude);
+          if (res?.Longitude) setLongitude(res?.Longitude);
           if (res?.FotoPath) setPreview([res?.FotoPath]);
         } else {
           history.push("/tanque");
         }
       });
     }
-  }, [id, history]);
+  }, [id, history, form]);
 
   useEffect(() => {
     if (load) {
@@ -126,8 +124,8 @@ const useTanque = (id?: number, load?: boolean): UseTanque => {
 
     const imagens = Array.from(event.target.files);
 
-    setForm((prev) => {
-      return { ...prev, image: imagens };
+    form.setFieldsValue({
+      image: imagens,
     });
 
     const imagensPreview = imagens.map((image) => {
@@ -139,23 +137,34 @@ const useTanque = (id?: number, load?: boolean): UseTanque => {
 
   function getFormData(): FormData {
     const data = new FormData();
+    const formDados = form.getFieldsValue();
 
     if (id) data.append("TanqueId", String(id));
-    if (form?.Rota) data.append("Rota", form?.Rota);
-    if (form?.Capacidade) data.append("Capacidade", String(form?.Capacidade));
-    if (form?.MediaDiaria)
-      data.append("MediaDiaria", String(form?.MediaDiaria));
-    if (form?.TipoTanque) data.append("TipoTanque", String(form?.TipoTanque));
-    if (form?.NumeroSerie) data.append("NumeroSerie", form?.NumeroSerie);
-    if (form?.Marca) data.append("Marca", form?.Marca);
-    if (form?.Latitude) data.append("Latitude", String(form?.Latitude));
-    if (form?.Longitude) data.append("Longitude", String(form?.Longitude));
-    if (form?.image)
-      form?.image.forEach((img) => {
+    if (formDados?.Rota) data.append("Rota", formDados?.Rota);
+    if (formDados?.Capacidade)
+      data.append("Capacidade", String(formDados?.Capacidade));
+    if (formDados?.MediaDiaria)
+      data.append("MediaDiaria", String(formDados?.MediaDiaria));
+    if (formDados?.TipoTanque)
+      data.append("TipoTanque", String(formDados?.TipoTanque));
+    if (formDados?.NumeroSerie)
+      data.append("NumeroSerie", formDados?.NumeroSerie);
+    if (formDados?.Marca) data.append("Marca", formDados?.Marca);
+    if (formDados?.Latitude)
+      data.append("Latitude", String(formDados?.Latitude));
+    if (formDados?.Longitude)
+      data.append("Longitude", String(formDados?.Longitude));
+    if (formDados?.image)
+      formDados?.image.forEach((img) => {
         data.append("image", img);
       });
 
     return data;
+  }
+
+  function setPosition(lat: number, lng: number): void {
+    setLatitude(lat);
+    setLongitude(lng);
   }
 
   function redirect() {
@@ -164,7 +173,6 @@ const useTanque = (id?: number, load?: boolean): UseTanque => {
 
   return {
     form,
-    setForm,
     errorForm,
     tanques,
     onFinish,
@@ -174,6 +182,9 @@ const useTanque = (id?: number, load?: boolean): UseTanque => {
     list,
     preview,
     SelectedImages,
+    Latitude,
+    Longitude,
+    setPosition,
   };
 };
 

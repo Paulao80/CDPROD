@@ -19,7 +19,7 @@ const ButtonAdd = ({ onClick, form }: ButtonAddProps) => {
           onClick(event);
         }
       }}
-      type="submit"
+      type="button"
       className="btn-save"
     >
       <Save fontSize="large" />

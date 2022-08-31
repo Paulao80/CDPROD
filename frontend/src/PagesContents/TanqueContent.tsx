@@ -5,27 +5,30 @@ import Footer from "../Components/Footer";
 import Main from "../Components/Main";
 import Container from "../Components/Container";
 import BtnSave from "../Components/ButtonSave";
-import { TextField, MenuItem } from "@mui/material";
+import { MenuItem } from "@mui/material";
 import PainelNav from "../Components/PainelNav";
 import { MapContainer, TileLayer, Marker, useMapEvents } from "react-leaflet";
-import { FormEvent } from "react";
 import { iconLocation } from "../Util/Icons";
 import Logo from "../Assets/images/logo.png";
 import { useDispatch } from "react-redux";
 import { TanquesActive } from "../Actions/PageActiveActions";
 import useTanque from "../Hooks/useTanque";
-import { SetFormData } from "../Util/Functions";
+import { HiddenX, TextFieldX } from "../Components/Fields";
+import Form, { Field } from "rc-field-form";
+import { ChangeEvent } from "react";
 
 const TanqueContent = (id?: number) => {
   const dispatch = useDispatch();
   const {
     errorForm,
     form,
-    setForm,
     onFinish,
     onEdit,
     preview,
     SelectedImages,
+    Latitude,
+    Longitude,
+    setPosition,
   } = useTanque(id);
 
   dispatch(TanquesActive());
@@ -34,25 +37,21 @@ const TanqueContent = (id?: number) => {
     const map = useMapEvents({
       click(e) {
         const { lat, lng } = e.latlng;
-        setForm((prev) => {
-          return { ...prev, Latitude: lat, Longitude: lng };
-        });
+        setPosition(lat, lng);
         map.flyTo(e.latlng, map.getZoom());
       },
     });
 
-    return form?.Latitude !== undefined && form?.Longitude !== undefined ? (
+    return Latitude !== undefined && Longitude !== undefined ? (
       <Marker
-        position={[form?.Latitude, form?.Longitude]}
+        position={[Latitude, Longitude]}
         interactive={false}
         icon={iconLocation}
       />
     ) : null;
   };
 
-  const OnSubmit = async (event: FormEvent) => {
-    event.preventDefault();
-
+  const OnSubmit = async () => {
     if (id) {
       onEdit();
     } else {
@@ -60,7 +59,7 @@ const TanqueContent = (id?: number) => {
     }
   };
 
-  if (form?.Latitude === undefined || form?.Longitude === undefined) {
+  if (Latitude === undefined || Longitude === undefined) {
     return <p>Carregando...</p>;
   }
 
@@ -74,7 +73,7 @@ const TanqueContent = (id?: number) => {
           titulo={`${id ? "Editar" : "Adicionar"} Tanque`}
         />
         <Container>
-          <form onSubmit={OnSubmit}>
+          <Form form={form} onFinish={OnSubmit}>
             {errorForm?.message !== undefined ? (
               <div className="Message-error">
                 <p>{errorForm.message}</p>
@@ -82,6 +81,18 @@ const TanqueContent = (id?: number) => {
             ) : (
               ""
             )}
+
+            <Field name="TanqueId">
+              {(input, meta) => (
+                <HiddenX
+                  {...input}
+                  meta={meta}
+                  errorForm={errorForm}
+                  type="number"
+                  hidden
+                />
+              )}
+            </Field>
 
             <MapContainer
               center={[-10.930750223902585, -61.927419334264975]}
@@ -99,115 +110,113 @@ const TanqueContent = (id?: number) => {
               <LocationMarker />
             </MapContainer>
 
-            {errorForm?.errors?.Latitude !== undefined &&
-            errorForm?.errors?.Longitude !== undefined ? (
-              <div className="Message-error">
-                <p>{errorForm.errors.Latitude}</p>
-                <p>{errorForm.errors.Longitude}</p>
-              </div>
-            ) : (
-              ""
-            )}
+            <Field name="Latitude">
+              {(input, meta) => (
+                <HiddenX
+                  {...input}
+                  meta={meta}
+                  errorForm={errorForm}
+                  type="number"
+                  hidden
+                />
+              )}
+            </Field>
 
-            <TextField
-              name="Rota"
-              id="Rota"
-              label="Rota"
-              variant="outlined"
-              fullWidth
-              margin="normal"
-              value={form?.Rota}
-              onChange={(event) => SetFormData(event, setForm)}
-            />
+            <Field name="Longitude">
+              {(input, meta) => (
+                <HiddenX
+                  {...input}
+                  meta={meta}
+                  errorForm={errorForm}
+                  type="number"
+                  hidden
+                />
+              )}
+            </Field>
 
-            {errorForm?.errors?.Rota !== undefined ? (
-              <div className="Message-error">
-                <p>{errorForm.errors.Rota}</p>
-              </div>
-            ) : (
-              ""
-            )}
+            <Field name="Rota">
+              {(input, meta) => (
+                <TextFieldX
+                  {...input}
+                  meta={meta}
+                  errorForm={errorForm}
+                  label="Rota"
+                  variant="outlined"
+                  fullWidth
+                  margin="normal"
+                />
+              )}
+            </Field>
 
-            <TextField
-              name="Capacidade"
-              id="Capacidade"
-              label="Capacidade"
-              variant="outlined"
-              type="number"
-              fullWidth
-              margin="normal"
-              value={form?.Capacidade}
-              onChange={(event) => SetFormData(event, setForm, Number)}
-            />
+            <Field name="Capacidade">
+              {(input, meta) => (
+                <TextFieldX
+                  {...input}
+                  meta={meta}
+                  errorForm={errorForm}
+                  label="Capacidade"
+                  variant="outlined"
+                  type="number"
+                  fullWidth
+                  margin="normal"
+                />
+              )}
+            </Field>
 
-            {errorForm?.errors?.Capacidade !== undefined ? (
-              <div className="Message-error">
-                <p>{errorForm.errors.Capacidade}</p>
-              </div>
-            ) : (
-              ""
-            )}
+            <Field name="MediaDiaria">
+              {(input, meta) => (
+                <TextFieldX
+                  {...input}
+                  meta={meta}
+                  errorForm={errorForm}
+                  label="Média Diária"
+                  variant="outlined"
+                  type="number"
+                  fullWidth
+                  margin="normal"
+                />
+              )}
+            </Field>
 
-            <TextField
-              name="MediaDiaria"
-              id="MediaDiaria"
-              label="Média Diária"
-              variant="outlined"
-              type="number"
-              fullWidth
-              margin="normal"
-              value={form?.MediaDiaria}
-              onChange={(event) => SetFormData(event, setForm, Number)}
-            />
+            <Field name="TipoTanque">
+              {(input, meta) => (
+                <TextFieldX
+                  {...input}
+                  meta={meta}
+                  errorForm={errorForm}
+                  label="Tipo de Tanque"
+                  variant="outlined"
+                  select
+                  fullWidth
+                  margin="normal"
+                >
+                  <MenuItem key={1} value={1}>
+                    Individual
+                  </MenuItem>
+                  <MenuItem key={2} value={2}>
+                    Comunitário
+                  </MenuItem>
+                </TextFieldX>
+              )}
+            </Field>
 
-            {errorForm?.errors?.MediaDiaria !== undefined ? (
-              <div className="Message-error">
-                <p>{errorForm.errors.MediaDiaria}</p>
-              </div>
-            ) : (
-              ""
-            )}
-
-            <TextField
-              name="TipoTanque"
-              id="TipoTanque"
-              label="Tipo de Tanque"
-              variant="outlined"
-              select
-              fullWidth
-              margin="normal"
-              value={form?.TipoTanque !== 0 ? form?.TipoTanque : ""}
-              onChange={(event) => SetFormData(event, setForm, Number)}
-            >
-              <MenuItem key={1} value={1}>
-                Individual
-              </MenuItem>
-              <MenuItem key={2} value={2}>
-                Comunitário
-              </MenuItem>
-            </TextField>
-
-            {errorForm?.errors?.TipoTanque !== undefined ? (
-              <div className="Message-error">
-                <p>{errorForm.errors.TipoTanque}</p>
-              </div>
-            ) : (
-              ""
-            )}
-
-            <TextField
-              name="Foto"
-              id="Foto"
-              label="Foto do Tanque"
-              variant="outlined"
-              type="file"
-              fullWidth
-              margin="normal"
-              InputLabelProps={{
-                shrink: true,
-              }}
-              onChange={SelectedImages}
-            />
+            <Field name="Foto">
+              {(input, meta) => (
+                <TextFieldX
+                  {...input}
+                  meta={meta}
+                  label="Foto do Tanque"
+                  variant="outlined"
+                  type="file"
+                  fullWidth
+                  margin="normal"
+                  onChange={(event: ChangeEvent<HTMLInputElement>) => {
+                    if (input?.onChange) input.onChange(event);
+                    SelectedImages(event);
+                  }}
+                />
+              )}
+            </Field>
 
             {preview.map((image) => {
               return (
@@ -220,46 +229,48 @@ const TanqueContent = (id?: number) => {
               );
             })}
 
-            <TextField
-              name="NumeroSerie"
-              id="NumeroSerie"
-              label="Nº de Série do Tanque"
-              variant="outlined"
-              fullWidth
-              margin="normal"
-              value={form?.NumeroSerie}
-              onChange={(event) => SetFormData(event, setForm)}
-            />
+            <Field name="image">
+              {(input, meta) => (
+                <HiddenX
+                  {...input}
+                  meta={meta}
+                  errorForm={errorForm}
+                  type="number"
+                  hidden
+                />
+              )}
+            </Field>
 
-            {errorForm?.errors?.NumeroSerie !== undefined ? (
-              <div className="Message-error">
-                <p>{errorForm.errors.NumeroSerie}</p>
-              </div>
-            ) : (
-              ""
-            )}
+            <Field name="NumeroSerie">
+              {(input, meta) => (
+                <TextFieldX
+                  {...input}
+                  meta={meta}
+                  errorForm={errorForm}
+                  label="Nº de Série do Tanque"
+                  variant="outlined"
+                  fullWidth
+                  margin="normal"
+                />
+              )}
+            </Field>
 
-            <TextField
-              name="Marca"
-              id="Marca"
-              label="Marca do Tanque"
-              variant="outlined"
-              fullWidth
-              margin="normal"
-              value={form?.Marca}
-              onChange={(event) => SetFormData(event, setForm)}
-            />
+            <Field name="Marca">
+              {(input, meta) => (
+                <TextFieldX
+                  {...input}
+                  meta={meta}
+                  errorForm={errorForm}
+                  label="Marca do Tanque"
+                  variant="outlined"
+                  fullWidth
+                  margin="normal"
+                />
+              )}
+            </Field>
 
-            {errorForm?.errors?.Marca !== undefined ? (
-              <div className="Message-error">
-                <p>{errorForm.errors.Marca}</p>
-              </div>
-            ) : (
-              ""
-            )}
-
-            <BtnSave />
-          </form>
+            <BtnSave onClick={OnSubmit} form={form} />
+          </Form>
         </Container>
       </Main>
 

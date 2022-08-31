@@ -14,29 +14,29 @@ import ShowData from "../../Components/ShowData";
 import { GetTipoTanque } from "../../Util/Functions";
 import { Tanque } from "../../Interfaces";
 import { useState, useEffect } from "react";
-import Api from "../../Services/Api";
 import Logo from "../../Assets/images/logo.png";
 import { useDispatch } from "react-redux";
 import { TanquesActive } from "../../Actions/PageActiveActions";
+import useTanque from "../../Hooks/useTanque";
 
 interface Param {
   id: string;
 }
 
 const DetailsTanque = () => {
-  const dispatch = useDispatch();
-
-  dispatch(TanquesActive());
-
   const { id } = useParams<Param>();
-
+  const dispatch = useDispatch();
+  const { getById } = useTanque();
   const [tanque, setTanque] = useState<Tanque>();
 
   useEffect(() => {
-    Api.get(`/tanques/${id}`).then((response) => {
-      setTanque(response.data);
-    });
-  }, [id]);
+    if (id)
+      getById(Number(id)).then((res) => {
+        if (res) setTanque(res);
+      });
+  }, [id, getById]);
+
+  dispatch(TanquesActive());
 
   if (tanque === undefined) {
     return <p>Carregando...</p>;

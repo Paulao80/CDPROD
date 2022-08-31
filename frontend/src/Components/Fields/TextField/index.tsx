@@ -22,7 +22,7 @@ export const TextFieldX = ({
       value={value}
       InputLabelProps={{
         ...InputLabelProps,
-        shrink: !IsBlank(value) || type === "date",
+        shrink: !IsBlank(value) || type === "date" || type === "file",
       }}
       {...props}
     />
