@@ -45,7 +45,6 @@ const useProdutor = (id?: number, load?: boolean): UseProdutor => {
   async function onFinish(): Promise<void> {
     try {
       const formDados = form.getFieldsValue();
-      console.log("🚀 ~ file: useProdutor.ts ~ line 48 ~ onFinish ~ formDados", formDados)
       const { status } = await service.create(formDados);
       status === 201
         ? redirect()

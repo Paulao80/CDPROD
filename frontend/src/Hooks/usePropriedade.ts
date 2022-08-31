@@ -1,11 +1,11 @@
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import Form, { FormInstance } from "rc-field-form";
+import { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { Error, PropriedadeError, Propriedade } from "../Interfaces/index";
 import * as service from "../Services/PropriedadeService";
 
 interface UsePropriedade {
-  form: Propriedade;
-  setForm: Dispatch<SetStateAction<Propriedade>>;
+  form: FormInstance;
   propriedades: Propriedade[];
   errorForm?: Error<PropriedadeError>;
   onFinish(): Promise<void>;
@@ -17,17 +17,8 @@ interface UsePropriedade {
 
 const usePropriedade = (id?: number, load?: boolean): UsePropriedade => {
   const history = useHistory();
-  const [form, setForm] = useState<Propriedade>({
-    Nome: "",
-    Nirf: "",
-    InscEstadual: "",
-    Endereco: "",
-    Municipio: "",
-    Estado: "",
-    Produtor: {
-      ProdutorId: undefined,
-    },
-  });
+  const [form] = Form.useForm<Propriedade>();
+
   const [errorForm, setErrorForm] = useState<Error<PropriedadeError>>();
   const [propriedades, setPropriedades] = useState<Propriedade[]>([]);
 
@@ -35,13 +26,13 @@ const usePropriedade = (id?: number, load?: boolean): UsePropriedade => {
     if (id) {
       getById(id).then((res) => {
         if (res) {
-          setForm(res);
+          form.setFieldsValue(res);
         } else {
           history.push("/propriedade");
         }
       });
     }
-  }, [id, history]);
+  }, [id, history, form]);
 
   useEffect(() => {
     if (load) {
@@ -53,7 +44,12 @@ const usePropriedade = (id?: number, load?: boolean): UsePropriedade => {
 
   async function onFinish(): Promise<void> {
     try {
-      const { status } = await service.create(form);
+      const formDados = form.getFieldsValue();
+      console.log(
+        "🚀 ~ file: usePropriedade.ts ~ line 48 ~ onFinish ~ formDados",
+        formDados
+      );
+      const { status } = await service.create(formDados);
       status === 201
         ? redirect()
         : alert("Não foi possivel adicionar a Propriedade");
@@ -64,7 +60,8 @@ const usePropriedade = (id?: number, load?: boolean): UsePropriedade => {
 
   async function onEdit(): Promise<void> {
     try {
-      const { status } = await service.edit(form);
+      const formDados = form.getFieldsValue();
+      const { status } = await service.edit(formDados);
       status === 200
         ? redirect()
         : alert("Não foi possivel atualizar a Propriedade");
@@ -114,7 +111,6 @@ const usePropriedade = (id?: number, load?: boolean): UsePropriedade => {
 
   return {
     form,
-    setForm,
     propriedades,
     errorForm,
     onFinish,

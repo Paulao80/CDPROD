@@ -10,29 +10,29 @@ import { useParams } from 'react-router-dom';
 import ShowData from '../../Components/ShowData';
 import { Propriedade } from '../../Interfaces';
 import { useEffect, useState } from 'react';
-import Api from '../../Services/Api';
 import Logo from '../../Assets/images/logo.png';
 import { useDispatch } from 'react-redux';
 import { PropriedadesActive } from '../../Actions/PageActiveActions';
+import usePropriedade from '../../Hooks/usePropriedade';
 
 interface Param {
     id: string;
 }
 
 const DetailsPropriedade = () => {
-    const dispatch = useDispatch();
-
-    dispatch(PropriedadesActive());
-
     const { id } = useParams<Param>();
-
+    const dispatch = useDispatch();
+    const { getById } = usePropriedade();
     const [propriedade, setPropriedade] = useState<Propriedade>();
 
     useEffect(() => {
-        Api.get(`/propriedades/${id}`).then(response => {
-            setPropriedade(response.data);
-        });
-    }, [id]);
+        if(id)
+            getById(Number(id)).then((res) => {
+                if(res) setPropriedade(res);
+            });
+    }, [id, getById]);
+
+    dispatch(PropriedadesActive());  
 
     if (propriedade === undefined) {
         return (
