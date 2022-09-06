@@ -16,11 +16,12 @@ export interface Produtor {
 }
 
 export interface ContasBancarias {
-  ContaId: number;
-  NomePertence: string;
-  Banco: string;
-  Agencia: string;
-  Conta: string;
+  ContaId?: number;
+  NomePertence?: string;
+  Banco?: string;
+  Agencia?: string;
+  Conta?: string;
+  Produtor?: Produtor;
 }
 
 export interface Propriedade {

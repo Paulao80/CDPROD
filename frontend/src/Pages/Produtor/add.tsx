@@ -42,8 +42,7 @@ const AddContas = () => {
         })
     }, [id])
 
-    const OnSubmit = async (event: FormEvent) => {
-        event.preventDefault();
+    const OnSubmit = async () => {
 
         await Api.post('contas', {
             NomePertence,
@@ -135,7 +134,7 @@ const AddContas = () => {
                             onChange={event => setConta(event.target.value)}
                         />
 
-                        <BtnSave />
+                        <BtnSave onClick={OnSubmit} />
                     </form>
 
                 </Container>
