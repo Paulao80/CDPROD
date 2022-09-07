@@ -23,13 +23,35 @@ interface UseContaBancaria {
 const useContaBancaria = (
   id?: number,
   produtorId?: number,
-  load?: boolean,
+  load?: boolean
 ): UseContaBancaria => {
   const history = useHistory();
   const [form] = Form.useForm<ContasBancarias>();
 
   const [errorForm, setErrorForm] = useState<Error<ContaBancariaError>>();
   const [contasBancarias, setContasBancarias] = useState<ContasBancarias[]>([]);
+
+  useEffect(() => {
+    if (id) {
+      getById(id).then((res) => {
+        if (res) {
+          form.setFieldsValue(res);
+        } else {
+          history.push(`/produtor/contas/${produtorId}`);
+        }
+      });
+    }
+  }, [id, history, form, produtorId]);
+
+  useEffect(() => {
+    if (load && produtorId) {
+      listByProdutorId(produtorId).then((res) => {
+        setContasBancarias(res);
+      });
+    } else if(load) {
+      history.push(`/produtor`);
+    }
+  }, [load, produtorId, history]);
 
   async function onFinish(): Promise<void> {
     try {
@@ -98,7 +120,6 @@ const useContaBancaria = (
       return [];
     }
   }
-
 
   function redirect() {
     history.push(`/produtor/contas/${produtorId}`);

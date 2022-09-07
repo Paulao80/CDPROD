@@ -9,12 +9,14 @@
   --cor-btnAdd: #0e62e0;
   --cor-btnAdd-hover: #0a4bad;
   --cor-btnSave: #3ab63a;
-  --cor-btnSave-hover: #349e34;
+  --cor-btnSave-hover: #35ac35;
   --cor-fonte: #424242;
   --cor-btnEdt: #f8d822;
   --cor-btnEdt-hover: #e7c91f;
   --cor-btnld: #2b7cf7;
   --cor-btnld-hover: #418af7;
+  --cor-btnCancel: #ff2b2b;
+  --cor-btnCancel-hover: #ff1818;
 }
 
 * {

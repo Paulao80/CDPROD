@@ -8,7 +8,7 @@ import BtnSave from '../../Components/ButtonSave';
 import './style.css';
 import { TextField } from '@material-ui/core';
 import { useHistory, useParams } from 'react-router-dom';
-import { FormEvent, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import Api from '../../Services/Api';
 import { Produtor } from '../../Interfaces';
 import Logo from '../../Assets/images/logo.png';

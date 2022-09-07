@@ -101,6 +101,22 @@ export interface StatePageActive {
   Relatorios: string;
 }
 
+export enum OperationModal {
+  Add,
+  Edit,
+  Info,
+}
+
+export interface TypeModal {
+  key: string;
+  title: string;
+  operation: OperationModal;
+}
+
+export interface StateModal {
+  modals: TypeModal[];
+}
+
 export interface User {
   UserId: number;
   Name: string;
@@ -122,6 +138,12 @@ export interface Error<T> {
 export interface ApiResponse<T> {
   data?: T;
   status: number;
+}
+
+export interface Reducers {
+  MenuReducer: StateMenu;
+  PageActiveReducer: StatePageActive;
+  ModalStateReducer: StateModal;
 }
 
 export * from "./errors";

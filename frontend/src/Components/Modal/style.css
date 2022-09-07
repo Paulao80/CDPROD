@@ -1,0 +1,80 @@
+.modal {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    border-bottom: 1px solid rgb(165, 165, 165);
+    box-shadow: 3px 3px 19px 0px #000000;
+}
+
+.modal .modal-header {
+    padding: 10px 5px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgb(165, 165, 165);
+}
+
+.modal .modal-header .modal-title {
+    font-weight: 700;
+    font-size: 18px;
+}
+
+.modal .modal-header .btn-close {
+    border: none;
+    background-color: transparent;
+    padding: 2px;
+} 
+
+.modal .modal-header .btn-close:hover {
+    color: rgb(250, 53, 53);
+    cursor: pointer;
+}
+
+.modal .modal-body {
+    padding: 5px;
+}
+
+.modal .modal-footer {
+    padding: 7px 5px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+    border-top: 1px solid rgb(165, 165, 165);
+}
+
+.modal .modal-footer .btn-operations {
+    background-color: white;
+    padding: 8px 0;
+    width: 80px;
+    margin: 3px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    border-radius: 5px;
+    border: none;
+    color: rgb(241, 241, 241);
+}
+
+.modal .modal-footer .btn-operations:hover {
+    color: rgb(233, 233, 233);
+}
+
+.modal .modal-footer .btn-operations.save {
+    background-color: var(--cor-btnSave);
+}
+
+.modal .modal-footer .btn-operations.save:hover {
+    background-color: var(--cor-btnSave-hover);
+}
+
+.modal .modal-footer .btn-operations.cancel {
+    background-color: var(--cor-btnCancel);
+}
+
+.modal .modal-footer .btn-operations.cancel:hover {
+    background-color: var(--cor-btnCancel-hover);
+}
