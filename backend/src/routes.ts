@@ -49,6 +49,7 @@ routes.delete('/tanques/:id', Auth.verify, TanquesControllers.delete);
 
 routes.get('/prodtanques', Auth.verify, ProdutoresTanquesControllers.index);
 routes.get('/prodtanques/:id', Auth.verify, ProdutoresTanquesControllers.show);
+routes.get('/prodtanques/tanque/:id', Auth.verify, ProdutoresTanquesControllers.getByTanqueId);
 routes.post('/prodtanques', Auth.verify, ProdutoresTanquesControllers.create);
 routes.delete('/prodtanques/:id', Auth.verify, ProdutoresTanquesControllers.delete);
 
