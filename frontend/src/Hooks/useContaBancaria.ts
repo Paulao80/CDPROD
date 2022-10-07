@@ -5,19 +5,25 @@ import {
   Error,
   ContaBancariaError,
   ContasBancarias,
+  Produtor,
 } from "../Interfaces/index";
 import * as service from "../Services/ContaService";
+import useProdutor from "./useProdutor";
 
 interface UseContaBancaria {
   form: FormInstance;
   contasBancarias: ContasBancarias[];
   errorForm?: Error<ContaBancariaError>;
-  onFinish(): Promise<void>;
-  onEdit(): Promise<void>;
+  onFinish(): Promise<boolean>;
+  onEdit(): Promise<boolean>;
   onDelete(id?: number): Promise<boolean>;
   getById(id: number): Promise<ContasBancarias | null>;
   list(): Promise<ContasBancarias[]>;
   listByProdutorId(id: number): Promise<ContasBancarias[]>;
+  onChangePertenceProdutor(): void;
+  produtor: Produtor;
+  pertenceProdutor: boolean;
+  setFormData(data: ContasBancarias): void;
 }
 
 const useContaBancaria = (
@@ -30,6 +36,10 @@ const useContaBancaria = (
 
   const [errorForm, setErrorForm] = useState<Error<ContaBancariaError>>();
   const [contasBancarias, setContasBancarias] = useState<ContasBancarias[]>([]);
+  const [produtor, setProdutor] = useState<Produtor>({});
+  const [pertenceProdutor, setPertenceProdutor] = useState<boolean>(false);
+
+  const { getById: getProdutoById } = useProdutor();
 
   useEffect(() => {
     if (id) {
@@ -48,32 +58,66 @@ const useContaBancaria = (
       listByProdutorId(produtorId).then((res) => {
         setContasBancarias(res);
       });
-    } else if(load) {
+    } else if (load) {
       history.push(`/produtor`);
     }
   }, [load, produtorId, history]);
 
-  async function onFinish(): Promise<void> {
+  useEffect(() => {
+    if (produtorId) {
+      getProdutoById(produtorId).then((resp) => {
+        if (resp) setProdutor(resp);
+        else history.push(`/produtor`);
+      });
+    }
+    // eslint-disable-next-line
+  }, [load, produtorId, history]);
+
+  async function onFinish(): Promise<boolean> {
     try {
-      const formDados = form.getFieldsValue();
-      const { status } = await service.create(formDados);
-      status === 201
-        ? redirect()
-        : alert("Não foi possivel adicionar a conta bancária");
+      const formDados: ContasBancarias = {
+        ...form.getFieldsValue(),
+        Produtor: produtor,
+      };
+      const { status, data } = await service.create(formDados);
+      if (status !== 201) {
+        alert("Não foi possivel adicionar a conta bancária");
+        return false;
+      }
+      if (data) setContasBancarias((prev) => prev.concat(data));
+      form.resetFields();
+      return true;
     } catch (error: any) {
       setErrorForm(error.response.data);
+      return false;
     }
   }
 
-  async function onEdit(): Promise<void> {
+  async function onEdit(): Promise<boolean> {
     try {
       const formDados = form.getFieldsValue();
-      const { status } = await service.edit(formDados);
-      status === 200
-        ? redirect()
-        : alert("Não foi possivel atualizar a conta bancária");
+      const { status, data } = await service.edit(formDados);
+
+      if (status !== 200) {
+        alert("Não foi possivel atualizar a conta bancária");
+        return false;
+      }
+
+      if (data) {
+        const updatedContas = [...contasBancarias];
+        updatedContas[
+          contasBancarias.findIndex((item) => item.ContaId === data?.ContaId)
+        ] = {
+          ...data,
+        };
+        setContasBancarias(updatedContas);
+      }
+
+      form.resetFields();
+      return true;
     } catch (error: any) {
       setErrorForm(error.response.data);
+      return false;
     }
   }
 
@@ -121,8 +165,17 @@ const useContaBancaria = (
     }
   }
 
-  function redirect() {
-    history.push(`/produtor/contas/${produtorId}`);
+  function onChangePertenceProdutor() {
+    const formDados = form.getFieldsValue();
+    setPertenceProdutor(formDados.PertenceProdutor ? true : false);
+    if (formDados.PertenceProdutor)
+      form.setFieldsValue({ NomePertence: produtor.Nome });
+    else form.setFieldsValue({ NomePertence: "" });
+  }
+
+  function setFormData(data: ContasBancarias): void {
+    setPertenceProdutor(data.PertenceProdutor ? true : false);
+    form.setFieldsValue(data);
   }
 
   return {
@@ -135,6 +188,10 @@ const useContaBancaria = (
     getById,
     list,
     listByProdutorId,
+    onChangePertenceProdutor,
+    produtor,
+    pertenceProdutor,
+    setFormData,
   };
 };
 

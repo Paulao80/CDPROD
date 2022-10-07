@@ -35,6 +35,8 @@
 
 .modal .modal-body {
     padding: 5px;
+    height: 55vh;
+    overflow-y: auto;
 }
 
 .modal .modal-footer {

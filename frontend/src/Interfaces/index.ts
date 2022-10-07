@@ -22,6 +22,7 @@ export interface ContasBancarias {
   Agencia?: string;
   Conta?: string;
   Produtor?: Produtor;
+  PertenceProdutor?: boolean;
 }
 
 export interface Propriedade {

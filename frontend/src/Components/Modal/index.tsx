@@ -11,10 +11,12 @@ interface ModalXProps {
   onFinish?(): Promise<any>;
   onEdit?(): Promise<any>;
   onCancel?(): Promise<any>;
+  keepMounted?: boolean;
 }
 
 const ModalX: React.FC<ModalXProps> = (props) => {
-  const { keyValue, children, width, onEdit, onFinish, onCancel } = props;
+  const { keyValue, children, width, onEdit, onFinish, onCancel, keepMounted } =
+    props;
 
   const { modals, isModalOpen, closeModal } = useModal();
 
@@ -27,7 +29,7 @@ const ModalX: React.FC<ModalXProps> = (props) => {
   }, [modals, isModalOpen, keyValue]);
 
   return (
-    <Modal open={thisModalOpen}>
+    <Modal open={thisModalOpen} keepMounted={keepMounted}>
       <div
         className="modal"
         style={{
@@ -62,10 +64,16 @@ const ModalX: React.FC<ModalXProps> = (props) => {
               className="btn-operations save"
               onClick={async () => {
                 if (thisModal?.operation === OperationModal.Add)
-                  if (onFinish) await onFinish();
+                  if (onFinish)
+                    await onFinish().then((resp) => {
+                      if (resp === true) closeModal(keyValue);
+                    });
 
                 if (thisModal?.operation === OperationModal.Edit)
-                  if (onEdit) await onEdit();
+                  if (onEdit)
+                    await onEdit().then((resp) => {
+                      if (resp === true) closeModal(keyValue);
+                    });
               }}
             >
               Salvar
