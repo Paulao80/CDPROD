@@ -18,6 +18,11 @@ import { OperationModal } from "../../Interfaces";
 import Form, { Field } from "rc-field-form";
 import { HiddenX, TextFieldX } from "../../Components/Fields";
 import ButtonAct from "../../Components/ButtonAct";
+import { KEY_M_CONTASBANCARIAS } from "../../constants/modals/keys";
+import {
+  TITLE_M_ADD_CONTASBANCARIAS,
+  TITLE_M_EDT_CONTASBANCARIAS,
+} from "../../constants/modals/titles";
 
 interface Param {
   id?: string;
@@ -38,14 +43,14 @@ const Contas = () => {
     onChangePertenceProdutor,
     pertenceProdutor,
     setFormData,
-  } = useContaBancaria(undefined, id ? Number(id) : undefined, true);
+  } = useContaBancaria(id ? Number(id) : undefined, true);
 
   dispatch(ProdutoresActive());
 
   const handleOpen = () => {
     openModal({
-      key: "mdl-contasbancarias",
-      title: "Teste",
+      key: KEY_M_CONTASBANCARIAS,
+      title: TITLE_M_ADD_CONTASBANCARIAS,
       operation: OperationModal.Add,
     });
   };
@@ -60,9 +65,9 @@ const Contas = () => {
           setFormData={setFormData}
           row={row}
           modal={{
-            key: "mdl-contasbancarias",
+            key: KEY_M_CONTASBANCARIAS,
             operation: OperationModal.Edit,
-            title: "Teste",
+            title: TITLE_M_EDT_CONTASBANCARIAS,
           }}
         />
       </div>
@@ -127,7 +132,7 @@ const Contas = () => {
           />
         </Container>
         <ModalX
-          keyValue="mdl-contasbancarias"
+          keyValue={KEY_M_CONTASBANCARIAS}
           width={900}
           onFinish={onFinish}
           onEdit={onEdit}

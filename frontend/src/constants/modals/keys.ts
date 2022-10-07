@@ -1,0 +1,1 @@
+export const KEY_M_CONTASBANCARIAS = 'mdl-contasbancarias';

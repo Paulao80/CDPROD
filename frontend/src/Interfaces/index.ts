@@ -52,10 +52,10 @@ export interface Tanque {
 }
 
 export interface ProdutorTanque {
-  ProdutorTanqueId: number;
-  Responsavel: boolean;
-  Produtor: Produtor;
-  Tanque: Tanque;
+  ProdutorTanqueId?: number;
+  Responsavel?: boolean;
+  Produtor?: Produtor;
+  Tanque?: Tanque;
 }
 
 export interface ProdutoresTanques {

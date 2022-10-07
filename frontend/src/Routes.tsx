@@ -16,7 +16,6 @@ import CreateProdutor from './Pages/Produtor/create';
 import DetailsProdutor from './Pages/Produtor/details';
 import EditProdutor from './Pages/Produtor/edit';
 import Contas from './Pages/Produtor/contas';
-import AddContas from './Pages/Produtor/add';
 import CreatePropriedade from './Pages/Propriedade/create';
 import DetailsPropriedade from './Pages/Propriedade/details';
 import EditPropriedade from './Pages/Propriedade/edit';
@@ -51,7 +50,6 @@ const Routes = () => {
                 <PrivateRoute path="/produtor/create" component={CreateProdutor} />
                 <PrivateRoute path="/produtor/details/:id" component={DetailsProdutor} />
                 <PrivateRoute path="/produtor/edit/:id" component={EditProdutor} />
-                <PrivateRoute path="/produtor/contas/add/:id" component={AddContas} />
                 <PrivateRoute path="/produtor/contas/:id" component={Contas} />
                 <PrivateRoute path="/produtor" component={Produtor} />
 

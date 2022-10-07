@@ -27,7 +27,6 @@ interface UseContaBancaria {
 }
 
 const useContaBancaria = (
-  id?: number,
   produtorId?: number,
   load?: boolean
 ): UseContaBancaria => {
@@ -40,18 +39,6 @@ const useContaBancaria = (
   const [pertenceProdutor, setPertenceProdutor] = useState<boolean>(false);
 
   const { getById: getProdutoById } = useProdutor();
-
-  useEffect(() => {
-    if (id) {
-      getById(id).then((res) => {
-        if (res) {
-          form.setFieldsValue(res);
-        } else {
-          history.push(`/produtor/contas/${produtorId}`);
-        }
-      });
-    }
-  }, [id, history, form, produtorId]);
 
   useEffect(() => {
     if (load && produtorId) {
