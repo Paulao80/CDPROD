@@ -5,7 +5,6 @@ import Main from '../../Components/Main';
 import Container from '../../Components/Container';
 import BtnSave from '../../Components/ButtonSave';
 import Painel from '../../Components/Painel';
-import { TextField } from '@material-ui/core';
 import { ChangeEvent, FormEvent, useState } from 'react';
 import './style.css';
 import Logo from '../../Assets/images/vaca.png';
@@ -13,6 +12,7 @@ import { useHistory } from 'react-router-dom';
 import { register } from './../../Services/Auth';
 import { useDispatch } from 'react-redux';
 import { NoneActive } from '../../Actions/PageActiveActions';
+import { TextField } from '@mui/material';
 
 interface Error {
     message: string;

@@ -95,7 +95,14 @@ export default {
 
     await ProdutoresTanquesRepository.save(produtorTanque);
 
-    return response.status(201).json(produtorTanque);
+    const prodTanque = await ProdutoresTanquesRepository.findOneOrFail({
+      relations: ["Produtor", "Tanque"],
+      where: {
+        ProdutorTanqueId: produtorTanque.ProdutorTanqueId,
+      },
+    });
+
+    return response.status(201).json(ProdutoresTanquesView.render(prodTanque));
   },
   async delete(request: Request, response: Response) {
     const { id } = request.params;

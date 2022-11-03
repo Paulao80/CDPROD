@@ -9,12 +9,12 @@ import Painel from "../../Components/Painel";
 import Container from "../../Components/Container";
 import Footer from "../../Components/Footer";
 import BtnSave from '../../Components/ButtonSave';
-import { TextField } from "@material-ui/core";
 import { User as IUser } from '../../Interfaces'
 import Api from "../../Services/Api";
 import { update } from '../../Services/Auth';
 import { useDispatch } from 'react-redux';
 import { NoneActive } from '../../Actions/PageActiveActions';
+import { TextField } from '@mui/material';
 
 interface Error {
     message: string;

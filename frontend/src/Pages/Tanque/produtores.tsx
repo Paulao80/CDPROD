@@ -3,115 +3,89 @@ import Header from "../../Components/Header";
 import Aside from "../../Components/Aside";
 import Footer from "../../Components/Footer";
 import Main from "../../Components/Main";
-import MUIDataTable from "mui-datatables";
 import ButtonAdd from "../../Components/ButtonAdd";
-import { useLocation, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import PainelNav from "../../Components/PainelNav";
-import { useState, useEffect } from "react";
-import Api from "../../Services/Api";
-import { Tanque, Produtor, RowsDeleted } from "../../Interfaces";
+import { OperationModal } from "../../Interfaces";
 import Logo from "../../Assets/images/logo.png";
 import { useDispatch } from "react-redux";
 import { TanquesActive } from "../../Actions/PageActiveActions";
+import { DataGrid, GridColDef } from "@mui/x-data-grid";
+import useProdutorTanque from "../../Hooks/useProdutorTanque";
+import Container from "../../Components/Container";
+import useModal from "../../Hooks/useModal";
+import { KEY_M_PRODUTORTANQUES } from "../../constants/modals/keys";
+import { TITLE_M_ADD_PRODUTORTANQUES } from "../../constants/modals/titles";
+import ModalX from "../../Components/Modal";
+import useProdutor from "../../Hooks/useProdutor";
+import Form, { Field } from "rc-field-form";
+import { TextFieldX } from "../../Components/Fields";
+import { GetSimNao } from "../../Util/Functions";
+import { MenuItem } from "@mui/material";
 
 interface Param {
   id: string;
 }
 
 const ProdutoresTanques = () => {
+  const { id } = useParams<Param>();
+
   const dispatch = useDispatch();
+  const { openModal } = useModal();
+  const { produtores } = useProdutor(undefined, true);
+  const { produtoresTanques, form, onFinish, errorForm } = useProdutorTanque(
+    id ? Number(id) : undefined,
+    true
+  );
 
   dispatch(TanquesActive());
 
-  const { id } = useParams<Param>();
-  const location = useLocation();
-
-  const [tanque, setTanque] = useState<Tanque>({} as Tanque);
-
-  useEffect(() => {
-    Api.get(`/tanques/${id}`).then((response) => {
-      setTanque(response.data);
+  const handleOpen = () => {
+    openModal({
+      key: KEY_M_PRODUTORTANQUES,
+      title: TITLE_M_ADD_PRODUTORTANQUES,
+      operation: OperationModal.Add,
     });
-  }, [location, id]);
+  };
 
-  const columns = [
+  const columns: GridColDef[] = [
     {
-      name: "Produtor",
-      label: "ID",
-      options: {
-        filter: true,
-        sort: false,
-        customBodyRender: (value: Produtor) => {
-          return value.ProdutorId;
-        },
+      field: "PRodutorId",
+      headerName: "ID",
+      filterable: true,
+      sortable: true,
+      renderCell: (params) => {
+        return params.row.Produtor.ProdutorId;
       },
     },
     {
-      name: "Produtor",
-      label: "Nome",
-      options: {
-        filter: true,
-        sort: true,
-        customBodyRender: (value: Produtor) => {
-          return value.Nome;
-        },
+      field: "PRodutorNome",
+      headerName: "Nome",
+      filterable: true,
+      sortable: true,
+      renderCell: (params) => {
+        return params.row.Produtor.Nome;
       },
     },
     {
-      name: "Produtor",
-      label: "CPF/CNPJ",
-      options: {
-        filter: true,
-        sort: false,
-        customBodyRender: (value: Produtor) => {
-          return value.CpfCnpj;
-        },
+      field: "ProdutorCpfCnpj",
+      headerName: "CPF/CNPJ",
+      filterable: true,
+      sortable: true,
+      renderCell: (params) => {
+        return params.row.Produtor.CpfCnpj;
       },
     },
     {
-      name: "Responsavel",
-      label: "Responsavel",
-      options: {
-        filter: true,
-        sort: false,
-        customBodyRender: (value: boolean) => {
-          if (value) {
-            return "Sim";
-          } else {
-            return "Não";
-          }
-        },
+      field: "Responsavel",
+      headerName: "Responsavel",
+      filterable: true,
+      sortable: false,
+      renderCell: (params) => {
+        return GetSimNao(params.row.Responsavel);
       },
     },
   ];
-
-  const setRowProps = () => {
-    return {
-      style: { cursor: "pointer" },
-    };
-  };
-
-  const onRowsDelete = (rowsDeleted: RowsDeleted, newTableData: any) => {
-    rowsDeleted.data.map(async (row) => {
-      let prodTanque = tanque?.ProdutoresTanques
-        ? tanque?.ProdutoresTanques[row.dataIndex]
-        : null;
-
-      if (prodTanque)
-        await Api.delete(`/prodtanques/${prodTanque.ProdutorTanqueId}`)
-          .then((response) => {
-            alert(response.data.Message);
-          })
-          .catch(() => {
-            alert("Error");
-          });
-    });
-  };
-
-  const options = {
-    setRowProps,
-    onRowsDelete,
-  };
 
   return (
     <>
@@ -119,14 +93,80 @@ const ProdutoresTanques = () => {
       <Aside />
       <Main>
         <PainelNav to={`/tanque`} titulo="Produtores" />
-        <MUIDataTable
-          title={""}
-          data={tanque?.ProdutoresTanques ? tanque?.ProdutoresTanques : []}
-          columns={columns}
-          options={options}
-        />
+        <Container>
+          <DataGrid
+            rows={produtoresTanques}
+            columns={columns}
+            pageSize={5}
+            checkboxSelection
+            getRowId={(row) => row.ProdutorTanqueId}
+          />
+        </Container>
+        <ModalX
+          keyValue={KEY_M_PRODUTORTANQUES}
+          width={900}
+          onFinish={onFinish}
+        >
+          <Form form={form}>
+            {errorForm?.message !== undefined ? (
+              <div className="Message-error">
+                <p>{errorForm.message}</p>
+              </div>
+            ) : (
+              ""
+            )}
+
+            <Field name={["Produtor", "ProdutorId"]}>
+              {(input, meta) => (
+                <TextFieldX
+                  {...input}
+                  meta={meta}
+                  errorForm={errorForm}
+                  label="Produtor"
+                  variant="outlined"
+                  select
+                  fullWidth
+                  margin="normal"
+                >
+                  {produtores.map((produtor) => {
+                    return (
+                      <MenuItem
+                        key={produtor.ProdutorId}
+                        value={produtor.ProdutorId}
+                      >
+                        {`${produtor.ProdutorId} - ${produtor.Nome}`}
+                      </MenuItem>
+                    );
+                  })}
+                </TextFieldX>
+              )}
+            </Field>
+
+            <Field name="Responsavel">
+              {(input, meta) => (
+                <TextFieldX
+                  {...input}
+                  meta={meta}
+                  errorForm={errorForm}
+                  label="Responsavel"
+                  variant="outlined"
+                  select
+                  fullWidth
+                  margin="normal"
+                >
+                  <MenuItem key={1} value={1}>
+                    Sim
+                  </MenuItem>
+                  <MenuItem key={2} value={0}>
+                    Não
+                  </MenuItem>
+                </TextFieldX>
+              )}
+            </Field>
+          </Form>
+        </ModalX>
       </Main>
-      <ButtonAdd to={`/tanque/produtores/add/${tanque.TanqueId}`} />
+      <ButtonAdd onClick={handleOpen} />
       <Footer />
     </>
   );

@@ -1,8 +1,8 @@
 import "./style.css";
-import { Save } from "@material-ui/icons";
 import { MouseEventHandler } from "react";
 import { FormInstance } from "rc-field-form";
 import { formContainsError } from "../../Util/Functions";
+import { Save } from "@mui/icons-material";
 
 interface ButtonAddProps {
   onClick?: MouseEventHandler<HTMLButtonElement>;

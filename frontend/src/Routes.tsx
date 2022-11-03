@@ -23,7 +23,6 @@ import CreateTanque from './Pages/Tanque/create';
 import DetailsTanque from './Pages/Tanque/details';
 import EditTanque from './Pages/Tanque/edit';
 import ProdutoresTanques from './Pages/Tanque/produtores';
-import AddProdutorTanque from './Pages/Tanque/add';
 
 const Routes = () => {
 
@@ -65,7 +64,6 @@ const Routes = () => {
                 <PrivateRoute path="/tanque/create" component={CreateTanque} />
                 <PrivateRoute path="/tanque/details/:id" component={DetailsTanque} />
                 <PrivateRoute path="/tanque/edit/:id" component={EditTanque} />
-                <PrivateRoute path="/tanque/produtores/add/:id" component={AddProdutorTanque} />
                 <PrivateRoute path="/tanque/produtores/:id" component={ProdutoresTanques} />
                 <PrivateRoute path="/tanque" component={Tanque} />
 

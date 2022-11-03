@@ -1,6 +1,6 @@
 import './style.css';
 import { Link } from 'react-router-dom';
-import { Add } from '@material-ui/icons';
+import { Add } from '@mui/icons-material';
 
 type props = {
     to?: string;

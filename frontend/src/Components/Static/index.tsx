@@ -1,7 +1,7 @@
 import './style.css';
-import { People, House, LocalDrink } from '@material-ui/icons';
 import Api from '../../Services/Api';
 import { useEffect, useState } from 'react';
+import { House, LocalDrink, People } from '@mui/icons-material';
 
 interface Info {
     Produtores: number;

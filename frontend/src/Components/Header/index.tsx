@@ -1,10 +1,10 @@
 import './style.css';
-import { Notifications, Menu } from '@material-ui/icons';
 import { useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from "react-redux";
 import { changeMenu, hideMenu } from '../../Actions/MenuActions';
 import { changeNotification, hideNotification } from '../../Actions/NotificationActions';
 import { StateMenu } from '../../Interfaces';
+import { Menu, Notifications } from '@mui/icons-material';
 
 type Props = {
     logo: string;

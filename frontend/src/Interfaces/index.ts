@@ -53,7 +53,7 @@ export interface Tanque {
 
 export interface ProdutorTanque {
   ProdutorTanqueId?: number;
-  Responsavel?: boolean;
+  Responsavel?: boolean | number;
   Produtor?: Produtor;
   Tanque?: Tanque;
 }

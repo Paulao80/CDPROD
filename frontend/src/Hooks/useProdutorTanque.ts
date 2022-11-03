@@ -9,6 +9,7 @@ import {
 } from "../Interfaces/index";
 import * as service from "../Services/ProdutoTanqueService";
 import useTanque from "./useTanque";
+import { formatValueToBool } from "../Util/Functions";
 
 interface UseProdutorTanque {
   form: FormInstance;
@@ -59,12 +60,15 @@ const useProdutorTanque = (
 
   async function onFinish(): Promise<boolean> {
     try {
+      const { Responsavel, ...resto } = form.getFieldsValue();
       const formDados: ProdutorTanque = {
-        ...form.getFieldsValue(),
+        ...resto,
+        Responsavel: formatValueToBool(Responsavel),
         Tanque: tanque,
       };
 
       const { status, data } = await service.create(formDados);
+
       if (status !== 201) {
         alert("Não foi possivel adicionar a produtor ao tanque");
         return false;

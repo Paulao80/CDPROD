@@ -2,7 +2,7 @@ import './style.css';
 import { Link } from 'react-router-dom';
 import Logo from '../../Assets/images/vaca.png';
 import Coleta from '../../Assets/images/coleta.png';
-import { ArrowForward } from '@material-ui/icons';
+import { ArrowForward } from '@mui/icons-material';
 
 const Landing = () => {
     return (

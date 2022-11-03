@@ -40,6 +40,22 @@ export const GetTipoTanque = (tipo?: number) => {
   }
 };
 
+export const GetSimNao = (value: boolean) => {
+  if (value) return "Sim";
+
+  return "Não";
+};
+
+export const formatValueToBool = (value: any) => {
+  if (typeof value === "boolean") return value;
+
+  if (value === 1) return true;
+
+  if (value === "true") return true;
+
+  return false;
+};
+
 export const IsBlank = (value: any) => {
   if (
     value === null ||

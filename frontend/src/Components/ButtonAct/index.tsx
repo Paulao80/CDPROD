@@ -1,8 +1,8 @@
 import { Link } from "react-router-dom";
 import "./style.css";
-import { People, Edit, List, AccountBalance } from "@material-ui/icons";
 import useModal from "../../Hooks/useModal";
 import { TypeModal } from "../../Interfaces";
+import { AccountBalance, Edit, List, People } from "@mui/icons-material";
 
 type props = {
   to?: string;

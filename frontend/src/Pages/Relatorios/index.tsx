@@ -5,13 +5,13 @@ import Footer from '../../Components/Footer';
 import Main from '../../Components/Main';
 import Container from '../../Components/Container';
 import Painel from '../../Components/Painel';
-import { People, House, LocalDrink } from '@material-ui/icons';
 import Api from '../../Services/Api';
 import { useDispatch } from 'react-redux';
 import { RelatoriosActive } from '../../Actions/PageActiveActions';
 import Logo from '../../Assets/images/logo.png';
 import Loading from '../../Assets/images/loading.gif';
 import { useState } from 'react';
+import { House, LocalDrink, People } from '@mui/icons-material';
 
 const Relatorios = () => {
     const dispatch = useDispatch();
