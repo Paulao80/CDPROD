@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
     },
     scroll: {
         width: '90%',
-        height: (Dimensions.get('window').height / 5) * 4 - 7.5,
+        height: (Dimensions.get('window').height / 5) * 4 - 37,
         margin: -15,
     },
     scroll2: {

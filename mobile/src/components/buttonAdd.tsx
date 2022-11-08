@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
         padding: 10,
         backgroundColor: 'orange',
         position: 'absolute',
-        bottom: -12,
+        bottom: -4,
         borderRadius: 23,
         elevation: 5
     }

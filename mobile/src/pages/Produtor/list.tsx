@@ -31,25 +31,5 @@ const ProdutorList = () => {
     );
 }
 
-const styles = StyleSheet.create({
-    item: {
-        height: 75,
-        width: '97%',
-        backgroundColor: 'white',
-        elevation: 10,
-        marginBottom: 7.5,
-        justifyContent: 'center',
-        paddingLeft: 30
-    },
-    title: {
-        fontSize: 18,
-        fontWeight: '700'
-    },
-    desc: {
-        fontSize: 16,
-        fontWeight: '500'
-    },
-});
-
 
 export default ProdutorList;

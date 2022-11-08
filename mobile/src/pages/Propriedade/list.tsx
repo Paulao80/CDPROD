@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, GestureResponderEvent } from 'react-native';
+import { GestureResponderEvent } from 'react-native';
 import Header from '../../components/header';
 import Panel from '../../components/panel';
 import Container from '../../components/container';
