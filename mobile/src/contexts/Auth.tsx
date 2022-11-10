@@ -28,7 +28,6 @@ export const AuthProvider: React.FC = ({ children }) => {
         if (isExpired(storageToken)) signOut();
         else {
           setUser(JSON.parse(storageUser));
-          Api.defaults.headers["authorization-token"] = storageToken;
         }
       }
 
@@ -44,10 +43,10 @@ export const AuthProvider: React.FC = ({ children }) => {
     if (response) {
       const { user, token } = response;
 
-      setUser(user);
-
       await AsyncStorage.setItem("@cdprod:user", JSON.stringify(user));
       await AsyncStorage.setItem("@cdprod:token", token);
+
+      setUser(user);
     }
   }
 

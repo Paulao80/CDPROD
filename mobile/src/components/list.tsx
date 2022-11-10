@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, Image, Pressable } from 'react-native';
 
 type Item = {
     title: any;
-    desc: string;
+    desc?: string;
     foto?: any;
 }
 

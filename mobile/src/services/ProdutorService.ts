@@ -1,4 +1,4 @@
-import Api from "./Api";
+import Api from "./api";
 import { Produtor, Delete, ApiResponse } from "../interfaces";
 
 export async function list(): Promise<ApiResponse<Produtor[]>> {

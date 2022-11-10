@@ -15,7 +15,7 @@ interface uf {
 }
 
 const ProdutorAdd = () => {
-  const { form } = useProdutor();
+  const { form, onAdd } = useProdutor();
 
   const Ufs = dataUfs.map((item) => {
     return {
@@ -230,7 +230,7 @@ const ProdutorAdd = () => {
       </Panel>
       <ButtonSave
         OnPress={() => {
-          console.log(form.FormValues);
+          onAdd();
         }}
       />
     </Container>
