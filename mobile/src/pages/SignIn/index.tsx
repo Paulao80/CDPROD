@@ -84,6 +84,7 @@ const SingIn = () => {
           placeholderTextColor="black"
           onChangeText={setPassword}
           value={password}
+          secureTextEntry
         />
         <TouchableOpacity style={styles.button} onPress={handleSingIn}>
           <Text style={styles.textButton}>Login</Text>
