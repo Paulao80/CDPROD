@@ -10,13 +10,15 @@ import { FormProdutorType, useProdutor } from "../../hooks";
 import MaskInput from "react-native-mask-input";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from ".";
+import { Produtor } from "../../interfaces";
 
 type ProdutorListProp = NativeStackScreenProps<
   RootStackParamList,
-  "ProdutorAdd"
+  "ProdutorEdit"
 > & {
   form: FormProdutorType;
-  onAdd: () => Promise<boolean>;
+  onEdit: () => Promise<boolean>;
+  formatFromApiToApp: (produtor?: Produtor | undefined) => Produtor | undefined;
 };
 
 interface uf {
@@ -24,12 +26,14 @@ interface uf {
   value: string;
 }
 
-const ProdutorAdd = (props: ProdutorListProp) => {
-  const { navigation, form, onAdd } = props;
+const ProdutorEdit = (props: ProdutorListProp) => {
+  const { navigation, route, form, onEdit, formatFromApiToApp } = props;
+  const produtor = route.params?.item as Produtor;
 
   useEffect(() => {
-    form.resetForm();
-  }, []);
+    const produtorFormatado = formatFromApiToApp(produtor);
+    if (produtorFormatado) form?.setForm(produtorFormatado);
+  }, [produtor]);
 
   const OnNavigateToList = () => navigation.navigate("ProdutorList");
 
@@ -78,15 +82,15 @@ const ProdutorAdd = (props: ProdutorListProp) => {
 
   return (
     <Container>
-      <Header title="ADICIONAR PRODUTOR" />
+      <Header title="EDITAR PRODUTOR" />
       <Panel background>
         <View style={styles.control}>
           <TextInput
             style={styles.input}
             placeholder="Nome"
             placeholderTextColor="black"
-            onChangeText={(Nome) => form.setForm({ Nome })}
-            value={form.formValues.Nome}
+            onChangeText={(Nome) => form?.setForm({ Nome })}
+            value={form?.formValues.Nome}
           />
         </View>
 
@@ -96,14 +100,15 @@ const ProdutorAdd = (props: ProdutorListProp) => {
             placeholder="Data de Nascimento"
             placeholderTextColor="black"
             mask={[/\d/, /\d/, "/", /\d/, /\d/, "/", /\d/, /\d/, /\d/, /\d/]}
-            onChangeText={(DataNasc) => form.setForm({ DataNasc })}
-            value={form.formValues.DataNasc}
+            onChangeText={(DataNasc) => form?.setForm({ DataNasc })}
+            value={form?.formValues.DataNasc}
           />
         </View>
 
         <View style={styles.control}>
           <RNPickerSelect
-            onValueChange={(TipoPessoa) => form.setForm({ TipoPessoa })}
+            onValueChange={(TipoPessoa) => form?.setForm({ TipoPessoa })}
+            value={form?.formValues.TipoPessoa}
             placeholder={{
               label: "Tipo de Pessoa",
               value: undefined,
@@ -128,8 +133,8 @@ const ProdutorAdd = (props: ProdutorListProp) => {
             style={styles.input}
             placeholder="Nacionalidade"
             placeholderTextColor="black"
-            onChangeText={(Nacionalidade) => form.setForm({ Nacionalidade })}
-            value={form.formValues.Nacionalidade}
+            onChangeText={(Nacionalidade) => form?.setForm({ Nacionalidade })}
+            value={form?.formValues.Nacionalidade}
           />
         </View>
 
@@ -138,9 +143,9 @@ const ProdutorAdd = (props: ProdutorListProp) => {
             style={styles.input}
             placeholder="CPF/CNPJ"
             placeholderTextColor="black"
-            mask={form.formValues.TipoPessoa === 1 ? CPF_MASK : CNPJ_MASK}
-            onChangeText={(CpfCnpj) => form.setForm({ CpfCnpj })}
-            value={form.formValues.CpfCnpj}
+            mask={form?.formValues.TipoPessoa === 1 ? CPF_MASK : CNPJ_MASK}
+            onChangeText={(CpfCnpj) => form?.setForm({ CpfCnpj })}
+            value={form?.formValues.CpfCnpj}
           />
         </View>
 
@@ -150,8 +155,8 @@ const ProdutorAdd = (props: ProdutorListProp) => {
             placeholder="Registro Geral"
             placeholderTextColor="black"
             mask={[/\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/]}
-            onChangeText={(RG) => form.setForm({ RG })}
-            value={form.formValues.RG}
+            onChangeText={(RG) => form?.setForm({ RG })}
+            value={form?.formValues.RG}
           />
         </View>
 
@@ -160,14 +165,15 @@ const ProdutorAdd = (props: ProdutorListProp) => {
             style={styles.input}
             placeholder="Orgão de Expedição"
             placeholderTextColor="black"
-            onChangeText={(OrgaoExp) => form.setForm({ OrgaoExp })}
-            value={form.formValues.OrgaoExp}
+            onChangeText={(OrgaoExp) => form?.setForm({ OrgaoExp })}
+            value={form?.formValues.OrgaoExp}
           />
         </View>
 
         <View style={styles.control}>
           <RNPickerSelect
-            onValueChange={(EstadoExp) => form.setForm({ EstadoExp })}
+            onValueChange={(EstadoExp) => form?.setForm({ EstadoExp })}
+            value={form?.formValues.EstadoExp}
             placeholder={{
               label: "Estado de Expedição",
               value: undefined,
@@ -184,14 +190,15 @@ const ProdutorAdd = (props: ProdutorListProp) => {
             placeholder="Data de Expedição"
             placeholderTextColor="black"
             mask={[/\d/, /\d/, "/", /\d/, /\d/, "/", /\d/, /\d/, /\d/, /\d/]}
-            onChangeText={(DataExp) => form.setForm({ DataExp })}
-            value={form.formValues.DataExp}
+            onChangeText={(DataExp) => form?.setForm({ DataExp })}
+            value={form?.formValues.DataExp}
           />
         </View>
 
         <View style={styles.control}>
           <RNPickerSelect
-            onValueChange={(EstadoCivil) => form.setForm({ EstadoCivil })}
+            onValueChange={(EstadoCivil) => form?.setForm({ EstadoCivil })}
+            value={form?.formValues.EstadoCivil}
             placeholder={{
               label: "Estado civil",
               value: undefined,
@@ -246,8 +253,8 @@ const ProdutorAdd = (props: ProdutorListProp) => {
               /\d/,
               /\d/,
             ]}
-            onChangeText={(Telefone) => form.setForm({ Telefone })}
-            value={form.formValues.Telefone}
+            onChangeText={(Telefone) => form?.setForm({ Telefone })}
+            value={form?.formValues.Telefone}
           />
         </View>
 
@@ -256,17 +263,18 @@ const ProdutorAdd = (props: ProdutorListProp) => {
             style={styles.input}
             placeholder="Ultimo Laticinio"
             placeholderTextColor="black"
-            onChangeText={(UltLaticinio) => form.setForm({ UltLaticinio })}
-            value={form.formValues.UltLaticinio}
+            onChangeText={(UltLaticinio) => form?.setForm({ UltLaticinio })}
+            value={form?.formValues.UltLaticinio}
           />
         </View>
         <View style={styles.br} />
       </Panel>
       <ButtonSave
         OnPress={() => {
-          onAdd().then((resp) => {
-            if (resp) OnNavigateToList();
-          });
+          if (onEdit)
+            onEdit().then((resp) => {
+              if (resp) OnNavigateToList();
+            });
         }}
       />
     </Container>
@@ -324,4 +332,4 @@ const customPickerStyles = StyleSheet.create({
   },
 });
 
-export default ProdutorAdd;
+export default ProdutorEdit;

@@ -21,7 +21,7 @@ const ProtudorDetails = (props: ProdutorListProp) => {
 
   return (
     <Container>
-      <Header title="Visualizar produtor" />
+      <Header title="VISUALIZAR PRODUTOR" />
       <Panel background>
         <DataView name="Nome" value={produtor?.Nome} />
         <DataView

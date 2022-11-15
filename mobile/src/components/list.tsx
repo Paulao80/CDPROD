@@ -1,6 +1,11 @@
 import React, { useState } from "react";
 import { View, Text, StyleSheet, Image, Pressable } from "react-native";
-import { MaterialIcons } from "@expo/vector-icons";
+
+interface MenuItem {
+  label: string;
+  icon?: JSX.Element;
+  onPress?: (item: any) => void;
+}
 
 type Item = {
   title: any;
@@ -8,9 +13,10 @@ type Item = {
   foto?: any;
   item?: any;
   onPress?: (item: any) => void;
+  menuItens?: MenuItem[];
 };
 
-const List = ({ title, desc, foto, item, onPress }: Item) => {
+const List = ({ title, desc, foto, item, onPress, menuItens }: Item) => {
   const [menuVisible, setMenuVisible] = useState<boolean>(false);
 
   return (
@@ -26,6 +32,7 @@ const List = ({ title, desc, foto, item, onPress }: Item) => {
           setMenuVisible(!menuVisible);
         }}
         onPress={() => {
+          setMenuVisible(false);
           if (onPress && item) onPress(item);
         }}
       >
@@ -41,41 +48,30 @@ const List = ({ title, desc, foto, item, onPress }: Item) => {
           <Text style={styles.title}>{title}</Text>
           <Text style={styles.desc}>{desc}</Text>
         </View>
-        <View style={{ ...styles.menu, right: menuVisible ? 0 : "-40%" }}>
-          <Pressable
-            style={({ pressed }) => [
-              styles.menuItem,
-              {
-                backgroundColor: pressed ? "#e0e0e0" : "white",
-              },
-            ]}
-          >
-            <MaterialIcons name="edit" size={20} color="black" />
-            <Text>Editar</Text>
-          </Pressable>
-          <Pressable
-            style={({ pressed }) => [
-              styles.menuItem,
-              {
-                backgroundColor: pressed ? "#e0e0e0" : "white",
-              },
-            ]}
-          >
-            <MaterialIcons name="delete" size={20} color="black" />
-            <Text>Excluir</Text>
-          </Pressable>
-          <Pressable
-            style={({ pressed }) => [
-              styles.menuItem,
-              {
-                backgroundColor: pressed ? "#e0e0e0" : "white",
-              },
-            ]}
-          >
-            <MaterialIcons name="credit-card" size={20} color="black" />
-            <Text>Contas</Text>
-          </Pressable>
-        </View>
+        {menuItens && (
+          <View style={{ ...styles.menu, right: menuVisible ? 0 : "-40%" }}>
+            {menuItens.map((menuiItem, key) => {
+              return (
+                <Pressable
+                  key={`menu-item-${key}`}
+                  style={({ pressed }) => [
+                    styles.menuItem,
+                    {
+                      backgroundColor: pressed ? "#e0e0e0" : "white",
+                    },
+                  ]}
+                  onPress={() => {
+                    setMenuVisible(false);
+                    if (menuiItem.onPress) menuiItem.onPress(item);
+                  }}
+                >
+                  {menuiItem.icon}
+                  <Text>{menuiItem.label}</Text>
+                </Pressable>
+              );
+            })}
+          </View>
+        )}
       </Pressable>
     </>
   );
@@ -117,11 +113,12 @@ const styles = StyleSheet.create({
     elevation: 20,
     display: "flex",
     flexDirection: "column",
-    justifyContent: "space-between",
+    justifyContent: "flex-start",
   },
   menuItem: {
-    height: "31%",
+    height: "30%",
     width: "100%",
+    marginBottom: 3,
     border: "5px solid orange",
     elevation: 30,
     display: "flex",
