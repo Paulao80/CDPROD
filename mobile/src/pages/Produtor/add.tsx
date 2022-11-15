@@ -8,14 +8,25 @@ import dataUfs from "../../data/ufs.json";
 import ButtonSave from "../../components/buttonSave";
 import { useProdutor } from "../../hooks";
 import MaskInput from "react-native-mask-input";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { RootStackParamList } from ".";
+
+type ProdutorListProp = NativeStackScreenProps<
+  RootStackParamList,
+  "ProdutorAdd"
+>;
 
 interface uf {
   label: string;
   value: string;
 }
 
-const ProdutorAdd = () => {
+const ProdutorAdd = (props: ProdutorListProp) => {
+  const { navigation } = props;
   const { form, onAdd } = useProdutor();
+
+  const OnNavigateToList = (params?: RootStackParamList) =>
+    navigation.navigate("ProdutorList", params?.ProdutorList);
 
   const Ufs = dataUfs.map((item) => {
     return {
@@ -70,7 +81,7 @@ const ProdutorAdd = () => {
             placeholder="Nome"
             placeholderTextColor="black"
             onChangeText={(Nome) => form.setForm({ Nome })}
-            value={form.FormValues.Nome}
+            value={form.formValues.Nome}
           />
         </View>
 
@@ -81,7 +92,7 @@ const ProdutorAdd = () => {
             placeholderTextColor="black"
             mask={[/\d/, /\d/, "/", /\d/, /\d/, "/", /\d/, /\d/, /\d/, /\d/]}
             onChangeText={(DataNasc) => form.setForm({ DataNasc })}
-            value={form.FormValues.DataNasc}
+            value={form.formValues.DataNasc}
           />
         </View>
 
@@ -113,7 +124,7 @@ const ProdutorAdd = () => {
             placeholder="Nacionalidade"
             placeholderTextColor="black"
             onChangeText={(Nacionalidade) => form.setForm({ Nacionalidade })}
-            value={form.FormValues.Nacionalidade}
+            value={form.formValues.Nacionalidade}
           />
         </View>
 
@@ -122,9 +133,9 @@ const ProdutorAdd = () => {
             style={styles.input}
             placeholder="CPF/CNPJ"
             placeholderTextColor="black"
-            mask={form.FormValues.TipoPessoa === 1 ? CPF_MASK : CNPJ_MASK}
+            mask={form.formValues.TipoPessoa === 1 ? CPF_MASK : CNPJ_MASK}
             onChangeText={(CpfCnpj) => form.setForm({ CpfCnpj })}
-            value={form.FormValues.CpfCnpj}
+            value={form.formValues.CpfCnpj}
           />
         </View>
 
@@ -133,9 +144,9 @@ const ProdutorAdd = () => {
             style={styles.input}
             placeholder="Registro Geral"
             placeholderTextColor="black"
-            mask={[/\d/, /\d/,/\d/, /\d/,/\d/, /\d/, /\d/]}
+            mask={[/\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/]}
             onChangeText={(RG) => form.setForm({ RG })}
-            value={form.FormValues.RG}
+            value={form.formValues.RG}
           />
         </View>
 
@@ -145,7 +156,7 @@ const ProdutorAdd = () => {
             placeholder="Orgão de Expedição"
             placeholderTextColor="black"
             onChangeText={(OrgaoExp) => form.setForm({ OrgaoExp })}
-            value={form.FormValues.OrgaoExp}
+            value={form.formValues.OrgaoExp}
           />
         </View>
 
@@ -163,12 +174,13 @@ const ProdutorAdd = () => {
         </View>
 
         <View style={styles.control}>
-          <TextInput
+          <MaskInput
             style={styles.input}
             placeholder="Data de Expedição"
             placeholderTextColor="black"
+            mask={[/\d/, /\d/, "/", /\d/, /\d/, "/", /\d/, /\d/, /\d/, /\d/]}
             onChangeText={(DataExp) => form.setForm({ DataExp })}
-            value={form.FormValues.DataExp}
+            value={form.formValues.DataExp}
           />
         </View>
 
@@ -211,9 +223,26 @@ const ProdutorAdd = () => {
             style={styles.input}
             placeholder="Telefone"
             placeholderTextColor="black"
-            mask={['(',/\d/,/\d/,')', ' ', /\d/, ' ', /\d/,/\d/,/\d/,/\d/, '-', /\d/,/\d/,/\d/,/\d/]}
+            mask={[
+              "(",
+              /\d/,
+              /\d/,
+              ")",
+              " ",
+              /\d/,
+              " ",
+              /\d/,
+              /\d/,
+              /\d/,
+              /\d/,
+              "-",
+              /\d/,
+              /\d/,
+              /\d/,
+              /\d/,
+            ]}
             onChangeText={(Telefone) => form.setForm({ Telefone })}
-            value={form.FormValues.Telefone}
+            value={form.formValues.Telefone}
           />
         </View>
 
@@ -223,14 +252,16 @@ const ProdutorAdd = () => {
             placeholder="Ultimo Laticinio"
             placeholderTextColor="black"
             onChangeText={(UltLaticinio) => form.setForm({ UltLaticinio })}
-            value={form.FormValues.UltLaticinio}
+            value={form.formValues.UltLaticinio}
           />
         </View>
         <View style={styles.br} />
       </Panel>
       <ButtonSave
         OnPress={() => {
-          onAdd();
+          onAdd().then((resp) => {
+            if (resp) OnNavigateToList({ ProdutorList: { reload: true } });
+          });
         }}
       />
     </Container>

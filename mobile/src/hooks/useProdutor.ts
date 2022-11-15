@@ -2,6 +2,8 @@ import { useMemo, useState } from "react";
 import { Produtor } from "../interfaces";
 import { RecursivePartial } from "../Types";
 import * as service from "../services/ProdutorService";
+import moment from "moment";
+import { formatDataToApi } from "../utils/formatData";
 
 interface UseProdutor {
   produtores: Produtor[];
@@ -13,11 +15,11 @@ interface UseProdutor {
 
 interface FormType {
   setForm: (dados: RecursivePartial<Produtor>) => void;
-  FormValues: RecursivePartial<Produtor>;
+  formValues: RecursivePartial<Produtor>;
 }
 
 const useProdutor = (): UseProdutor => {
-  const [FormValues, setFormValues] = useState<RecursivePartial<Produtor>>({});
+  const [formValues, setFormValues] = useState<RecursivePartial<Produtor>>({});
   const [produtores, setProdutores] = useState<Produtor[]>([]);
 
   function setForm(dados: RecursivePartial<Produtor>) {
@@ -29,9 +31,9 @@ const useProdutor = (): UseProdutor => {
   const form: FormType = useMemo(() => {
     return {
       setForm,
-      FormValues,
+      formValues,
     };
-  }, [FormValues]);
+  }, [formValues]);
 
   async function list() {
     try {
@@ -51,7 +53,7 @@ const useProdutor = (): UseProdutor => {
 
   async function onAdd() {
     try {
-      const { data } = await service.create(FormValues);
+      const { data } = await service.create(formatFromAppToApi(formValues));
       if (data) setProdutores((prev) => prev.concat(data));
       return true;
     } catch (err: any) {
@@ -62,6 +64,18 @@ const useProdutor = (): UseProdutor => {
       );
       return false;
     }
+  }
+
+  function formatFromAppToApi(
+    formValues: RecursivePartial<Produtor>
+  ): Produtor {
+    const { DataExp, DataNasc, ...resto } = formValues;
+
+    return {
+      ...resto,
+      DataNasc: formatDataToApi(DataNasc),
+      DataExp: formatDataToApi(DataExp),
+    };
   }
 
   return {
