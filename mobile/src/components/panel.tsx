@@ -8,8 +8,11 @@ type Props = {
 };
 
 const Panel: React.FC<Props> = ({ children, background }) => {
+  const { screen, keyboardHeight, statusBarHeight } = useDimension();
+  console.log("🚀 ~ file: panel.tsx ~ line 12 ~ statusBarHeight", statusBarHeight)
 
-  const {screen, keyboardHeight} = useDimension();
+  const diferenca = ((10 / screen.scale) * screen.scale * 8.75);
+  console.log("🚀 ~ file: panel.tsx ~ line 14 ~ diferenca", diferenca);
 
   const styles = StyleSheet.create({
     body: {
@@ -18,12 +21,12 @@ const Panel: React.FC<Props> = ({ children, background }) => {
     },
     scroll: {
       width: "90%",
-      height: (screen.height / 5) * 4 - 37,
+      height: screen.height - screen.height / 5 - diferenca,
       margin: -15,
     },
     scroll2: {
       width: "90%",
-      height: screen.height - screen.height / 5 - 45 - keyboardHeight,
+      height: screen.height - screen.height / 5 - keyboardHeight - diferenca,
       margin: -15,
       backgroundColor: "white",
       padding: 10,

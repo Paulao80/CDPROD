@@ -1,5 +1,11 @@
 import { useEffect, useState } from "react";
-import { Dimensions, ScaledSize, Keyboard, KeyboardEvent } from "react-native";
+import {
+  Dimensions,
+  ScaledSize,
+  Keyboard,
+  KeyboardEvent,
+  StatusBar,
+} from "react-native";
 
 interface DimensionType {
   window: ScaledSize;
@@ -8,6 +14,8 @@ interface DimensionType {
 
 interface UseDimension extends DimensionType {
   keyboardHeight: number;
+  statusBarHeight: number;
+  navBarHeight: number;
 }
 
 const window = Dimensions.get("window");
@@ -18,6 +26,9 @@ export const useDimension = (): UseDimension => {
     window,
     screen,
   });
+
+  const statusBarHeight = StatusBar.currentHeight ? StatusBar.currentHeight : 0;
+  const navBarHeight = dimensions.screen.height - dimensions.window.height;
 
   const [keyboardHeight, setKeyboardHeight] = useState(0);
 
@@ -54,5 +65,5 @@ export const useDimension = (): UseDimension => {
     };
   });
 
-  return { ...dimensions, keyboardHeight };
+  return { ...dimensions, keyboardHeight, statusBarHeight, navBarHeight };
 };
