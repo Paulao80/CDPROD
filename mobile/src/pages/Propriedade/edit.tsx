@@ -9,16 +9,19 @@ import dataUfs from "../../data/ufs.json";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from ".";
 import { FormPropriedadeType } from "../../hooks/usePropriedade";
-import { Produtor } from "../../interfaces";
+import { Produtor, Propriedade } from "../../interfaces";
 import MaskInput from "react-native-mask-input";
 
-type PropriedadeAddProp = NativeStackScreenProps<
+type PropriedadeEditProp = NativeStackScreenProps<
   RootStackParamList,
-  "PropriedadeAdd"
+  "PropriedadeEdit"
 > & {
   form: FormPropriedadeType;
-  onAdd: () => Promise<boolean>;
+  onEdit: () => Promise<boolean>;
   list: () => Promise<Produtor[] | undefined>;
+  formatFromApiToApp: (
+    produtor?: Propriedade | undefined
+  ) => Propriedade | undefined;
 };
 
 interface ProdutorSelect {
@@ -31,12 +34,17 @@ interface uf {
   value: string;
 }
 
-const PropriedadeAdd = (props: PropriedadeAddProp) => {
-  const { navigation, form, onAdd, list } = props;
+const PropriedadeEdit = (props: PropriedadeEditProp) => {
+  const { navigation, route, form, onEdit, list, formatFromApiToApp } = props;
+  const propriedade = route.params?.item as Propriedade | undefined;
   const [dataProdutores, setDataProdutores] = useState<Produtor[]>([]);
 
   useEffect(() => {
-    form.resetForm();
+    const propriedadeFormatado = formatFromApiToApp(propriedade);
+    if (propriedadeFormatado) form.setForm(propriedadeFormatado);
+  }, [propriedade]);
+
+  useEffect(() => {
     list().then((resp) => {
       if (resp) setDataProdutores(resp);
     });
@@ -60,7 +68,7 @@ const PropriedadeAdd = (props: PropriedadeAddProp) => {
 
   return (
     <Container>
-      <Header title="ADICIONAR PROPRIEDADE" />
+      <Header title="EDITAR PROPRIEDADE" />
       <Panel background>
         <View style={styles.control}>
           <MaskInput
@@ -128,6 +136,7 @@ const PropriedadeAdd = (props: PropriedadeAddProp) => {
         <View style={styles.control}>
           <RNPickerSelect
             onValueChange={(Estado) => form.setForm({ Estado })}
+            value={form.formValues.Estado}
             placeholder={{
               label: "Estado",
               value: undefined,
@@ -143,6 +152,7 @@ const PropriedadeAdd = (props: PropriedadeAddProp) => {
             onValueChange={(ProdutorId) =>
               form.setForm({ Produtor: { ProdutorId } })
             }
+            value={form.formValues.Produtor?.ProdutorId}
             placeholder={{
               label: "Produtor",
               value: undefined,
@@ -155,7 +165,7 @@ const PropriedadeAdd = (props: PropriedadeAddProp) => {
       </Panel>
       <ButtonSave
         OnPress={() => {
-          onAdd().then((resp) => {
+          onEdit().then((resp) => {
             if (resp) OnNavigateToList();
           });
         }}
@@ -215,4 +225,4 @@ const customPickerStyles = StyleSheet.create({
   },
 });
 
-export default PropriedadeAdd;
+export default PropriedadeEdit;

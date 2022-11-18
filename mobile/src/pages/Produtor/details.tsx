@@ -1,5 +1,4 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { Text, View } from "react-native";
 import { RootStackParamList } from ".";
 import Container from "../../components/container";
 import DataView from "../../components/dataView";
@@ -10,12 +9,12 @@ import { formatDataToApp } from "../../utils/formatData";
 import { formatEstadoCivil } from "../../utils/formatEstadoCivil";
 import { formatTipoPessoa } from "../../utils/formatTipoPessoa";
 
-type ProdutorListProp = NativeStackScreenProps<
+type ProdutorDetailsProp = NativeStackScreenProps<
   RootStackParamList,
   "ProdutorDetails"
 >;
 
-const ProtudorDetails = (props: ProdutorListProp) => {
+const ProtudorDetails = (props: ProdutorDetailsProp) => {
   const { route } = props;
   const produtor = route.params?.item as Produtor;
 

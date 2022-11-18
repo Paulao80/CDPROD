@@ -9,10 +9,8 @@ type Props = {
 
 const Panel: React.FC<Props> = ({ children, background }) => {
   const { screen, keyboardHeight, statusBarHeight } = useDimension();
-  console.log("🚀 ~ file: panel.tsx ~ line 12 ~ statusBarHeight", statusBarHeight)
 
   const diferenca = ((10 / screen.scale) * screen.scale * 8.75);
-  console.log("🚀 ~ file: panel.tsx ~ line 14 ~ diferenca", diferenca);
 
   const styles = StyleSheet.create({
     body: {

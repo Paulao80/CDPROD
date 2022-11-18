@@ -11,7 +11,7 @@ import MaskInput from "react-native-mask-input";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from ".";
 
-type ProdutorListProp = NativeStackScreenProps<
+type ProdutorAddProp = NativeStackScreenProps<
   RootStackParamList,
   "ProdutorAdd"
 > & {
@@ -24,7 +24,7 @@ interface uf {
   value: string;
 }
 
-const ProdutorAdd = (props: ProdutorListProp) => {
+const ProdutorAdd = (props: ProdutorAddProp) => {
   const { navigation, form, onAdd } = props;
 
   useEffect(() => {
