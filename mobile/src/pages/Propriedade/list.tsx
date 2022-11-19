@@ -10,7 +10,7 @@ import { RootStackParamList } from "./index";
 import { Propriedade } from "../../interfaces";
 import { MaterialIcons } from "@expo/vector-icons";
 
-type ProdutorListProp = NativeStackScreenProps<
+type PropriedadeListProp = NativeStackScreenProps<
   RootStackParamList,
   "PropriedadeList"
 > & {
@@ -19,7 +19,7 @@ type ProdutorListProp = NativeStackScreenProps<
   onDel: (id: number) => Promise<boolean>;
 };
 
-const PropriedadeList = (props: ProdutorListProp) => {
+const PropriedadeList = (props: PropriedadeListProp) => {
   const { navigation, propriedades, onSearch, onDel } = props;
 
   const OnNavigateToAdd = (event: GestureResponderEvent) =>

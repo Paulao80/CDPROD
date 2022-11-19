@@ -43,7 +43,7 @@ const List = ({ title, desc, foto, item, onPress, menuItens }: Item) => {
               uri: foto,
             }}
           />
-        ) : null}
+        ) : ''}
         <View>
           <Text style={styles.title}>{title}</Text>
           <Text style={styles.desc}>{desc}</Text>

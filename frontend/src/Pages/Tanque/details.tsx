@@ -56,7 +56,6 @@ const DetailsTanque = () => {
             <ShowData Label="Rota" Data={tanque.Rota} />
             <ShowData Label="Capacidade" Data={tanque.Capacidade} />
             <ShowData Label="Média Diária" Data={tanque.MediaDiaria} />
-            <ShowData Label="Rota" Data={tanque.TanqueId} />
             <ShowData
               Label="Tipo de Tanque"
               Data={GetTipoTanque(tanque.TipoTanque)}

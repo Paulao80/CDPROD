@@ -17,38 +17,56 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from ".";
 import { FormTanqueType } from "../../hooks";
 import ButtonSave from "../../components/buttonSave";
+import { Tanque } from "../../interfaces";
 
-type TanqueAddProp = NativeStackScreenProps<RootStackParamList, "TanqueAdd"> & {
+type TanqueEditProp = NativeStackScreenProps<
+  RootStackParamList,
+  "TanqueEdit"
+> & {
   form: FormTanqueType;
-  onAdd: () => Promise<boolean>;
+  onEdit: () => Promise<boolean>;
   pickFile: () => Promise<void>;
   imageShow: string | undefined;
   region: Region | undefined;
   selectMapPosition: (event: MapEvent<{}>) => void;
   getGeoLocation: () => Promise<void>;
+  setImageShowPath: (path?: string | undefined) => void;
+  setRegionLocation: (
+    latitude?: number | undefined,
+    longitude?: number | undefined
+  ) => void;
 };
 
-const TanqueAdd = (props: TanqueAddProp) => {
+const TanqueEdit = (props: TanqueEditProp) => {
   const {
     navigation,
+    route,
     form,
-    onAdd,
+    onEdit,
     pickFile,
     imageShow,
     region,
     selectMapPosition,
     getGeoLocation,
+    setImageShowPath,
+    setRegionLocation,
   } = props;
 
+  const tanque = route.params?.item as Tanque | undefined;
+
   useEffect(() => {
-    form.resetForm();
-  }, []);
+    if (tanque) {
+      form.setForm(tanque);
+      setImageShowPath(tanque.FotoPath);
+      setRegionLocation(tanque.Latitude, tanque.Longitude);
+    }
+  }, [tanque]);
 
   const OnNavigateToList = () => navigation.navigate("TanqueList");
 
   return (
     <Container>
-      <Header title="ADICIONAR TANQUE" />
+      <Header title="EDITAR TANQUE" />
       <Panel background>
         <View style={styles.viewMap}>
           <MapView
@@ -125,6 +143,7 @@ const TanqueAdd = (props: TanqueAddProp) => {
         <View style={styles.control}>
           <RNPickerSelect
             onValueChange={(TipoTanque) => form.setForm({ TipoTanque })}
+            value={form.formValues.TipoTanque}
             placeholder={{
               label: "Tipo de Tanque",
               value: undefined,
@@ -181,7 +200,7 @@ const TanqueAdd = (props: TanqueAddProp) => {
       </Panel>
       <ButtonSave
         OnPress={() => {
-          onAdd().then((resp) => {
+          onEdit().then((resp) => {
             if (resp) OnNavigateToList();
           });
         }}
@@ -258,4 +277,4 @@ const customPickerStyles = StyleSheet.create({
   },
 });
 
-export default TanqueAdd;
+export default TanqueEdit;
