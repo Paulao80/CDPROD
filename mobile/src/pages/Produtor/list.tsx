@@ -31,6 +31,9 @@ const ProdutorList = (props: ProdutorListProp) => {
   const OnNavigateToEdit = (item: any) =>
     navigation.navigate("ProdutorEdit", { item });
 
+  const OnNavigateToContas = (item: any) =>
+    navigation.navigate("ContaList", { item });
+
   useEffect(() => {
     onSearch();
   }, []);
@@ -66,6 +69,7 @@ const ProdutorList = (props: ProdutorListProp) => {
                 icon: (
                   <MaterialIcons name="credit-card" size={20} color="black" />
                 ),
+                onPress: OnNavigateToContas,
               },
             ]}
           />

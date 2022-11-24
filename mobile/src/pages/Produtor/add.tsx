@@ -6,7 +6,7 @@ import Panel from "../../components/panel";
 import RNPickerSelect from "react-native-picker-select";
 import dataUfs from "../../data/ufs.json";
 import ButtonSave from "../../components/buttonSave";
-import { FormProdutorType, useProdutor } from "../../hooks";
+import { FormProdutorType } from "../../hooks";
 import MaskInput from "react-native-mask-input";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from ".";
