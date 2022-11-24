@@ -23,13 +23,13 @@ export type RootStackParamList = {
   ContaList?: {
     item: any;
   };
-  ContaAdd: {
+  ContaAdd?: {
     item: any;
   };
-  ContaDetails: {
+  ContaDetails?: {
     item: any;
   };
-  ContaEdit: {
+  ContaEdit?: {
     item: any;
   };
 };

@@ -16,8 +16,7 @@ type ContaAddProp = NativeStackScreenProps<RootStackParamList, "ContaAdd"> & {
 
 const ContaAdd = (props: ContaAddProp) => {
   const { navigation, route, form, onAdd } = props;
-  const produtor = route.params.item as Produtor | undefined;
-  console.log("🚀 ~ file: add.tsx ~ line 20 ~ ContaAdd ~ produtor", produtor)
+  const produtor = route.params?.item as Produtor | undefined;
 
   useEffect(() => {
     form.resetForm();

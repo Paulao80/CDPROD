@@ -108,7 +108,7 @@ const useContaBancaria = (): UseContaBancaria => {
 
   async function onEdit() {
     try {
-      const { data } = await service.edit(formValues);
+      const { data } = await service.edit(formatFromAppToApi(formValues));
       if (data) {
         const itemIndex = contas.findIndex(
           (item) => item.ContaId === data.ContaId

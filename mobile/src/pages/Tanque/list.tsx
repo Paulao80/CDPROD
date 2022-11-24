@@ -32,6 +32,9 @@ const TanqueList = (props: TanqueListProp) => {
   const OnNavigateToEdit = (item: any) =>
     navigation.navigate("TanqueEdit", { item });
 
+  const OnNavigateToProdutores = (item: any) =>
+    navigation.navigate("ProdTanqueList", { item });
+
   useEffect(() => {
     onSearch();
   }, []);
@@ -62,6 +65,11 @@ const TanqueList = (props: TanqueListProp) => {
                 label: "Excluir",
                 icon: <MaterialIcons name="delete" size={20} color="black" />,
                 onPress: onDelHandler,
+              },
+              {
+                label: "Produtores",
+                icon: <MaterialIcons name="people" size={20} color="black" />,
+                onPress: OnNavigateToProdutores,
               },
             ]}
           />
