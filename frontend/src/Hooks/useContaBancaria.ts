@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import Form, { FormInstance } from "rc-field-form";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import {
   Error,
   ContaBancariaError,
@@ -30,7 +30,7 @@ const useContaBancaria = (
   produtorId?: number,
   load?: boolean
 ): UseContaBancaria => {
-  const history = useHistory();
+  const navigate = useNavigate();
   const [form] = Form.useForm<ContasBancarias>();
 
   const [errorForm, setErrorForm] = useState<Error<ContaBancariaError>>();
@@ -46,19 +46,19 @@ const useContaBancaria = (
         setContasBancarias(res);
       });
     } else if (load) {
-      history.push(`/produtor`);
+      navigate(`/produtor`);
     }
-  }, [load, produtorId, history]);
+  }, [load, produtorId, navigate]);
 
   useEffect(() => {
     if (produtorId) {
       getProdutoById(produtorId).then((resp) => {
         if (resp) setProdutor(resp);
-        else history.push(`/produtor`);
+        else navigate(`/produtor`);
       });
     }
     // eslint-disable-next-line
-  }, [load, produtorId, history]);
+  }, [load, produtorId, navigate]);
 
   async function onFinish(): Promise<boolean> {
     try {
@@ -112,6 +112,7 @@ const useContaBancaria = (
     try {
       if (id) {
         const { data } = await service.del(id);
+        setContasBancarias((prev) => prev.filter((cb) => cb.ContaId !== id));
 
         alert(data?.Message);
 

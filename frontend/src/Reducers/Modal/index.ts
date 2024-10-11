@@ -1,7 +1,7 @@
+import { UnknownAction } from "redux";
 import { StateModal } from "../../Interfaces";
 
-export interface Action {
-  type: string;
+export interface Action extends UnknownAction {
   payload: StateModal;
 }
 

@@ -8,12 +8,28 @@ import { useDispatch } from "react-redux";
 import { PropriedadesActive } from "../../Actions/PageActiveActions";
 import Logo from "../../Assets/images/logo.png";
 import usePropriedade from "../../Hooks/usePropriedade";
-import { DataGrid, GridColDef } from "@mui/x-data-grid";
+import {
+  DataGrid,
+  GridColDef,
+  GridInputRowSelectionModel,
+  GridToolbarContainer,
+} from "@mui/x-data-grid";
 import Container from "../../Components/Container";
+import { useCallback, useMemo, useRef, useState } from "react";
+import DialogConfirmation, {
+  DialogConfirmationRef,
+} from "../../Components/Dialog/Confirmation";
+import ButtonDel from "../../Components/ButtonDel";
+import { TEXT_DELETE_PROPRIEDADES } from "../../constants/dialogs/text";
 
 const Propriedade = () => {
   const dispatch = useDispatch();
-  const { propriedades } = usePropriedade(undefined, true);
+
+  const refDialogConfDel = useRef<DialogConfirmationRef | null>(null);
+
+  const { propriedades, onDelete } = usePropriedade(undefined, true);
+  const [rowsSelection, setRowsSelection] =
+    useState<GridInputRowSelectionModel>([]);
 
   dispatch(PropriedadesActive());
 
@@ -26,24 +42,67 @@ const Propriedade = () => {
     );
   };
 
+  const showDelButton = useMemo(() => {
+    if (Array.isArray(rowsSelection) && rowsSelection.length > 0) {
+      return true;
+    }
+
+    return false;
+  }, [rowsSelection]);
+
+  const CustomToolbar = useCallback(() => {
+    return (
+      <GridToolbarContainer>
+        {showDelButton && (
+          <ButtonDel
+            onClick={() => {
+              refDialogConfDel.current?.setOpen(true);
+            }}
+          />
+        )}
+      </GridToolbarContainer>
+    );
+  }, [showDelButton]);
+
+  const onOkConfDel = useCallback(() => {
+    if (Array.isArray(rowsSelection)) {
+      rowsSelection.forEach((propriedadeId: number) => {
+        onDelete(propriedadeId).then((resp) => {
+          if (resp) {
+            setRowsSelection((prev) => {
+              if (Array.isArray(prev)) {
+                prev = prev.filter((f) => f !== propriedadeId);
+              }
+
+              return prev;
+            });
+          }
+        });
+      });
+    }
+  }, [onDelete, rowsSelection]);
+
   const columns: GridColDef[] = [
     {
       field: "PropriedadeId",
       headerName: "ID",
       filterable: true,
       sortable: true,
+      flex: 0.5,
     },
     {
       field: "Nirf",
       headerName: "NIRF",
       filterable: true,
       sortable: true,
+      flex: 1,
     },
     {
       field: "Nome",
       headerName: "Nome",
       filterable: true,
       sortable: true,
+      flex: 2,
     },
     {
       field: "Produtor",
@@ -53,6 +112,7 @@ const Propriedade = () => {
       renderCell: (params) => {
         return params.row.Produtor.Nome;
       },
+      flex: 2,
     },
     {
       field: "acoes",
@@ -62,6 +122,7 @@ const Propriedade = () => {
       renderCell: (params) => {
         return customAcoesRender(params.row.PropriedadeId);
       },
+      flex: 0.75,
     },
   ];
 
@@ -70,13 +131,28 @@ const Propriedade = () => {
       <Header logo={Logo} titulo="CDTR" />
       <Aside />
       <Main>
+        <DialogConfirmation
+          ref={(el) => {
+            refDialogConfDel.current = el;
+          }}
+          text={TEXT_DELETE_PROPRIEDADES}
+          onCancelText="Não"
+          onOkText="Sim"
+          onOk={onOkConfDel}
+        />
+
         <Container>
           <DataGrid
+            onRowSelectionModelChange={(rows) => setRowsSelection(rows)}
+            rowSelectionModel={rowsSelection}
             rows={propriedades}
             columns={columns}
-            pageSize={5}
             checkboxSelection
             getRowId={(row) => row.PropriedadeId}
+            pageSizeOptions={[5]}
+            slots={{
+              toolbar: CustomToolbar,
+            }}
           />
         </Container>
       </Main>

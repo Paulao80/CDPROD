@@ -11,7 +11,12 @@ import { useDispatch } from "react-redux";
 import { ProdutoresActive } from "../../Actions/PageActiveActions";
 import useContaBancaria from "../../Hooks/useContaBancaria";
 import Container from "../../Components/Container";
-import { DataGrid, GridColDef } from "@mui/x-data-grid";
+import {
+  DataGrid,
+  GridColDef,
+  GridInputRowSelectionModel,
+  GridToolbarContainer,
+} from "@mui/x-data-grid";
 import ModalX from "../../Components/Modal";
 import useModal from "../../Hooks/useModal";
 import { OperationModal } from "../../Interfaces";
@@ -23,15 +28,20 @@ import {
   TITLE_M_ADD_CONTASBANCARIAS,
   TITLE_M_EDT_CONTASBANCARIAS,
 } from "../../constants/modals/titles";
-
-interface Param {
-  id?: string;
-}
+import { useCallback, useMemo, useRef, useState } from "react";
+import ButtonDel from "../../Components/ButtonDel";
+import DialogConfirmation, {
+  DialogConfirmationRef,
+} from "../../Components/Dialog/Confirmation";
+import { TEXT_DELETE_CONTAS } from "../../constants/dialogs/text";
 
 const Contas = () => {
-  const { id } = useParams<Param>();
+  const { id } = useParams();
 
   const dispatch = useDispatch();
+
+  const refDialogConfDel = useRef<DialogConfirmationRef | null>(null);
+
   const { openModal } = useModal();
   const {
     contasBancarias,
@@ -43,7 +53,11 @@ const Contas = () => {
     onChangePertenceProdutor,
     pertenceProdutor,
     setFormData,
+    onDelete,
   } = useContaBancaria(id ? Number(id) : undefined, true);
+
+  const [rowsSelection, setRowsSelection] =
+    useState<GridInputRowSelectionModel>([]);
 
   dispatch(ProdutoresActive());
 
@@ -74,36 +88,81 @@ const Contas = () => {
     );
   };
 
+  const showDelButton = useMemo(() => {
+    if (Array.isArray(rowsSelection) && rowsSelection.length > 0) {
+      return true;
+    }
+
+    return false;
+  }, [rowsSelection]);
+
+  const CustomToolbar = useCallback(() => {
+    return (
+      <GridToolbarContainer>
+        {showDelButton && (
+          <ButtonDel
+            onClick={() => {
+              refDialogConfDel.current?.setOpen(true);
+            }}
+          />
+        )}
+      </GridToolbarContainer>
+    );
+  }, [showDelButton]);
+
+  const onOkConfDel = useCallback(() => {
+    if (Array.isArray(rowsSelection)) {
+      rowsSelection.forEach((contaId: number) => {
+        onDelete(contaId).then((resp) => {
+          if (resp) {
+            setRowsSelection((prev) => {
+              if (Array.isArray(prev)) {
+                prev = prev.filter((f) => f !== contaId);
+              }
+
+              return prev;
+            });
+          }
+        });
+      });
+    }
+  }, [onDelete, rowsSelection]);
+
   const columns: GridColDef[] = [
     {
       field: "ContaId",
       headerName: "ID",
       filterable: true,
       sortable: true,
+      flex: 0.5,
     },
     {
       field: "NomePertence",
       headerName: "Nome",
       filterable: true,
       sortable: true,
+      flex: 2,
     },
     {
       field: "Banco",
       headerName: "Banco",
       filterable: true,
       sortable: true,
+      flex: 1,
     },
     {
       field: "Agencia",
       headerName: "Agencia",
       filterable: true,
       sortable: true,
+      flex: 1,
     },
     {
       field: "Conta",
       headerName: "Conta",
       filterable: true,
       sortable: true,
+      flex: 1,
     },
     {
       field: "acoes",
@@ -113,6 +172,7 @@ const Contas = () => {
       renderCell: (params) => {
         return customAcoesRender(params.row);
       },
+      flex: 0.5,
     },
   ];
 
@@ -122,13 +182,29 @@ const Contas = () => {
       <Aside />
       <Main>
         <PainelNav to={`/produtor`} titulo="Contas" />
+
+        <DialogConfirmation
+          ref={(el) => {
+            refDialogConfDel.current = el;
+          }}
+          text={TEXT_DELETE_CONTAS}
+          onCancelText="Não"
+          onOkText="Sim"
+          onOk={onOkConfDel}
+        />
+
         <Container>
           <DataGrid
+            onRowSelectionModelChange={(rows) => setRowsSelection(rows)}
+            rowSelectionModel={rowsSelection}
             rows={contasBancarias}
             columns={columns}
-            pageSize={5}
             checkboxSelection
             getRowId={(row) => row.ContaId}
+            pageSizeOptions={[5]}
+            slots={{
+              toolbar: CustomToolbar,
+            }}
           />
         </Container>
         <ModalX

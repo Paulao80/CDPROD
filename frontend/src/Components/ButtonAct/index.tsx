@@ -26,13 +26,13 @@ const ButtonAct = ({
   const GetIconType = (type: string) => {
     switch (type) {
       case "produtores":
-        return <People fontSize="medium" />;
+        return <People fontSize="small" />;
       case "editar":
-        return <Edit fontSize="medium" />;
+        return <Edit fontSize="small" />;
       case "detalhes":
-        return <List fontSize="medium" />;
+        return <List fontSize="small" />;
       case "contas":
-        return <AccountBalance fontSize="medium" />;
+        return <AccountBalance fontSize="small" />;
     }
   };
 

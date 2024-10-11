@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import Form, { FormInstance } from "rc-field-form";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import {
   Error,
   ProdutorTanqueError,
@@ -27,7 +27,7 @@ const useProdutorTanque = (
   tanqueId?: number,
   load?: boolean
 ): UseProdutorTanque => {
-  const history = useHistory();
+  const navigate = useNavigate();
   const [form] = Form.useForm<ProdutorTanque>();
 
   const [errorForm, setErrorForm] = useState<Error<ProdutorTanqueError>>();
@@ -44,19 +44,18 @@ const useProdutorTanque = (
         setProdutoresTanques(res);
       });
     } else if (load) {
-      history.push(`/tanque`);
+      navigate(`/tanque`);
     }
-  }, [load, tanqueId, history]);
+  }, [load, tanqueId, navigate]);
 
   useEffect(() => {
     if (tanqueId) {
       getTanqueById(tanqueId).then((resp) => {
         if (resp) setTanque(resp);
-        else history.push("/tanque");
+        else navigate("/tanque");
       });
     }
-    // eslint-disable-next-line
-  }, [load, tanqueId, history]);
+  }, [load, tanqueId, navigate, getTanqueById]);
 
   async function onFinish(): Promise<boolean> {
     try {
@@ -87,6 +86,9 @@ const useProdutorTanque = (
     try {
       if (id) {
         const { data } = await service.del(id);
+        setProdutoresTanques((prev) =>
+          prev.filter((pt) => pt.ProdutorTanqueId !== id)
+        );
 
         alert(data?.Message);
 

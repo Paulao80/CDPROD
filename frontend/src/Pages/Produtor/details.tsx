@@ -16,12 +16,8 @@ import useProdutor from "../../Hooks/useProdutor";
 import { useEffect, useState } from "react";
 import { Produtor } from "../../Interfaces";
 
-interface Param {
-  id?: string;
-}
-
 const DetailsProdutor = () => {
-  const { id } = useParams<Param>();
+  const { id } = useParams();
   const dispatch = useDispatch();
   const { getById } = useProdutor();
   const [produtor, setProdutor] = useState<Produtor>();

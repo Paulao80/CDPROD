@@ -1,14 +1,16 @@
+import { Data } from "../Types";
+
 export interface Produtor {
   ProdutorId?: number;
   Nome?: string;
-  DataNasc?: string;
+  DataNasc?: Data;
   TipoPessoa?: number;
   Nacionalidade?: string;
   CpfCnpj?: string;
   RG?: string;
   OrgaoExp?: string;
   EstadoExp?: string;
-  DataExp?: string;
+  DataExp?: Data;
   EstadoCivil?: number;
   Telefone?: string;
   UltLaticinio?: string;

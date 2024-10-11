@@ -1,6 +1,6 @@
 import Form, { FormInstance } from "rc-field-form";
 import { useEffect, useState } from "react";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Error, PropriedadeError, Propriedade } from "../Interfaces/index";
 import * as service from "../Services/PropriedadeService";
 
@@ -16,7 +16,7 @@ interface UsePropriedade {
 }
 
 const usePropriedade = (id?: number, load?: boolean): UsePropriedade => {
-  const history = useHistory();
+  const navigate = useNavigate();
   const [form] = Form.useForm<Propriedade>();
 
   const [errorForm, setErrorForm] = useState<Error<PropriedadeError>>();
@@ -28,11 +28,11 @@ const usePropriedade = (id?: number, load?: boolean): UsePropriedade => {
         if (res) {
           form.setFieldsValue(res);
         } else {
-          history.push("/propriedade");
+          navigate("/propriedade");
         }
       });
     }
-  }, [id, history, form]);
+  }, [id, navigate, form]);
 
   useEffect(() => {
     if (load) {
@@ -70,6 +70,7 @@ const usePropriedade = (id?: number, load?: boolean): UsePropriedade => {
     try {
       if (id) {
         const { data } = await service.del(id);
+        setPropriedades((prev) => prev.filter((p) => p.PropriedadeId !== id));
 
         alert(data?.Message);
 
@@ -102,7 +103,7 @@ const usePropriedade = (id?: number, load?: boolean): UsePropriedade => {
   }
 
   function redirect() {
-    history.push("/propriedade");
+    navigate("/propriedade");
   }
 
   return {

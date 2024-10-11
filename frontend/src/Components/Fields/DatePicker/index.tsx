@@ -1,33 +1,24 @@
-import { TextField, TextFieldProps } from "@mui/material";
+import { DatePicker } from "@mui/x-date-pickers";
 import { Meta } from "rc-field-form/es/interface";
-import { IsBlank } from "../../../Util/Functions";
 import { Error } from "../../../Interfaces";
 
-type TextFieldXProps = TextFieldProps & {
+type DatePickerProps = React.ComponentProps<typeof DatePicker>;
+
+type DatePickerXProps = DatePickerProps & {
   meta?: Meta;
   errorForm?: Error<any>;
 };
 
-export const TextFieldX = ({
-  value = "",
-  type,
+export const DatePickerX = ({
+  value,
   meta,
-  slotProps,
   errorForm,
   ...props
-}: TextFieldXProps) => {
+}: DatePickerXProps) => {
   return (
     <>
-      <TextField
-        type={type}
+      <DatePicker
         value={value}
-        slotProps={{
-          ...slotProps,
-          inputLabel: {
-            ...slotProps?.inputLabel,
-            shrink: !IsBlank(value) || type === "date" || type === "file",
-          },
-        }}
         {...props}
       />
 

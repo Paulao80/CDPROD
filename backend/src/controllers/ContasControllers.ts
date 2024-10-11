@@ -75,7 +75,7 @@ export default {
           DataExp: Yup.date().notRequired(),
           EstadoCivil: Yup.number().notRequired(),
           Telefone: Yup.string().notRequired(),
-          UltLaticinio: Yup.string().notRequired(),
+          UltLaticinio: Yup.string().nullable().notRequired(),
         })
         .required("Produtor é Obrigatório"),
     });

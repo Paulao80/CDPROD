@@ -13,40 +13,45 @@ interface Tipos {
   QTD: number;
 }
 
-export const ChartMedia = () => {
-  const [chartData, setChartData] = useState<ChartData>({
-    labels: {
-      categories: [],
+const initialChartData = {
+  labels: {
+    categories: [],
+  },
+  series: [
+    {
+      name: "",
+      data: [],
     },
-    series: [
-      {
-        name: "",
-        data: [],
-      },
-    ],
-  });
+  ],
+};
+
+export const ChartMedia = () => {
+  const [chartData, setChartData] = useState<ChartData>(initialChartData);
 
   useEffect(() => {
-    Api.get("/tanques").then((response) => {
-      const data = response.data as Tanque[];
-      const myLabels = data.map((x) => String(x.TanqueId));
-      const mySeries = data.map((x) => (x.MediaDiaria ? x.MediaDiaria : 0));
+    Api.get("/tanques")
+      .then((response) => {
+        const data = response.data as Tanque[];
+        const myLabels = data.map((x) => String(x.TanqueId));
+        const mySeries = data.map((x) => (x.MediaDiaria ? x.MediaDiaria : 0));
 
-      setChartData({
-        labels: {
-          categories: myLabels,
-        },
-        series: [
-          {
-            name: "Média Diária (L)",
-            data: mySeries,
+        setChartData({
+          labels: {
+            categories: myLabels,
           },
-        ],
+          series: [
+            {
+              name: "Média Diária (L)",
+              data: mySeries,
+            },
+          ],
+        });
+      })
+      .catch(() => {
+        setChartData(initialChartData);
+        return;
       });
-    });
   }, []);
-
-  useEffect(() => {}, []);
 
   const options = {
     plotOptions: {
@@ -57,6 +62,7 @@ export const ChartMedia = () => {
   };
 
   return (
+    // @ts-ignore
     <Chart
       options={{ ...options, xaxis: chartData.labels }}
       series={chartData.series}
@@ -67,40 +73,35 @@ export const ChartMedia = () => {
 };
 
 export const ChartPropByMunicipio = () => {
-  const [chartData, setChartData] = useState<ChartData>({
-    labels: {
-      categories: [],
-    },
-    series: [
-      {
-        name: "",
-        data: [],
-      },
-    ],
-  });
+  const [chartData, setChartData] = useState<ChartData>(initialChartData);
 
   useEffect(() => {
     Api.get("/propriedades", {
       params: {
         group: "Municipio",
       },
-    }).then((response) => {
-      const data = response.data as Municipios[];
-      const myLabels = data.map((x) => x.Municipio);
-      const mySeries = data.map((x) => x.QTD);
+    })
+      .then((response) => {
+        const data = response.data as Municipios[];
+        const myLabels = data.map((x) => x.Municipio);
+        const mySeries = data.map((x) => x.QTD);
 
-      setChartData({
-        labels: {
-          categories: myLabels,
-        },
-        series: [
-          {
-            name: "Quantidade por Municipio",
-            data: mySeries,
+        setChartData({
+          labels: {
+            categories: myLabels,
           },
-        ],
+          series: [
+            {
+              name: "Quantidade por Municipio",
+              data: mySeries,
+            },
+          ],
+        });
+      })
+      .catch(() => {
+        setChartData(initialChartData);
+        return;
       });
-    });
   }, []);
 
   const options = {
@@ -110,6 +111,7 @@ export const ChartPropByMunicipio = () => {
   };
 
   return (
+    // @ts-ignore
     <Chart
       options={{ ...options, labels: chartData.labels.categories }}
       series={chartData.series[0].data}
@@ -120,47 +122,42 @@ export const ChartPropByMunicipio = () => {
 };
 
 export const ChartTipoTanque = () => {
-  const [chartData, setChartData] = useState<ChartData>({
-    labels: {
-      categories: [],
-    },
-    series: [
-      {
-        name: "",
-        data: [],
-      },
-    ],
-  });
+  const [chartData, setChartData] = useState<ChartData>(initialChartData);
 
   useEffect(() => {
     Api.get("/tanques", {
       params: {
         group: "TipoTanque",
       },
-    }).then((response) => {
-      const data = response.data as Tipos[];
-      const myLabels = data.map((x) => {
-        switch (x.TipoTanque) {
-          case 1:
-            return "Individual";
-          default:
-            return "Comunitário";
-        }
-      });
-      const mySeries = data.map((x) => x.QTD);
+    })
+      .then((response) => {
+        const data = response.data as Tipos[];
+        const myLabels = data.map((x) => {
+          switch (x.TipoTanque) {
+            case 1:
+              return "Individual";
+            default:
+              return "Comunitário";
+          }
+        });
+        const mySeries = data.map((x) => x.QTD);
 
-      setChartData({
-        labels: {
-          categories: myLabels,
-        },
-        series: [
-          {
-            name: "Tipo de Tanque",
-            data: mySeries,
+        setChartData({
+          labels: {
+            categories: myLabels,
           },
-        ],
+          series: [
+            {
+              name: "Tipo de Tanque",
+              data: mySeries,
+            },
+          ],
+        });
+      })
+      .catch(() => {
+        setChartData(initialChartData);
+        return;
       });
-    });
   }, []);
 
   const options = {
@@ -172,6 +169,7 @@ export const ChartTipoTanque = () => {
   };
 
   return (
+    // @ts-ignore
     <Chart
       options={{ ...options, xaxis: chartData.labels }}
       series={chartData.series}

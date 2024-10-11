@@ -21,6 +21,7 @@ import useLocalidade from "../Hooks/useLocalidade";
 import { HiddenX, TextFieldX } from "../Components/Fields";
 import Form, { Field } from "rc-field-form";
 import * as validator from "../Validators";
+import { DatePickerX } from "../Components/Fields/DatePicker";
 
 const ProdutorContent = (id?: number) => {
   const dispatch = useDispatch();
@@ -90,15 +91,19 @@ const ProdutorContent = (id?: number) => {
 
             <Field name="DataNasc" rules={validator.DataNasc}>
               {(input, meta) => (
-                <TextFieldX
+                <DatePickerX
                   {...input}
                   meta={meta}
                   errorForm={errorForm}
                   label="Data de Nascimento"
-                  type="date"
-                  variant="outlined"
-                  fullWidth
-                  margin="normal"
+                  format="DD/MM/YYYY"
+                  slotProps={{
+                    textField: {
+                      variant: "outlined",
+                      fullWidth: true,
+                      margin: "normal",
+                    },
+                  }}
                 />
               )}
             </Field>
@@ -159,7 +164,9 @@ const ProdutorContent = (id?: number) => {
                   errorForm={errorForm}
                   label="CPF/CNPJ"
                   variant="outlined"
-                  InputProps={inputComponent}
+                  slotProps={{
+                    input: inputComponent,
+                  }}
                   fullWidth
                   margin="normal"
                 />
@@ -174,8 +181,10 @@ const ProdutorContent = (id?: number) => {
                   errorForm={errorForm}
                   label="RG"
                   variant="outlined"
-                  InputProps={{
-                    inputComponent: RgMaskCustom as any,
+                  slotProps={{
+                    input: {
+                      inputComponent: RgMaskCustom as any,
+                    },
                   }}
                   fullWidth
                   margin="normal"
@@ -222,15 +231,19 @@ const ProdutorContent = (id?: number) => {
 
             <Field name="DataExp" rules={validator.DataExp}>
               {(input, meta) => (
-                <TextFieldX
+                <DatePickerX
                   {...input}
                   meta={meta}
                   errorForm={errorForm}
                   label="Data de Expedição"
-                  type="date"
-                  variant="outlined"
-                  fullWidth
-                  margin="normal"
+                  format="DD/MM/YYYY"
+                  slotProps={{
+                    textField: {
+                      variant: "outlined",
+                      fullWidth: true,
+                      margin: "normal",
+                    },
+                  }}
                 />
               )}
             </Field>
@@ -274,8 +287,10 @@ const ProdutorContent = (id?: number) => {
                   errorForm={errorForm}
                   label="Telefone"
                   variant="outlined"
-                  InputProps={{
-                    inputComponent: TelefoneMaskCustom as any,
+                  slotProps={{
+                    input: {
+                      inputComponent: TelefoneMaskCustom as any,
+                    },
                   }}
                   fullWidth
                   margin="normal"

@@ -6,6 +6,7 @@ import "./style.css";
 import CloseIcon from "@mui/icons-material/Close";
 
 interface ModalXProps {
+  children: React.ReactNode;
   keyValue: string;
   width?: number | string;
   onFinish?(): Promise<any>;
@@ -14,10 +15,15 @@ interface ModalXProps {
   keepMounted?: boolean;
 }
 
-const ModalX: React.FC<ModalXProps> = (props) => {
-  const { keyValue, children, width, onEdit, onFinish, onCancel, keepMounted } =
-    props;
-
+function ModalX({
+  keyValue,
+  children,
+  width,
+  onEdit,
+  onFinish,
+  onCancel,
+  keepMounted,
+}: ModalXProps) {
   const { modals, isModalOpen, closeModal } = useModal();
 
   const [thisModal, setThisModal] = useState<TypeModal>();
@@ -83,6 +89,6 @@ const ModalX: React.FC<ModalXProps> = (props) => {
       </div>
     </Modal>
   );
-};
+}
 
 export default ModalX;

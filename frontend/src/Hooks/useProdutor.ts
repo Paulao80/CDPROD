@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import Form, { FormInstance } from "rc-field-form";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Error, ProdutorError, Produtor } from "../Interfaces/index";
 import * as service from "../Services/ProdutorService";
+import dayjs from "dayjs";
 
 interface UseProdutor {
   form: FormInstance;
@@ -16,7 +17,7 @@ interface UseProdutor {
 }
 
 const useProdutor = (id?: number, load?: boolean): UseProdutor => {
-  const history = useHistory();
+  const navigate = useNavigate();
   const [form] = Form.useForm<Produtor>();
 
   const [errorForm, setErrorForm] = useState<Error<ProdutorError>>();
@@ -26,13 +27,13 @@ const useProdutor = (id?: number, load?: boolean): UseProdutor => {
     if (id) {
       getById(id).then((res) => {
         if (res) {
-          form.setFieldsValue(res);
+          form.setFieldsValue(formatFromApiToApp(res));
         } else {
-          history.push("/produtor");
+          navigate("/produtor");
         }
       });
     }
-  }, [id, history, form]);
+  }, [id, navigate, form]);
 
   useEffect(() => {
     if (load) {
@@ -70,6 +71,7 @@ const useProdutor = (id?: number, load?: boolean): UseProdutor => {
     try {
       if (id) {
         const { data } = await service.del(id);
+        setProdutores((prev) => prev.filter((p) => p.ProdutorId !== id));
 
         alert(data?.Message);
 
@@ -102,7 +104,15 @@ const useProdutor = (id?: number, load?: boolean): UseProdutor => {
   }
 
   function redirect() {
-    history.push("/produtor");
+    navigate("/produtor");
+  }
+
+  function formatFromApiToApp(produtor: Produtor): Produtor {
+    return {
+      ...produtor,
+      DataNasc: dayjs(produtor.DataNasc),
+      DataExp: dayjs(produtor.DataExp),
+    };
   }
 
   return {

@@ -19,12 +19,8 @@ import { useDispatch } from "react-redux";
 import { TanquesActive } from "../../Actions/PageActiveActions";
 import useTanque from "../../Hooks/useTanque";
 
-interface Param {
-  id: string;
-}
-
 const DetailsTanque = () => {
-  const { id } = useParams<Param>();
+  const { id } = useParams();
   const dispatch = useDispatch();
   const { getById } = useTanque();
   const [tanque, setTanque] = useState<Tanque>();

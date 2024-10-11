@@ -1,11 +1,13 @@
-import Routes from './Routes';
-import './Assets/css/app.css';
-import { createStore, combineReducers } from 'redux';
-import { Provider } from 'react-redux';
-import MenuReducer from './Reducers/Menu';
-import PageActiveReducer from './Reducers/PageActive';
-import NotificationReducer from './Reducers/Notification';
-import ModalStateReducer from './Reducers/Modal';
+import Routes from "./Routes";
+import "./Assets/css/app.css";
+import {  combineReducers, createStore } from "redux";
+import { Provider } from "react-redux";
+import MenuReducer from "./Reducers/Menu";
+import PageActiveReducer from "./Reducers/PageActive";
+import NotificationReducer from "./Reducers/Notification";
+import ModalStateReducer from "./Reducers/Modal";
+import { LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 
 function App() {
   const allReducers = combineReducers({
@@ -19,7 +21,9 @@ function App() {
 
   return (
     <Provider store={store}>
-      <Routes />
+      <LocalizationProvider dateAdapter={AdapterDayjs}>
+        <Routes />
+      </LocalizationProvider>
     </Provider>
   );
 }

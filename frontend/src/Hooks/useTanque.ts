@@ -1,6 +1,6 @@
 import { ChangeEvent, useEffect, useState } from "react";
 import Form, { FormInstance } from "rc-field-form";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Error, TanqueError, Tanque } from "../Interfaces/index";
 import * as service from "../Services/TanqueService";
 
@@ -21,7 +21,7 @@ interface UseTanque {
 }
 
 const useTanque = (id?: number, load?: boolean): UseTanque => {
-  const history = useHistory();
+  const navigate = useNavigate();
   const [form] = Form.useForm<Tanque>();
 
   const [errorForm, setErrorForm] = useState<Error<TanqueError>>();
@@ -46,11 +46,11 @@ const useTanque = (id?: number, load?: boolean): UseTanque => {
           if (res?.Longitude) setLongitude(res?.Longitude);
           if (res?.FotoPath) setPreview([res?.FotoPath]);
         } else {
-          history.push("/tanque");
+          navigate("/tanque");
         }
       });
     }
-  }, [id, history, form]);
+  }, [id, navigate, form]);
 
   useEffect(() => {
     if (load) {
@@ -86,6 +86,7 @@ const useTanque = (id?: number, load?: boolean): UseTanque => {
     try {
       if (id) {
         const { data } = await service.del(id);
+        setTanques((prev) => prev.filter((t) => t.TanqueId !== id));
 
         alert(data?.Message);
 
@@ -168,7 +169,7 @@ const useTanque = (id?: number, load?: boolean): UseTanque => {
   }
 
   function redirect() {
-    history.push("/tanque");
+    navigate("/tanque");
   }
 
   return {

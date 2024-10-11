@@ -17,6 +17,7 @@
   --cor-btnld-hover: #418af7;
   --cor-btnCancel: #ff2b2b;
   --cor-btnCancel-hover: #ff1818;
+  --cor-btnDel-hover: #e4e3e3;
 }
 
 * {
@@ -42,6 +43,9 @@ body {
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
+  align-items: center;
+  height: 100%;
+  width: 100%;
 }
 
 @media screen and (max-width: 700px) {

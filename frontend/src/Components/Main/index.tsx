@@ -1,16 +1,17 @@
-import './style.css';
-import Notification from '../Notification';
+import "./style.css";
+import Notification from "../Notification";
 
-interface MainProps { }
+interface MainProps {
+  children: React.ReactNode;
+}
 
-const Main: React.FC<MainProps> = (props) => {
-    return (
-        <main>
-            {props.children}
-            <Notification />
-        </main>
-    )
-
+function Main({ children }: MainProps) {
+  return (
+    <main>
+      {children}
+      <Notification />
+    </main>
+  );
 }
 
 export default Main;

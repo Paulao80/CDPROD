@@ -10,7 +10,12 @@ import { OperationModal } from "../../Interfaces";
 import Logo from "../../Assets/images/logo.png";
 import { useDispatch } from "react-redux";
 import { TanquesActive } from "../../Actions/PageActiveActions";
-import { DataGrid, GridColDef } from "@mui/x-data-grid";
+import {
+  DataGrid,
+  GridColDef,
+  GridInputRowSelectionModel,
+  GridToolbarContainer,
+} from "@mui/x-data-grid";
 import useProdutorTanque from "../../Hooks/useProdutorTanque";
 import Container from "../../Components/Container";
 import useModal from "../../Hooks/useModal";
@@ -22,21 +27,27 @@ import Form, { Field } from "rc-field-form";
 import { TextFieldX } from "../../Components/Fields";
 import { GetSimNao } from "../../Util/Functions";
 import { MenuItem } from "@mui/material";
-
-interface Param {
-  id: string;
-}
+import { useCallback, useMemo, useRef, useState } from "react";
+import DialogConfirmation, {
+  DialogConfirmationRef,
+} from "../../Components/Dialog/Confirmation";
+import ButtonDel from "../../Components/ButtonDel";
+import { TEXT_DELETE_PRODUTORES } from "../../constants/dialogs/text";
 
 const ProdutoresTanques = () => {
-  const { id } = useParams<Param>();
+  const { id } = useParams();
 
   const dispatch = useDispatch();
+
+  const refDialogConfDel = useRef<DialogConfirmationRef | null>(null);
+
   const { openModal } = useModal();
   const { produtores } = useProdutor(undefined, true);
-  const { produtoresTanques, form, onFinish, errorForm } = useProdutorTanque(
-    id ? Number(id) : undefined,
-    true
-  );
+  const { produtoresTanques, form, onFinish, errorForm, onDelete } =
+    useProdutorTanque(id ? Number(id) : undefined, true);
+
+  const [rowsSelection, setRowsSelection] =
+    useState<GridInputRowSelectionModel>([]);
 
   dispatch(TanquesActive());
 
@@ -48,24 +59,66 @@ const ProdutoresTanques = () => {
     });
   };
 
+  const showDelButton = useMemo(() => {
+    if (Array.isArray(rowsSelection) && rowsSelection.length > 0) {
+      return true;
+    }
+
+    return false;
+  }, [rowsSelection]);
+
+  const CustomToolbar = useCallback(() => {
+    return (
+      <GridToolbarContainer>
+        {showDelButton && (
+          <ButtonDel
+            onClick={() => {
+              refDialogConfDel.current?.setOpen(true);
+            }}
+          />
+        )}
+      </GridToolbarContainer>
+    );
+  }, [showDelButton]);
+
+  const onOkConfDel = useCallback(() => {
+    if (Array.isArray(rowsSelection)) {
+      rowsSelection.forEach((prodTanqueId: number) => {
+        onDelete(prodTanqueId).then((resp) => {
+          if (resp) {
+            setRowsSelection((prev) => {
+              if (Array.isArray(prev)) {
+                prev = prev.filter((f) => f !== prodTanqueId);
+              }
+
+              return prev;
+            });
+          }
+        });
+      });
+    }
+  }, [onDelete, rowsSelection]);
+
   const columns: GridColDef[] = [
     {
-      field: "PRodutorId",
+      field: "ProdutorId",
       headerName: "ID",
       filterable: true,
       sortable: true,
       renderCell: (params) => {
         return params.row.Produtor.ProdutorId;
       },
+      flex: 0.5,
     },
     {
-      field: "PRodutorNome",
+      field: "ProdutorNome",
       headerName: "Nome",
       filterable: true,
       sortable: true,
       renderCell: (params) => {
         return params.row.Produtor.Nome;
       },
+      flex: 2,
     },
     {
       field: "ProdutorCpfCnpj",
@@ -75,6 +128,7 @@ const ProdutoresTanques = () => {
       renderCell: (params) => {
         return params.row.Produtor.CpfCnpj;
       },
+      flex: 1,
     },
     {
       field: "Responsavel",
@@ -84,6 +138,7 @@ const ProdutoresTanques = () => {
       renderCell: (params) => {
         return GetSimNao(params.row.Responsavel);
       },
+      flex: 0.75,
     },
   ];
 
@@ -93,13 +148,29 @@ const ProdutoresTanques = () => {
       <Aside />
       <Main>
         <PainelNav to={`/tanque`} titulo="Produtores" />
+
+        <DialogConfirmation
+          ref={(el) => {
+            refDialogConfDel.current = el;
+          }}
+          text={TEXT_DELETE_PRODUTORES}
+          onCancelText="Não"
+          onOkText="Sim"
+          onOk={onOkConfDel}
+        />
+
         <Container>
           <DataGrid
+            onRowSelectionModelChange={(rows) => setRowsSelection(rows)}
+            rowSelectionModel={rowsSelection}
             rows={produtoresTanques}
             columns={columns}
-            pageSize={5}
             checkboxSelection
             getRowId={(row) => row.ProdutorTanqueId}
+            pageSizeOptions={[5]}
+            slots={{
+              toolbar: CustomToolbar,
+            }}
           />
         </Container>
         <ModalX
