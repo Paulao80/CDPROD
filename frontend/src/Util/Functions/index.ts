@@ -1,5 +1,7 @@
 import { FormInstance } from "rc-field-form";
 import { ChangeEvent, SetStateAction } from "react";
+import { Data } from "../../Types";
+import dayjs from "dayjs";
 
 export const GetTipoPessoa = (tipo?: number) => {
   switch (tipo) {
@@ -97,4 +99,9 @@ export const formContainsError = async (form: FormInstance<any>) => {
   }
 
   return false;
+};
+
+export const formatDataBrazil = (data?: Data) => {
+  if(data === null || data === undefined) return null;
+  return dayjs(data).format("DD/MM/YYYY");
 };

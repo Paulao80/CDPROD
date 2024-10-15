@@ -7,7 +7,7 @@ import Container from "../../Components/Container";
 import BtnEdt from "../../Components/ButtonEdt";
 import PainelNav from "../../Components/PainelNav";
 import { useParams } from "react-router-dom";
-import { GetTipoPessoa, GetEstadoCivil } from "../../Util/Functions";
+import { GetTipoPessoa, GetEstadoCivil, formatDataBrazil } from "../../Util/Functions";
 import ShowData from "../../Components/ShowData";
 import Logo from "../../Assets/images/logo.png";
 import { useDispatch } from "react-redux";
@@ -44,7 +44,7 @@ const DetailsProdutor = () => {
         <Container>
           <ShowData Label="Id" Data={produtor.ProdutorId} />
           <ShowData Label="Nome" Data={produtor.Nome} />
-          <ShowData Label="Data de Nascimento" Data={produtor.DataNasc} />
+          <ShowData Label="Data de Nascimento" Data={formatDataBrazil(produtor.DataNasc)} />
           <ShowData
             Label="Tipo de Pessoa"
             Data={GetTipoPessoa(produtor.TipoPessoa)}
@@ -54,7 +54,7 @@ const DetailsProdutor = () => {
           <ShowData Label="RG" Data={produtor.RG} />
           <ShowData Label="Orgão de Expedição" Data={produtor.OrgaoExp} />
           <ShowData Label="Estado de Expedição" Data={produtor.EstadoExp} />
-          <ShowData Label="Data de Expedição" Data={produtor.DataExp} />
+          <ShowData Label="Data de Expedição" Data={formatDataBrazil(produtor.DataExp)} />
           <ShowData
             Label="Estado Civil"
             Data={GetEstadoCivil(produtor.EstadoCivil)}
