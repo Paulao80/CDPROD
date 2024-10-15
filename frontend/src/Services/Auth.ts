@@ -1,6 +1,7 @@
 import { AxiosResponse } from 'axios';
 import {User} from '../Interfaces';
 import Api from './Api';
+import { redirect } from 'react-router-dom';
 
 export const USER_KEY = "@cdtr-user";
 export const isAuthenticated = () => (getUser() !== null);
@@ -82,4 +83,5 @@ export const update = async (UserId: number, Name: string, User: string, Email: 
 
 export const logout = () => {
     localStorage.removeItem(USER_KEY);
+    redirect('/account/login');
 };
