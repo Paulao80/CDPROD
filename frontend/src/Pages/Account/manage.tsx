@@ -1,6 +1,6 @@
 import './style.css';
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Header from "../../Components/Header";
 import Logo from '../../Assets/images/logo.png';
 import Aside from "../../Components/Aside";
@@ -9,12 +9,12 @@ import Painel from "../../Components/Painel";
 import Container from "../../Components/Container";
 import Footer from "../../Components/Footer";
 import BtnSave from '../../Components/ButtonSave';
-import { TextField } from "@material-ui/core";
 import { User as IUser } from '../../Interfaces'
 import Api from "../../Services/Api";
 import { update } from '../../Services/Auth';
 import { useDispatch } from 'react-redux';
 import { NoneActive } from '../../Actions/PageActiveActions';
+import { TextField } from '@mui/material';
 
 interface Error {
     message: string;
@@ -31,7 +31,7 @@ interface Error {
 
 const Manage = () => {
 
-    const history = useHistory();
+    const navigate = useNavigate();
 
     const dispatch = useDispatch();
 
@@ -91,7 +91,7 @@ const Manage = () => {
 
         await update(UserId, Name, User, Email, PasswordOld, PasswordNew, PasswordNewConfimation, image)
             .then((response) => {
-                if (response.status === 200) history.push('/dashboard');
+                if (response.status === 200) navigate('/dashboard');
                 else {
                     SetErrorForm(response.data);
                 }

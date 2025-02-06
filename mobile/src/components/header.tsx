@@ -1,31 +1,34 @@
-import React from 'react';
-import { View, Text, StyleSheet, Dimensions } from 'react-native';
+import React from "react";
+import { View, Text, StyleSheet } from "react-native";
+import { useDimension } from "../hooks";
 
 type props = {
-    title: string;
-}
+  title: string;
+};
 
 const Header = ({ title }: props) => {
-    return (
-        <View style={styles.header}>
-            <Text style={styles.title}>{title}</Text>
-        </View>
-    )
-}
+  const { screen } = useDimension();
 
-const styles = StyleSheet.create({
+  const styles = StyleSheet.create({
     header: {
-        backgroundColor: '#FABE36',
-        width: '100%',
-        height: Dimensions.get('window').height / 5,
-        alignItems: 'center',
-        justifyContent: 'center'
+      backgroundColor: "#FABE36",
+      width: "100%",
+      height: (screen.height) / 5,
+      alignItems: "center",
+      justifyContent: "center",
     },
     title: {
-        fontSize: 24,
-        fontWeight: '700',
-        color: 'white'
-    }
-});
+      fontSize: 24,
+      fontWeight: "700",
+      color: "white",
+    },
+  });
+
+  return (
+    <View style={styles.header}>
+      <Text style={styles.title}>{title}</Text>
+    </View>
+  );
+};
 
 export default Header;

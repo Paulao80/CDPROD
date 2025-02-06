@@ -1,14 +1,11 @@
-import './style.css';
+import "./style.css";
 
-interface ContainerProps { }
+interface ContainerProps {
+  children: React.ReactNode;
+}
 
-const Container: React.FC<ContainerProps> = (props) => {
-    return (
-        <div className="container">
-            {props.children}
-        </div>
-    )
-
+function Container({ children }: ContainerProps) {
+  return <div className="container">{children}</div>;
 }
 
 export default Container;

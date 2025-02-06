@@ -1,6 +1,6 @@
+import { UnknownAction } from "redux";
 
-export interface Action {
-    type: string;
+export interface Action extends UnknownAction {
     payload: string;
 }
 

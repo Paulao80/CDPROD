@@ -1,109 +1,125 @@
-import {Request, Response} from 'express';
-import {getRepository} from 'typeorm';
-import ProdutorTanque from '../models/ProdutorTanque';
-import ProdutoresTanquesView from '../views/ProdutoresTanquesView';
-import * as Yup from 'yup';
+import { Request, Response } from "express";
+import { getRepository } from "typeorm";
+import ProdutorTanque from "../models/ProdutorTanque";
+import ProdutoresTanquesView from "../views/ProdutoresTanquesView";
+import * as Yup from "yup";
 
-export default{
-    async index(request: Request, response: Response){
-        const ProdutoresTanquesRepository = getRepository(ProdutorTanque);
+export default {
+  async index(request: Request, response: Response) {
+    const ProdutoresTanquesRepository = getRepository(ProdutorTanque);
 
-        const produtoresTaques = await ProdutoresTanquesRepository.find({
-            relations: [
-                'Produtor',
-                'Tanque'
-            ]
-        });
+    const produtoresTaques = await ProdutoresTanquesRepository.find({
+      relations: ["Produtor", "Tanque"],
+    });
 
-        return response.json(ProdutoresTanquesView.renderMany(produtoresTaques));
-    },
-    async show(request: Request, response: Response){
-        const {id} = request.params;
+    return response.json(ProdutoresTanquesView.renderMany(produtoresTaques));
+  },
+  async show(request: Request, response: Response) {
+    const { id } = request.params;
 
-        const ProdutoresTanquesRepository = getRepository(ProdutorTanque);
+    const ProdutoresTanquesRepository = getRepository(ProdutorTanque);
 
-        const produtorTanque = await ProdutoresTanquesRepository.findOneOrFail(id, {
-            relations: [
-                'Produtor',
-                'Tanque'
-            ]
-        });
+    const produtorTanque = await ProdutoresTanquesRepository.findOneOrFail(id, {
+      relations: ["Produtor", "Tanque"],
+    });
 
-        return response.json(ProdutoresTanquesView.render(produtorTanque));
-    },
-    async create(request: Request, response: Response){
-        const {
-            Responsavel,
-            Produtor,
-            Tanque
-        } = request.body;
+    return response.json(ProdutoresTanquesView.render(produtorTanque));
+  },
+  async getByTanqueId(request: Request, response: Response) {
+    const { id } = request.params;
 
-        const data = {
-            Responsavel,
-            Produtor,
-            Tanque
-        }
+    const ProdutoresTanquesRepository = getRepository(ProdutorTanque);
 
-        const schema = Yup.object().shape({
-            Responsavel: Yup.boolean().required('Responsavel é Obrigatório'),
-            Produtor: Yup.object().shape({
-                ProdutorId: Yup.number().required('ProdutorId é Obrigatório'),
-                Nome: Yup.string().notRequired(),
-                DataNasc: Yup.date().notRequired(),
-                TipoPessoa: Yup.number().notRequired(),
-                Nacionalidade: Yup.string().notRequired(),
-                CpfCnpj: Yup.string().notRequired(),
-                RG: Yup.string().notRequired(),
-                OrgaoExp: Yup.string().notRequired(),
-                EstadoExp: Yup.string().notRequired(),
-                DataExp: Yup.date().notRequired(),
-                EstadoCivil: Yup.number().notRequired(),
-                Telefone: Yup.string().notRequired(),
-                UltLaticinio: Yup.string().notRequired()
-            }).required('Produtor é Obrigatório'),
-            Tanque: Yup.object().shape({
-                TanqueId: Yup.number().required('TanqueId é Obrigatório'),
-                Rota: Yup.string().notRequired(),
-                Capacidade: Yup.number().notRequired(),
-                MediaDiaria: Yup.number().notRequired(),
-                TipoTanque: Yup.number().notRequired(),
-                NumeroSerie: Yup.string().notRequired(),
-                Marca: Yup.string().notRequired(),
-                Latitude: Yup.number().notRequired(),
-                Longitude: Yup.number().notRequired(),
-                FotoPath: Yup.string().notRequired(),
-            }).required('Tanque é Obrigatório')
-        });
+    const produtoresTaques = await ProdutoresTanquesRepository.find({
+      relations: ["Produtor", "Tanque"],
+      where: {
+        Tanque: {
+          TanqueId: id,
+        },
+      },
+    });
 
-        await schema.validate(data, {
-            abortEarly: false
-        });
+    return response.json(ProdutoresTanquesView.renderMany(produtoresTaques));
+  },
+  async create(request: Request, response: Response) {
+    const { Responsavel, Produtor, Tanque } = request.body;
 
-        const ProdutoresTanquesRepository = getRepository(ProdutorTanque);
+    const data = {
+      Responsavel,
+      Produtor,
+      Tanque,
+    };
 
-        const produtorTanque = ProdutoresTanquesRepository.create(data);
+    const schema = Yup.object().shape({
+      Responsavel: Yup.boolean().required("Responsavel é Obrigatório"),
+      Produtor: Yup.object()
+        .shape({
+          ProdutorId: Yup.number().required("ProdutorId é Obrigatório"),
+          Nome: Yup.string().notRequired(),
+          DataNasc: Yup.date().notRequired(),
+          TipoPessoa: Yup.number().notRequired(),
+          Nacionalidade: Yup.string().notRequired(),
+          CpfCnpj: Yup.string().notRequired(),
+          RG: Yup.string().notRequired(),
+          OrgaoExp: Yup.string().notRequired(),
+          EstadoExp: Yup.string().notRequired(),
+          DataExp: Yup.date().notRequired(),
+          EstadoCivil: Yup.number().notRequired(),
+          Telefone: Yup.string().notRequired(),
+          UltLaticinio: Yup.string().notRequired(),
+        })
+        .required("Produtor é Obrigatório"),
+      Tanque: Yup.object()
+        .shape({
+          TanqueId: Yup.number().required("TanqueId é Obrigatório"),
+          Rota: Yup.string().notRequired(),
+          Capacidade: Yup.number().notRequired(),
+          MediaDiaria: Yup.number().notRequired(),
+          TipoTanque: Yup.number().notRequired(),
+          NumeroSerie: Yup.string().notRequired(),
+          Marca: Yup.string().notRequired(),
+          Latitude: Yup.number().notRequired(),
+          Longitude: Yup.number().notRequired(),
+          FotoPath: Yup.string().notRequired(),
+        })
+        .required("Tanque é Obrigatório"),
+    });
 
-        await ProdutoresTanquesRepository.save(produtorTanque);
+    await schema.validate(data, {
+      abortEarly: false,
+    });
 
-        return response.status(201).json(produtorTanque);
-    },
-    async delete(request: Request, response: Response){
-        const {id} = request.params;
+    const ProdutoresTanquesRepository = getRepository(ProdutorTanque);
 
-        const ProdutoresTanquesRepository = getRepository(ProdutorTanque); 
+    const produtorTanque = ProdutoresTanquesRepository.create(data);
 
-        const prodTanque = await ProdutoresTanquesRepository.findOne(id);
+    await ProdutoresTanquesRepository.save(produtorTanque);
 
-        if(prodTanque !== null && prodTanque !== undefined){
-            await ProdutoresTanquesRepository.delete(prodTanque.ProdutorTanqueId)
-            return response.json({
-                Message: "Excluído com Sucesso!"
-            });
-        }
-        else{
-            return response.json({
-                Message: "ProdutorTanque não encontrado!"
-            });
-        }     
+    const prodTanque = await ProdutoresTanquesRepository.findOneOrFail({
+      relations: ["Produtor", "Tanque"],
+      where: {
+        ProdutorTanqueId: produtorTanque.ProdutorTanqueId,
+      },
+    });
+
+    return response.status(201).json(ProdutoresTanquesView.render(prodTanque));
+  },
+  async delete(request: Request, response: Response) {
+    const { id } = request.params;
+
+    const ProdutoresTanquesRepository = getRepository(ProdutorTanque);
+
+    const prodTanque = await ProdutoresTanquesRepository.findOne(id);
+
+    if (prodTanque !== null && prodTanque !== undefined) {
+      await ProdutoresTanquesRepository.delete(prodTanque.ProdutorTanqueId);
+      return response.json({
+        Message: "Excluído com Sucesso!",
+      });
+    } else {
+      return response.json({
+        Message: "ProdutorTanque não encontrado!",
+      });
     }
+  },
 };

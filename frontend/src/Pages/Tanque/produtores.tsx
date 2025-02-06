@@ -1,136 +1,246 @@
-import './style.css';
-import Header from '../../Components/Header';
-import Aside from '../../Components/Aside';
-import Footer from '../../Components/Footer';
-import Main from '../../Components/Main';
-import MUIDataTable from "mui-datatables";
-import ButtonAdd from '../../Components/ButtonAdd';
-import { useLocation, useParams } from 'react-router-dom';
-import PainelNav from '../../Components/PainelNav';
-import { useState, useEffect } from 'react';
-import Api from '../../Services/Api';
-import { Tanque, Produtor, RowsDeleted } from '../../Interfaces';
-import Logo from '../../Assets/images/logo.png';
-import { useDispatch } from 'react-redux';
-import { TanquesActive } from '../../Actions/PageActiveActions';
-
-interface Param {
-    id: string;
-}
+import "./style.css";
+import Header from "../../Components/Header";
+import Aside from "../../Components/Aside";
+import Footer from "../../Components/Footer";
+import Main from "../../Components/Main";
+import ButtonAdd from "../../Components/ButtonAdd";
+import { useParams } from "react-router-dom";
+import PainelNav from "../../Components/PainelNav";
+import { OperationModal } from "../../Interfaces";
+import Logo from "../../Assets/images/logo.png";
+import { useDispatch } from "react-redux";
+import { TanquesActive } from "../../Actions/PageActiveActions";
+import {
+  DataGrid,
+  GridColDef,
+  GridInputRowSelectionModel,
+  GridToolbarContainer,
+} from "@mui/x-data-grid";
+import useProdutorTanque from "../../Hooks/useProdutorTanque";
+import Container from "../../Components/Container";
+import useModal from "../../Hooks/useModal";
+import { KEY_M_PRODUTORTANQUES } from "../../constants/modals/keys";
+import { TITLE_M_ADD_PRODUTORTANQUES } from "../../constants/modals/titles";
+import ModalX from "../../Components/Modal";
+import useProdutor from "../../Hooks/useProdutor";
+import Form, { Field } from "rc-field-form";
+import { TextFieldX } from "../../Components/Fields";
+import { GetSimNao } from "../../Util/Functions";
+import { MenuItem } from "@mui/material";
+import { useCallback, useMemo, useRef, useState } from "react";
+import DialogConfirmation, {
+  DialogConfirmationRef,
+} from "../../Components/Dialog/Confirmation";
+import ButtonDel from "../../Components/ButtonDel";
+import { TEXT_DELETE_PRODUTORES } from "../../constants/dialogs/text";
 
 const ProdutoresTanques = () => {
-    const dispatch = useDispatch();
+  const { id } = useParams();
 
-    dispatch(TanquesActive());
+  const dispatch = useDispatch();
 
-    const { id } = useParams<Param>();
-    const location = useLocation();
+  const refDialogConfDel = useRef<DialogConfirmationRef | null>(null);
 
-    const [tanque, setTanque] = useState<Tanque>({} as Tanque);
+  const { openModal } = useModal();
+  const { produtores } = useProdutor(undefined, true);
+  const { produtoresTanques, form, onFinish, errorForm, onDelete } =
+    useProdutorTanque(id ? Number(id) : undefined, true);
 
-    useEffect(() => {
-        Api.get(`/tanques/${id}`).then((response) => {
-            setTanque(response.data);
-        });
-    }, [location, id]);
+  const [rowsSelection, setRowsSelection] =
+    useState<GridInputRowSelectionModel>([]);
 
-    const columns = [
-        {
-            name: "Produtor",
-            label: "ID",
-            options: {
-                filter: true,
-                sort: false,
-                customBodyRender: (value: Produtor) => {
-                    return value.ProdutorId;
-                }
-            },
-        },
-        {
-            name: "Produtor",
-            label: "Nome",
-            options: {
-                filter: true,
-                sort: true,
-                customBodyRender: (value: Produtor) => {
-                    return value.Nome;
-                }
-            },
-        },
-        {
-            name: "Produtor",
-            label: "CPF/CNPJ",
-            options: {
-                filter: true,
-                sort: false,
-                customBodyRender: (value: Produtor) => {
-                    return value.CpfCnpj;
-                }
-            },
-        },
-        {
-            name: "Responsavel",
-            label: "Responsavel",
-            options: {
-                filter: true,
-                sort: false,
-                customBodyRender: (value: boolean) => {
-                    if (value) {
-                        return "Sim";
-                    }
-                    else {
-                        return "Não";
-                    }
-                }
-            }
-        }
-    ];
+  dispatch(TanquesActive());
 
-    const setRowProps = () => {
-        return {
-            style: { cursor: 'pointer' }
-        }
+  const handleOpen = () => {
+    openModal({
+      key: KEY_M_PRODUTORTANQUES,
+      title: TITLE_M_ADD_PRODUTORTANQUES,
+      operation: OperationModal.Add,
+    });
+  };
+
+  const showDelButton = useMemo(() => {
+    if (Array.isArray(rowsSelection) && rowsSelection.length > 0) {
+      return true;
     }
 
-    const onRowsDelete = (rowsDeleted: RowsDeleted, newTableData: any) => {
+    return false;
+  }, [rowsSelection]);
 
-        rowsDeleted.data.map(async (row) => {
-
-            let prodTanque = tanque.ProdutoresTanques[row.dataIndex];
-
-            await Api.delete(`/prodtanques/${prodTanque.ProdutorTanqueId}`)
-                .then((response) => {
-                    alert(response.data.Message);
-                })
-                .catch(() => {
-                    alert("Error");
-                });
-        });
-
-    }
-
-    const options = {
-        setRowProps,
-        onRowsDelete
-    };
-
+  const CustomToolbar = useCallback(() => {
     return (
-        <>
-            <Header logo={Logo} titulo="CDTR" />
-            <Aside />
-            <Main>
-                <PainelNav to={`/tanque`} titulo="Produtores" />
-                <MUIDataTable
-                    title={""}
-                    data={tanque.ProdutoresTanques}
-                    columns={columns}
-                    options={options}
-                />
-            </Main>
-            <ButtonAdd to={`/tanque/produtores/add/${tanque.TanqueId}`} />
-            <Footer />
-        </>
-    )
-}
+      <GridToolbarContainer>
+        {showDelButton && (
+          <ButtonDel
+            onClick={() => {
+              refDialogConfDel.current?.setOpen(true);
+            }}
+          />
+        )}
+      </GridToolbarContainer>
+    );
+  }, [showDelButton]);
+
+  const onOkConfDel = useCallback(() => {
+    if (Array.isArray(rowsSelection)) {
+      rowsSelection.forEach((prodTanqueId: number) => {
+        onDelete(prodTanqueId).then((resp) => {
+          if (resp) {
+            setRowsSelection((prev) => {
+              if (Array.isArray(prev)) {
+                prev = prev.filter((f) => f !== prodTanqueId);
+              }
+
+              return prev;
+            });
+          }
+        });
+      });
+    }
+  }, [onDelete, rowsSelection]);
+
+  const columns: GridColDef[] = [
+    {
+      field: "ProdutorId",
+      headerName: "ID",
+      filterable: true,
+      sortable: true,
+      renderCell: (params) => {
+        return params.row.Produtor.ProdutorId;
+      },
+      flex: 0.5,
+    },
+    {
+      field: "ProdutorNome",
+      headerName: "Nome",
+      filterable: true,
+      sortable: true,
+      renderCell: (params) => {
+        return params.row.Produtor.Nome;
+      },
+      flex: 2,
+    },
+    {
+      field: "ProdutorCpfCnpj",
+      headerName: "CPF/CNPJ",
+      filterable: true,
+      sortable: true,
+      renderCell: (params) => {
+        return params.row.Produtor.CpfCnpj;
+      },
+      flex: 1,
+    },
+    {
+      field: "Responsavel",
+      headerName: "Responsavel",
+      filterable: true,
+      sortable: false,
+      renderCell: (params) => {
+        return GetSimNao(params.row.Responsavel);
+      },
+      flex: 0.75,
+    },
+  ];
+
+  return (
+    <>
+      <Header logo={Logo} titulo="CDTR" />
+      <Aside />
+      <Main>
+        <PainelNav to={`/tanque`} titulo="Produtores" />
+
+        <DialogConfirmation
+          ref={(el) => {
+            refDialogConfDel.current = el;
+          }}
+          text={TEXT_DELETE_PRODUTORES}
+          onCancelText="Não"
+          onOkText="Sim"
+          onOk={onOkConfDel}
+        />
+
+        <Container>
+          <DataGrid
+            onRowSelectionModelChange={(rows) => setRowsSelection(rows)}
+            rowSelectionModel={rowsSelection}
+            rows={produtoresTanques}
+            columns={columns}
+            checkboxSelection
+            getRowId={(row) => row.ProdutorTanqueId}
+            pageSizeOptions={[5]}
+            slots={{
+              toolbar: CustomToolbar,
+            }}
+          />
+        </Container>
+        <ModalX
+          keyValue={KEY_M_PRODUTORTANQUES}
+          width={900}
+          onFinish={onFinish}
+        >
+          <Form form={form}>
+            {errorForm?.message !== undefined ? (
+              <div className="Message-error">
+                <p>{errorForm.message}</p>
+              </div>
+            ) : (
+              ""
+            )}
+
+            <Field name={["Produtor", "ProdutorId"]}>
+              {(input, meta) => (
+                <TextFieldX
+                  {...input}
+                  meta={meta}
+                  errorForm={errorForm}
+                  label="Produtor"
+                  variant="outlined"
+                  select
+                  fullWidth
+                  margin="normal"
+                >
+                  {produtores.map((produtor) => {
+                    return (
+                      <MenuItem
+                        key={produtor.ProdutorId}
+                        value={produtor.ProdutorId}
+                      >
+                        {`${produtor.ProdutorId} - ${produtor.Nome}`}
+                      </MenuItem>
+                    );
+                  })}
+                </TextFieldX>
+              )}
+            </Field>
+
+            <Field name="Responsavel">
+              {(input, meta) => (
+                <TextFieldX
+                  {...input}
+                  meta={meta}
+                  errorForm={errorForm}
+                  label="Responsavel"
+                  variant="outlined"
+                  select
+                  fullWidth
+                  margin="normal"
+                >
+                  <MenuItem key={1} value={1}>
+                    Sim
+                  </MenuItem>
+                  <MenuItem key={2} value={0}>
+                    Não
+                  </MenuItem>
+                </TextFieldX>
+              )}
+            </Field>
+          </Form>
+        </ModalX>
+      </Main>
+      <ButtonAdd onClick={handleOpen} />
+      <Footer />
+    </>
+  );
+};
 
 export default ProdutoresTanques;

@@ -1,55 +1,83 @@
-import React from 'react';
-import { View, Text, StyleSheet, GestureResponderEvent } from 'react-native';
-import Header from '../../components/header';
-import Panel from '../../components/panel';
-import Container from '../../components/container';
-import List from '../../components/list';
-import ButtonAdd from '../../components/buttonAdd';
-import { useNavigation } from '@react-navigation/native';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { RootStackParamList } from './index';
-import data from '../../data/produtores.json';
+import React, { useEffect } from "react";
+import { GestureResponderEvent } from "react-native";
+import Header from "../../components/header";
+import Panel from "../../components/panel";
+import Container from "../../components/container";
+import List from "../../components/list";
+import ButtonAdd from "../../components/buttonAdd";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { RootStackParamList } from "./index";
+import { MaterialIcons } from "@expo/vector-icons";
+import { Produtor } from "../../interfaces";
 
-type ProdutorListProp = NativeStackNavigationProp<RootStackParamList, 'ProdutorList'>
+type ProdutorListProp = NativeStackScreenProps<
+  RootStackParamList,
+  "ProdutorList"
+> & {
+  produtores: Produtor[];
+  onSearch: () => Promise<void>;
+  onDel: (id: number) => Promise<boolean>;
+};
 
-const ProdutorList = () => {
+const ProdutorList = (props: ProdutorListProp) => {
+  const { navigation, produtores, onSearch, onDel } = props;
 
-    const navigation = useNavigation<ProdutorListProp>();
+  const OnNavigateToAdd = (event: GestureResponderEvent) =>
+    navigation.navigate("ProdutorAdd");
 
-    const OnNavigateToAdd = (event: GestureResponderEvent) => navigation.navigate('ProdutorAdd');
+  const OnNavigateToDetails = (item: any) =>
+    navigation.navigate("ProdutorDetails", { item });
 
-    return (
-        <Container>
-            <Header title="PRODUTORES" />
-            <Panel background={false}>
-                {data.map(item => (
-                    <List title={item.Nome} desc={item.CPF} key={item.CPF} />
-                ))}
-            </Panel>
-            <ButtonAdd OnPress={OnNavigateToAdd} />
-        </Container>
-    );
-}
+  const OnNavigateToEdit = (item: any) =>
+    navigation.navigate("ProdutorEdit", { item });
 
-const styles = StyleSheet.create({
-    item: {
-        height: 75,
-        width: '97%',
-        backgroundColor: 'white',
-        elevation: 10,
-        marginBottom: 7.5,
-        justifyContent: 'center',
-        paddingLeft: 30
-    },
-    title: {
-        fontSize: 18,
-        fontWeight: '700'
-    },
-    desc: {
-        fontSize: 16,
-        fontWeight: '500'
-    },
-});
+  const OnNavigateToContas = (item: any) =>
+    navigation.navigate("ContaList", { item });
 
+  useEffect(() => {
+    onSearch();
+  }, []);
+
+  function onDelHandler(item: Produtor) {
+    if (item.ProdutorId) onDel(item.ProdutorId);
+  }
+
+  return (
+    <Container>
+      <Header title="PRODUTORES" />
+      <Panel background={false}>
+        {produtores.map((item, key) => (
+          <List
+            item={item}
+            title={item.Nome}
+            desc={item.CpfCnpj}
+            key={`produtor-${key}`}
+            onPress={OnNavigateToDetails}
+            menuItens={[
+              {
+                label: "Editar",
+                icon: <MaterialIcons name="edit" size={20} color="black" />,
+                onPress: OnNavigateToEdit,
+              },
+              {
+                label: "Excluir",
+                icon: <MaterialIcons name="delete" size={20} color="black" />,
+                onPress: onDelHandler,
+              },
+              {
+                label: "Contas",
+                icon: (
+                  <MaterialIcons name="credit-card" size={20} color="black" />
+                ),
+                onPress: OnNavigateToContas,
+              },
+            ]}
+          />
+        ))}
+      </Panel>
+      <ButtonAdd OnPress={OnNavigateToAdd} />
+    </Container>
+  );
+};
 
 export default ProdutorList;

@@ -1,8 +1,11 @@
 class Config {
-    public host = 'smtp.mail.yahoo.com';
-    public port = 587;
-    public user = `${process.env.EMAIL_SEND}`;
-    public password = `${process.env.PASSWORD_EMAIL}`;
+  public host = process.env.EMAIL_HOST;
+  public port = process.env.EMAIL_PORTS
+    ? Number(process.env.EMAIL_PORT)
+    : undefined;
+  public user = process.env.EMAIL_USER || "";
+  public password = process.env.EMAIL_PASSWORD || "";
+  public secure = process.env.EMAIL_SECURE === "true";
 }
 
-export default new Config;
+export default new Config();

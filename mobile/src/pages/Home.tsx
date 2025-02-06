@@ -1,6 +1,5 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { StyleSheet } from 'react-native';
 import Produtor from './Produtor';
 import Propriedade from './Propriedade';
 import Tanque from './Tanque';

@@ -1,0 +1,12 @@
+.btn-del {
+  background-color: transparent;
+  border: none;
+  border-radius: 7px;
+  margin: 5px;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.btn-del:hover {
+  background-color: var(--cor-btnDel-hover);
+}

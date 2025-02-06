@@ -1,6 +1,5 @@
 import './style.css';
 import { Link } from 'react-router-dom';
-import { Dashboard, People, House, LocalDrink, FileCopy } from '@material-ui/icons';
 import { useSelector } from 'react-redux';
 import { StateMenu, StatePageActive } from '../../Interfaces';
 import { logout } from '../../Services/Auth';
@@ -8,6 +7,7 @@ import { useEffect, useState } from 'react';
 import { getUser } from '../../Services/Auth';
 import { User } from '../../Interfaces';
 import userImg from '../../Assets/images/anonimos.jpg';
+import { Dashboard, FileCopy, House, LocalDrink, People } from '@mui/icons-material';
 
 interface Reducers {
     MenuReducer: StateMenu;

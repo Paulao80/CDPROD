@@ -29,6 +29,7 @@ routes.put('/produtores', Auth.verify, ProdutoresControllers.update);
 routes.delete('/produtores/:id', Auth.verify, ProdutoresControllers.delete);
 
 routes.get('/contas', Auth.verify, ContasControllers.index);
+routes.get('/contas/produtor/:id', Auth.verify, ContasControllers.getByProdutorId);
 routes.get('/contas/:id', Auth.verify, ContasControllers.show);
 routes.post('/contas', Auth.verify, ContasControllers.create);
 routes.put('/contas', Auth.verify, ContasControllers.update);
@@ -48,6 +49,7 @@ routes.delete('/tanques/:id', Auth.verify, TanquesControllers.delete);
 
 routes.get('/prodtanques', Auth.verify, ProdutoresTanquesControllers.index);
 routes.get('/prodtanques/:id', Auth.verify, ProdutoresTanquesControllers.show);
+routes.get('/prodtanques/tanque/:id', Auth.verify, ProdutoresTanquesControllers.getByTanqueId);
 routes.post('/prodtanques', Auth.verify, ProdutoresTanquesControllers.create);
 routes.delete('/prodtanques/:id', Auth.verify, ProdutoresTanquesControllers.delete);
 
